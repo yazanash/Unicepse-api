@@ -1,6 +1,6 @@
 import factory
 from datetime import datetime
-from src.Autherntication.models.user_model import User
+from src.Authentication.models.user_model import User
 
 
 class UserFactory(factory.Factory):
