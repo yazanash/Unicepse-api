@@ -87,10 +87,75 @@ class UserTest(unittest.TestCase):
         user.deserialize(data)
         # create test user
         user.create()
-        # print("user created ")
+        # read user data
         read_user = User.find(user.uid)
-        # user.dt_name = "user_test"
         self.assertEqual(user.username, read_user.username)  # add assertion here
+
+    def test_update_a_user(self):
+        """It should update a User and get it and assert it updated data """
+        data = {
+            'uid': '123456789',
+            'username': "user1",
+            'email': "user@example.com",
+            'password': "secret",
+            'token': "0123456789",
+            'date_joined': "2021-07-27"
+        }
+        user = User()
+        User.dt_name = "user_test"
+        user.deserialize(data)
+        # create test user
+        user.create()
+        # read user data
+        read_user = User.find(user.uid)
+        self.assertEqual(user.username, read_user.username)  # add assertion here
+        # user created successfully
+        user.username = "updated user"
+        user.update()
+        read_user = User.find(user.uid)
+        self.assertEqual(user.username, read_user.username)
+
+    def test_delete_a_user(self):
+        """It should delete a User check it is deleted """
+        data = {
+            'uid': '123456789',
+            'username': "user1",
+            'email': "user@example.com",
+            'password': "secret",
+            'token': "0123456789",
+            'date_joined': "2021-07-27"
+        }
+        user = User()
+        User.dt_name = "user_test"
+        user.deserialize(data)
+        # create test user
+        user.create()
+        # read user data
+        read_user = User.find(user.uid)
+        self.assertEqual(user.username, read_user.username)  # add assertion here
+        # user created successfully
+        user.delete()
+        read_user = User.check_if_exist(user.uid)
+        self.assertIsNone(read_user.username)
+
+    def test_get_all_users(self):
+        """It should update a User and get it and assert it updated data """
+        data = {
+            'uid': '123456789',
+            'username': "user1",
+            'email': "user@example.com",
+            'password': "secret",
+            'token': "0123456789",
+            'date_joined': "2021-07-27"
+        }
+        user = User()
+        User.dt_name = "user_test"
+        user.deserialize(data)
+        # create test user
+        user.create()
+        # read user data
+        users = User.all()
+        self.assertIsNotNone(User)
 
 
 if __name__ == '__main__':
