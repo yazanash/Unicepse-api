@@ -32,3 +32,4 @@ coverage
 
 # Utilities
 httpie
+pyotp

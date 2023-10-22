@@ -5,13 +5,16 @@ from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import auth
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 app = Flask(__name__)
 
 app.register_blueprint(trainingBlueprint)
 
-print("get env var %s", os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
+print("get env var %s", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
-cred = credentials.Certificate(os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
+cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 default_app = firebase_admin.initialize_app(cred, {
     "databaseURL": "https://platinum-8b28f-default-rtdb.firebaseio.com"
 })
