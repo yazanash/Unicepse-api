@@ -1,11 +1,12 @@
 """
 This class Tests Fake Module
 """
-
+import time
 import unittest
 import logging
 from . import factories as fake
 from datetime import datetime
+from src.common.utils import OtpHelper
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +59,15 @@ class TestFakes(unittest.TestCase):
         player = fake.PlayerFactory()
         logger.info("Testing fake Player!")
         self.assertIsNotNone(player)
+
+    def test_otp_helper(self):
+        """It should generate multi-otp and validate them"""
+        otp_helper = OtpHelper()
+        res1 = otp_helper.generate_otp()
+        res2 = otp_helper.generate_otp()
+        time.sleep(15)
+        self.assertTrue(otp_helper.validate_otp(res1))
+        self.assertTrue(otp_helper.validate_otp(res2))
 
 
 ################################################################
