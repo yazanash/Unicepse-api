@@ -2,7 +2,7 @@ import unittest
 
 
 from src.Authentication.models.user_model import User
-from src.common.models import database, base
+# from src.common.models import database, base
 
 
 class UserTest(unittest.TestCase):
@@ -10,12 +10,12 @@ class UserTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """This runs once before the entire test suite"""
-        database=base.reference('test')
+        # database=base.reference('test')
 
     @classmethod
     def tearDownClass(cls):
         """This runs once after the entire test suite"""
-        database = base.reference('user')
+        # database = base.reference('user')
 
     def setUp(self):
         """This runs before each test"""
@@ -65,11 +65,32 @@ class UserTest(unittest.TestCase):
             'date_joined': "2021-07-27"
         }
         user = User()
+        user.dt_name = "user_test"
         user.deserialize(data)
         print("user des ")
         user.create()
         print("user created ")
         self.assertIsNotNone(user.uid)  # add assertion here
+
+    def test_get_a_user(self):
+        """It should add a User and get it to assert that it exist"""
+        data = {
+            'uid': '123456789',
+            'username': "user1",
+            'email': "user@example.com",
+            'password': "secret",
+            'token': "0123456789",
+            'date_joined': "2021-07-27"
+        }
+        user = User()
+        User.dt_name = "user_test"
+        user.deserialize(data)
+        # create test user
+        user.create()
+        # print("user created ")
+        read_user = User.find(user.uid)
+        # user.dt_name = "user_test"
+        self.assertEqual(user.username, read_user.username)  # add assertion here
 
 
 if __name__ == '__main__':

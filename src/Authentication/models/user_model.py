@@ -18,6 +18,8 @@ class User(models.PersistentBase):
         self.token = None
         self.date_joined = None
 
+    dt_name = "user"
+
     def serialize(self):
         """Serializes a User into a dictionary"""
         return {
@@ -55,3 +57,7 @@ class User(models.PersistentBase):
                 "bad or no data - " + error.args[0]
             ) from error
         return self
+
+    @classmethod
+    def create_model(cls):
+        return User()

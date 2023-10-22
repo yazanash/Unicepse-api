@@ -18,10 +18,11 @@ class UserFactory(factory.Factory):
     class Meta:
         model = User
 
-    id = factory.Sequence(lambda n: n)
+    uid = factory.Sequence(lambda n: n)
     username = factory.Faker("name")
     password = factory.Faker("password")
-    disabled = factory.fuzzy.FuzzyChoice([True, False])
+    email = factory.Faker("email")
+    token = factory.Faker("catch_phrase")
     dateJoined = factory.LazyFunction(datetime.utcnow)
 
 
@@ -39,6 +40,7 @@ class TrainingFactory(factory.Factory):
 
     id = factory.Sequence(lambda n: n)
     name = factory.Faker("name")
+    images = factory.Faker("email")
 
 
 class SubscriptionFactory(factory.Factory):
@@ -47,16 +49,18 @@ class SubscriptionFactory(factory.Factory):
         model = Subscription
 
     id = factory.Sequence(lambda n: n)
-    playerId = factory.Sequence(lambda n: n)
-    startDate = factory.LazyFunction(datetime.utcnow())
-    endDate = factory.LazyFunction(datetime.utcnow())
-    price = factory.LazyAttribute(random.randrange(0, 1000001))
-    priceAD = factory.LazyAttribute(random.randrange(0, 1000001))
-    discountValue = factory.LazyAttribute(random.randrange(0, 1000001))
-    discountDesc = factory.Faker("catch_phrase")
+    pl_id = factory.Sequence(lambda n: n)
+    sp_id = factory.Sequence(lambda n: n)
+    tr_id = factory.Sequence(lambda n: n)
+    startDate = factory.Faker("date_object")
+    endDate = factory.Faker("date_object")
+    price = random.randrange(0, 1000001)
+    priceAD = random.randrange(0, 1000001)
+    discountValue = random.randrange(0, 1000001)
+    discountDes = factory.Faker("catch_phrase")
     isD = factory.fuzzy.FuzzyChoice([True, False])
     isPay = factory.fuzzy.FuzzyChoice([True, False])
-    paymentTotal = factory.LazyAttribute(random.randrange(0, 1000001))
+    paymentTotal = random.randrange(0, 1000001)
 
 
 class PlayerFactory(factory.Factory):
@@ -65,4 +69,5 @@ class PlayerFactory(factory.Factory):
 
     id = factory.Sequence(lambda n: n)
     name = factory.Faker("name")
-    images = factory.Faker("email")
+    width = fuzzy.FuzzyFloat(10, 100)
+    height = fuzzy.FuzzyFloat(10, 100)

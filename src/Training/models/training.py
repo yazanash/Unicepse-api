@@ -1,5 +1,9 @@
-class Training:
+from src.common import models
+
+
+class Training(models.PersistentBase):
     def __init__(self, id, name, images):
+        super().__init__()
         self.id = id
         self.name = name
         self.images = images
