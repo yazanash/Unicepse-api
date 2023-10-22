@@ -21,7 +21,8 @@ class UserFactory(factory.Factory):
     uid = factory.Sequence(lambda n: n)
     username = factory.Faker("name")
     password = factory.Faker("password")
-    disabled = factory.fuzzy.FuzzyChoice([True, False])
+    email = factory.Faker("email")
+    token = factory.Faker("catch_phrase")
     dateJoined = factory.LazyFunction(datetime.utcnow)
 
 

@@ -1,5 +1,9 @@
-class Player:
+from src.common import models
+
+
+class Player(models.PersistentBase):
     def __init__(self, id, name, width, height):
+        super().__init__()
         self.id = id
         self.name = name
         self.width = width
@@ -7,6 +11,7 @@ class Player:
 
     @classmethod
     def from_json(cls, json):
+        """Deserializes a player from dict {json}"""
         return Player(json['id'], json['name'], json['width'], json['height'])
 
     def to_json(self):
