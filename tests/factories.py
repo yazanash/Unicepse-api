@@ -31,6 +31,9 @@ class TrainingProgFactory(factory.Factory):
         model = TrainingProgram
 
     id = factory.Sequence(lambda n: n)
+    name = factory.Faker("name")
+    training_list = ['train1', 'train2']
+    provider = factory.Faker("name")
 
 
 class TrainingFactory(factory.Factory):
@@ -40,7 +43,8 @@ class TrainingFactory(factory.Factory):
 
     id = factory.Sequence(lambda n: n)
     name = factory.Faker("name")
-    images = factory.Faker("email")
+    rounds = factory.fuzzy.FuzzyInteger(1, 15)
+    image_url = factory.Faker("email")
 
 
 class SubscriptionFactory(factory.Factory):

@@ -2,19 +2,28 @@ from src.common import models
 
 
 class Training(models.PersistentBase):
-    def __init__(self, id, name, images):
+    def __init__(self, id, name, rounds, image_url):
         super().__init__()
         self.id = id
         self.name = name
-        self.images = images
+        self.rounds = rounds
+        self.image_url = image_url
 
-    @classmethod
-    def from_json(cls, json):
-        return Training(json['id'], json['name'], json['images'])
+    @staticmethod
+    def deserialize(json):
+        """Deserializes Training from dict {json}"""
+        return Training(
+            json['id'],
+            json['name'],
+            json['rounds'],
+            json['image_url'],
+        )
 
-    def to_json(self):
+    def serialize(self):
+        """Serializes Training to dict {json}"""
         return {
             'id': self.id,
             'name': self.name,
-            'images': self.images,
+            'rounds': self.rounds,
+            'image_url': self.image_url,
         }
