@@ -1,6 +1,7 @@
 import firebase_admin
 from flask import Flask
 from src.Training.routes.training_route import trainingBlueprint
+from flask_mail import Mail, Message
 from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import auth
@@ -9,14 +10,15 @@ app = Flask(__name__)
 
 app.register_blueprint(trainingBlueprint)
 
-print("get env var %s", os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
 
-cred = credentials.Certificate(os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
-default_app = firebase_admin.initialize_app(cred, {
-    "databaseURL": "https://platinum-8b28f-default-rtdb.firebaseio.com"
-})
-ref = db.reference("users")
-print(ref.get())
+# print("get env var %s", os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
+#
+# cred = credentials.Certificate(os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
+# default_app = firebase_admin.initialize_app(cred, {
+#     "databaseURL": "https://platinum-8b28f-default-rtdb.firebaseio.com"
+# })
+# ref = db.reference("users")
+# print(ref.get())
 # ref = db.reference('users')
 # print(ref.get())
 #
@@ -33,15 +35,20 @@ print(ref.get())
 # user = auth.get_user_by_email(email)
 # print('Successfully fetched user data: {0}'.format(user.password))
 
+mail = Mail(app)
+
 
 @app.route('/', methods=["GET"])
 def hello_app():
     return "Platinum Api; version=1.0.0"
 
 
-@app.route('/test-firebase', methods=["GET"])
-def fire_app():
-    return "none"
+@app.route('/send-mail', methods=["GET"])
+def send_mail():
+    msg = Message('Hello From flask', sender='yazan.ash.doonaas@gmail.com', recipients=['yazan.k.aboshash@gmail.com'])
+    msg.body = "This is the email body"
+    mail.send(msg)
+    return "Sent"
 
 
 if __name__ == "__main__":

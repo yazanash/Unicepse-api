@@ -8,6 +8,8 @@ Flask-SQLAlchemy
 psycopg2-binary
 python-dotenv
 firebase-admin
+Flask-Mail
+
 
 # Runtime dependencies
 gunicorn
