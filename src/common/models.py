@@ -26,9 +26,6 @@ base = db
 class PersistentBase:
     """Base class added persistent methods"""
 
-    def __init__(self):
-        self.id = None  # pylint: disable=invalid-name
-
     def create(self):
         """
         Creates an Account to the database
