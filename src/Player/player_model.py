@@ -9,12 +9,18 @@ class Player(models.PersistentBase):
         self.width = width
         self. height = height
 
-    @classmethod
-    def from_json(cls, json):
+    @staticmethod
+    def deserialize(json):
         """Deserializes a player from dict {json}"""
-        return Player(json['id'], json['name'], json['width'], json['height'])
+        return Player(
+            json['id'],
+            json['name'],
+            json['width'],
+            json['height']
+        )
 
-    def to_json(self):
+    def serialize(self):
+        """Serializes player to dict {json}"""
         return {
             'id': self.id,
             'name': self.name,
