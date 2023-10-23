@@ -13,6 +13,8 @@ app = Flask(__name__)
 
 app.register_blueprint(trainingBlueprint)
 
+# this line added for test GPG configuration
+
 # ref = db.reference('users')
 # print(ref.get())
 #
