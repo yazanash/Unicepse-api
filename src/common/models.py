@@ -32,7 +32,7 @@ class PersistentBase:
         """
         logger.info("Creating %s", self.username)
         # self.uid = None  # id must be none to generate next primary key
-        users_ref = db.reference(self.dt_name).child(self.uid)
+        users_ref = db.reference(self.dt_name).child(str(self.uid))
         users_ref.set(self.serialize())
         logger.info("Created %s successfully", self.username)
 
@@ -41,13 +41,13 @@ class PersistentBase:
         Updates an Account to the database
         """
         logger.info("Updating %s", self.username)
-        users_ref = db.reference(self.dt_name).child(self.uid)
+        users_ref = db.reference(self.dt_name).child(str(self.uid))
         users_ref.update(self.serialize())
 
     def delete(self):
-        """Removes a Account from the data store"""
+        """Removes a user from the data store"""
         logger.info("Deleting %s", self.username)
-        users_ref = db.reference(self.dt_name).child(self.uid).delete()
+        users_ref = db.reference(self.dt_name).child(str(self.uid)).delete()
 
     @classmethod
     def all(cls):
@@ -60,7 +60,7 @@ class PersistentBase:
     def check_if_exist(cls, uid):
         """check if record is exist in database"""
         logger.info("check is data exist")
-        user_ref = db.reference(cls.dt_name).child(uid).get()
+        user_ref = db.reference(cls.dt_name).child(str(uid)).get()
         if user_ref is not None:
             user = cls.create_model()
             user.deserialize(user_ref)
@@ -74,7 +74,7 @@ class PersistentBase:
     def find(cls, by_uid):
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
-        users_ref = db.reference(cls.dt_name).child(by_uid)
+        users_ref = db.reference(cls.dt_name).child(str(by_uid))
         user = cls.create_model()
         user.deserialize(users_ref.get())
         return user

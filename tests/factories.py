@@ -23,7 +23,7 @@ class UserFactory(factory.Factory):
     password = factory.Faker("password")
     email = factory.Faker("email")
     token = factory.Faker("catch_phrase")
-    dateJoined = factory.LazyFunction(datetime.utcnow)
+    date_joined = factory.LazyFunction(datetime.utcnow)
 
 
 class TrainingProgFactory(factory.Factory):

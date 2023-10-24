@@ -4,31 +4,36 @@ User Model
 for validate user auth
 """
 from src.common import models
-from datetime import date
+from datetime import datetime as date
 
 
 class User(models.PersistentBase):
 
-    def __init__(self):
+    def __init__(self, uid=None,
+                 username=None,
+                 email=None,
+                 password=None,
+                 token=None,
+                 date_joined=None):
         super().__init__()
-        self.uid = None
-        self.username = None
-        self.email = None
-        self.password = None
-        self.token = None
-        self.date_joined = None
+        self.uid = uid
+        self.username = username
+        self.email = email
+        self.password = password
+        self.token = token
+        self.date_joined = date_joined
 
     dt_name = "user"
 
     def serialize(self):
         """Serializes a User into a dictionary"""
         return {
-            "uid": self.uid,
+            'uid': str(self.uid),
             'username': self.username,
             'email': self.email,
             'password': self.password,
-            'token': self.token
-
+            'token': self.token,
+            'date_joined': self.date_joined.isoformat()
         }
 
     def deserialize(self, data):

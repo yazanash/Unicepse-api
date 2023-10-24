@@ -4,8 +4,9 @@ from src.Training.routes.training_route import trainingBlueprint
 from flask_mail import Mail, Message
 from firebase_admin import credentials
 from firebase_admin import db
-from firebase_admin import auth
-import os
+# from firebase_admin import auth
+# import os
+from tests import factories
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,6 +15,10 @@ app = Flask(__name__)
 app.register_blueprint(trainingBlueprint)
 
 # this line modified for test ssh configuration
+# cred = credentials.Certificate("key.json")
+# firebase_admin.initialize_app(cred, {
+#     "databaseURL": "https://platinum-8b28f-default-rtdb.firebaseio.com"
+# })
 
 # ref = db.reference('users')
 # print(ref.get())
@@ -48,4 +53,4 @@ def send_mail():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=5000)
