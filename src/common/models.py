@@ -4,11 +4,13 @@ base CRUD Model
 """
 import logging
 from datetime import date
+from firebase_admin import exceptions
 
 import firebase_admin
 from firebase_admin import db
 from firebase_admin import credentials
 import os
+
 
 
 logger = logging.getLogger("flask.app")
@@ -25,6 +27,7 @@ base = db
 ######################################################################
 class PersistentBase:
     """Base class added persistent methods"""
+    dt_name = "user"
 
     def create(self):
         """
@@ -54,7 +57,15 @@ class PersistentBase:
         """Returns all the records in the database"""
         logger.info("Processing all records")
         user_ref = db.reference(cls.dt_name).get()
-        return user_ref
+        print(user_ref)
+        data = []
+        print(type(user_ref))
+        if user_ref is not None:
+            for key, val in user_ref.items():
+                user = cls.create_model()
+                user.deserialize(val)
+                data.append(user)
+        return data
 
     @classmethod
     def check_if_exist(cls, uid):
@@ -66,18 +77,19 @@ class PersistentBase:
             user.deserialize(user_ref)
             return user
         else:
-            user = cls.create_model()
-            user.uid = uid
-            return user
+            return None
 
     @classmethod
     def find(cls, by_uid):
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
         users_ref = db.reference(cls.dt_name).child(str(by_uid))
-        user = cls.create_model()
-        user.deserialize(users_ref.get())
-        return user
+        if users_ref.get() is not None:
+            user = cls.create_model()
+            user.deserialize(users_ref.get())
+            return user
+        else:
+            return None
 
 
 class DataValidationError(Exception):

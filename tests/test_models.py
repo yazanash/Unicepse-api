@@ -26,14 +26,12 @@ class TestFakes(unittest.TestCase):
         self.assertIsNotNone(training.id, f"training.id: {training.id}")
         self.assertIsNotNone(training.name, f"training.name: {training.name}")
         self.assertIsNotNone(training.image_url, f"training.images: {training.image_url}")
-        print("Training: ", training.serialize())
 
     def test_fake_training_program(self):
         """It should make a fake Training program"""
         training_prog = fake.TrainingProgFactory()
         logger.info("Testing fake training program")
         self.assertIsNotNone(training_prog.id, f"trainingProgram.id: {training_prog.id}")
-        print("Training Program: ", training_prog.id)
 
     def test_fake_Subscription(self):
         """It should make a fake Subscription"""
@@ -52,7 +50,6 @@ class TestFakes(unittest.TestCase):
         self.assertIsNotNone(subs.paymentTotal, f"")
         self.assertIsNotNone(subs.discountValue, f"")
         self.assertIsNotNone(subs.discountDes, f"")
-        print("Subscription: ", subs.to_json())
 
     def test_fake_player(self):
         """It should make a fake Player"""
@@ -70,7 +67,6 @@ class TestFakes(unittest.TestCase):
         self.assertTrue(otph.verify(res1))
         self.assertTrue(otph.verify(res2))
         self.assertEqual(len(otph.otp_list), 2)
-        print(res1, res2)
         time.sleep(5)
         #   assert otp(s) are not valid after time interval
         self.assertEqual(otph.verify(res1), False)
@@ -85,7 +81,6 @@ class TestFakes(unittest.TestCase):
         res1 = otp_helper.generate()
         time.sleep(5)
         res2 = otp_helper.generate()
-        print(res1, res2)
         self.assertNotEquals(res1, res2)
         self.assertTrue(otp_helper.verify(res1))
         self.assertTrue(otp_helper.verify(res2))

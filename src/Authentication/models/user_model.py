@@ -42,6 +42,7 @@ class User(models.PersistentBase):
         Args:
             data (dict): A dictionary containing the resource data
         """
+        print(data)
         try:
             self.uid = data["uid"]
             self.username = data["username"]
