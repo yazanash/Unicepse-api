@@ -1,4 +1,4 @@
- __pycache__/
+__pycache__/
 src/Authentication/models/__pycache__/
 src/Authentication/routes/__pycache__/
 src/Payment/__pycache__/
