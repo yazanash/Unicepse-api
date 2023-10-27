@@ -1,5 +1,6 @@
 from src.common import models
 from datetime import datetime
+from src.common import status
 
 
 class Player(models.PersistentBase):
@@ -16,15 +17,19 @@ class Player(models.PersistentBase):
     @staticmethod
     def deserialize(json):
         """Deserializes a player from dict {json}"""
-        return Player(
-            json['id'],
-            json['name'],
-            json['width'],
-            json['height'],
-            datetime.strptime(json['date_of_birth'], "%Y/%m/%d, %H:%M:%S"),
-            json['gender'],
-            json['balance'],
-        )
+        try:
+            player = Player(
+                json['id'],
+                json['name'],
+                json['width'],
+                json['height'],
+                datetime.strptime(json['date_of_birth'], "%Y/%m/%d, %H:%M:%S"),
+                json['gender'],
+                json['balance'],
+            )
+        except Exception:
+            return status.HTTP_406_NOT_ACCEPTABLE
+        return player
 
     def serialize(self):
         """Serializes player to dict {json}"""
