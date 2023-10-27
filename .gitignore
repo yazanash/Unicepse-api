@@ -1,4 +1,12 @@
-__pycache__
+__pycache__/
+src/Authentication/models/__pycache__/
+src/Authentication/routes/__pycache__/
+src/Payment/__pycache__/
+src/Player/__pycache__/
+src/Training/models/__pycache__/
+
+src/common/__pycache__/
+tests/__pycache__/
 .coverage
 key.json
 .env

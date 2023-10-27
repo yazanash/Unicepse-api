@@ -8,6 +8,7 @@ from src.Training.models.training import Training
 from src.Payment.subscription import Subscription
 from src.Training.models.training_program import TrainingProgram
 from src.Player.player_model import Player
+from src.common.utils import TokenGenerator
 
 
 ###################################################################
@@ -22,8 +23,8 @@ class UserFactory(factory.Factory):
     username = factory.Faker("name")
     password = factory.Faker("password")
     email = factory.Faker("email")
-    token = factory.Faker("catch_phrase")
-    dateJoined = factory.LazyFunction(datetime.utcnow)
+    token = TokenGenerator.generate_token()
+    date_joined = factory.LazyFunction(datetime.utcnow)
 
 
 class TrainingProgFactory(factory.Factory):
