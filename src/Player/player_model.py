@@ -37,4 +37,3 @@ class Player(models.PersistentBase):
             'gender': self.gender,
             'balance': self.balance,
         }
-
