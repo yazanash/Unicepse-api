@@ -20,10 +20,10 @@ def create_player():
     maybe this should be on the sign-in process?
     """
     try:
-        player_service.create_player_usecase()
+        res = player_service.create_player_usecase(player_json=request.get_json())
+        return res
     except Exception :
         return status.HTTP_400_BAD_REQUEST
-    return status.HTTP_503_SERVICE_UNAVAILABLE
 
 
 @playerBp.route("/player", methods=["GET"])
@@ -33,6 +33,10 @@ def read_player():
     a (Token) should be present to identify
     player and return info
     """
+    try:
+        player_service.read_player_usecase()
+    except Exception :
+        return status.HTTP_400_BAD_REQUEST
     return status.HTTP_503_SERVICE_UNAVAILABLE
 
 

@@ -87,23 +87,8 @@ class TestFakes(unittest.TestCase):
 
     def test_token_generator(self):
         """It should make unique tokens"""
-        token1 = TokenGenerator.generate_token()
-        token2 = TokenGenerator.generate_token()
-        self.assertNotEquals(token1, token2)
-
-
-################################################################
-#   D A T A B A S E   M O D E L S   T E S T   C A S E S
-################################################################
-class TestDatabase(unittest.TestCase):
-    """
-    Testcases for firebase database:
-        * Create
-        * READ
-        * UPDATE
-        * DELETE
-    """
-    ######################################################################
-    #  T E S T   C A S E S
-    ######################################################################
-
+        token_list = []
+        for _ in range(100):
+            token_list.append(TokenGenerator.generate_token())
+        token_list = list(set(token_list))
+        self.assertEqual(len(token_list), 100)
