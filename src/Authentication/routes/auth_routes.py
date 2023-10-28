@@ -16,21 +16,21 @@ def create_user():
     return make_response(jsonify(message), status.HTTP_201_CREATED)
 
 
-@auth_Bp.route("/auth/<int:account_id>", methods=["GET"])
+@auth_Bp.route("/auth/<string:account_id>", methods=["GET"])
 def get_user(account_id):
     """this function will return user data"""
     user = User.find(account_id)
-    if not user:
+    if user is None:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
     message = user.serialize()
     return make_response(jsonify(message), status.HTTP_200_OK)
 
 
-@auth_Bp.route("/auth/<int:account_id>", methods=["PUT"])
+@auth_Bp.route("/auth/<string:account_id>", methods=["PUT"])
 def update_user(account_id):
     """this function will UPDATE user data a"""
     user = User.find(account_id)
-    if not user:
+    if user is None:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
     user.deserialize(request.get_json())
     user.update()
