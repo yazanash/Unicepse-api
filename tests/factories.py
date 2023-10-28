@@ -23,7 +23,7 @@ class UserFactory(factory.Factory):
     username = factory.Faker("name")
     password = factory.Faker("password")
     email = factory.Faker("email")
-    token = TokenGenerator.generate_token()
+    token = factory.LazyFunction(TokenGenerator.generate_token)
     date_joined = factory.LazyFunction(datetime.utcnow)
 
 
@@ -72,11 +72,11 @@ class PlayerFactory(factory.Factory):
     class Meta:
         model = Player
 
-    id = factory.Sequence(lambda n: n)
+    pid = factory.Sequence(lambda n: n)
     name = factory.Faker("name")
     width = fuzzy.FuzzyFloat(10, 100)
     height = fuzzy.FuzzyFloat(10, 100)
     date_of_birth = factory.Faker("date_time")
     gender = fuzzy.FuzzyChoice(["male", 'female'])
-    balance = random.randrange(0,100000)
+    balance = random.randrange(0, 100000)
 
