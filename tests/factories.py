@@ -1,5 +1,5 @@
 import random
-
+import uuid
 import factory
 from factory import fuzzy
 from datetime import datetime
@@ -19,7 +19,7 @@ class UserFactory(factory.Factory):
     class Meta:
         model = User
 
-    uid = factory.Sequence(lambda n: n)
+    uid = uuid.uuid4().hex
     username = factory.Faker("name")
     password = factory.Faker("password")
     email = factory.Faker("email")

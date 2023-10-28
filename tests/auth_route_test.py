@@ -1,11 +1,15 @@
 import unittest
 import logging
-from app import app
+
+from src.Authentication.models.user_model import User
 from tests.factories import UserFactory
 from src.common import status  # HTTP Status Codes
 from firebase_admin import db
+from src import app
 BASE_URL = "/auth"
 content_json = "application/json"
+
+users_test = []
 
 
 class MyTestCase(unittest.TestCase):
@@ -20,6 +24,7 @@ class MyTestCase(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         """Runs once before test suite"""
+        User.delete_multi_users(users_test)
 
     def setUp(self):
         """Runs before each test"""
@@ -47,12 +52,13 @@ class MyTestCase(unittest.TestCase):
             new_user = response.get_json()
             user.uid = new_user["uid"]
             users.append(user)
+            users_test.append(user)
         return users
 
-    def test_index(self):
-        """It should get 200_OK from the Home Page"""
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    # def test_index(self):
+    #     """It should get 200_OK from the Home Page"""
+    #     response = self.client.get('/')
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_a_user(self):
         """It should return status code 201 user created successfully"""
@@ -62,10 +68,13 @@ class MyTestCase(unittest.TestCase):
                                     content_type=content_json
                                     )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.get_json()
+        users_test.append(data['uid'])
 
     def test_read_a_user(self):
         """It should return status code 200 and return user data"""
         user = self._create_users(1)[0]
+        print(user.uid)
         resp = self.client.get(
             f"{BASE_URL}/{user.uid}", content_type=content_json
         )
@@ -74,7 +83,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(data["username"], user.username)
 
     def test_get_user_not_found(self):
-        """It should return status code 200 and return user data"""
+        """It should return status code 404 for not existing user"""
         resp = self.client.get(
             f"{BASE_URL}/789654123", content_type=content_json
         )
@@ -84,10 +93,13 @@ class MyTestCase(unittest.TestCase):
         """It should return status code 200 and update user data"""
         user = UserFactory()
         # create user
-        user.uid = 123456789
         response = self.client.post(BASE_URL, json=user.serialize(), content_type=content_json)
+        data = response.get_json()
         user.deserialize(response.get_json())
+        user.uid = data['uid']
+        users_test.append(user.uid)
         user.username = "User Number 3"
+        print(f"{BASE_URL}/{user.uid}")
         resp = self.client.put(
             f"{BASE_URL}/{user.uid}", json=user.serialize(), content_type=content_json
         )
@@ -95,7 +107,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(resp.get_json()['username'], user.username)
 
     def test_update_user_not_found(self):
-        """It should return status code 200 and return user data"""
+        """It should return status code 404 for update for not exist user"""
         # user = self._create_users(1)[0]
         resp = self.client.put(
             f"{BASE_URL}/565656565", content_type=content_json

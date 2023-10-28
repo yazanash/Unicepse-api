@@ -3,11 +3,13 @@ User Model
 
 for validate user auth
 """
-from src.common import models
+
 from datetime import datetime as date
 
+from src.common import models
 
-class User(models.PersistentBase):
+
+class User(models.AuthService):
 
     def __init__(self, uid=None,
                  username=None,
@@ -30,10 +32,9 @@ class User(models.PersistentBase):
         return {
             'uid': str(self.uid),
             'username': self.username,
-            'email': self.email,
             'password': self.password,
-            'token': self.token,
-            'date_joined': self.date_joined.isoformat()
+            'email': self.email,
+            'date_joined': self.date_joined
         }
 
     def deserialize(self, data):
@@ -42,24 +43,22 @@ class User(models.PersistentBase):
         Args:
             data (dict): A dictionary containing the resource data
         """
-        print(data)
+        # print(data)
         try:
-            self.uid = data["uid"]
             self.username = data["username"]
             self.email = data["email"]
             self.password = data["password"]
-            self.token = data["token"]
             self.date_joined = None
             date_joined = data.get("date_joined")
             if date_joined:
-                self.date_joined = date.fromisoformat(date_joined)
+                self.date_joined = date_joined
             else:
                 self.date_joined = date.today()
         except KeyError as error:
-            raise models.DataValidationError("Invalid Account: missing " + error.args[0]) from error
+            raise models.DataValidationError("Invalid User: missing " + error.args[0]) from error
         except TypeError as error:
             raise models.DataValidationError(
-                "Invalid Account: body of request contained "
+                "Invalid User: body of request contained "
                 "bad or no data - " + error.args[0]
             ) from error
         return self

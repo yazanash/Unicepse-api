@@ -9,7 +9,7 @@ psycopg2-binary
 python-dotenv
 firebase-admin
 Flask-Mail
-flask-jwt-extended
+PyJWT
 
 # Runtime dependencies
 gunicorn
