@@ -1,6 +1,7 @@
 from src.Player.player_presistent_base import PlayerPersistentBase
 from datetime import datetime
-from src.common import status
+from src.common import status, errors
+from src.common.utils import logger
 
 
 class Player(PlayerPersistentBase):
@@ -22,6 +23,7 @@ class Player(PlayerPersistentBase):
     def deserialize(json):
         """Deserializes a player from dict {json}"""
         try:
+            logger.info(f"deserializing a player")
             player = Player(
                 json['pid'],
                 json['name'],
@@ -31,21 +33,30 @@ class Player(PlayerPersistentBase):
                 json['gender'],
                 json['balance'],
             )
-        except Exception:
-            return status.HTTP_406_NOT_ACCEPTABLE
+        except AttributeError as e:
+            logger.error("Error deserializing player: %s", e)
+            raise errors.DataValidationError("Player deserializing Error!")
+        except TypeError:
+            raise errors.DataValidationError("TypeError")
         return player
 
     def serialize(self):
         """Serializes player to dict {json}"""
-        return {
-            'pid': self.pid,
-            'name': self.name,
-            'width': self.width,
-            'height': self.height,
-            'date_of_birth': self.date_of_birth.strftime("%Y/%m/%d, %H:%M:%S"),
-            'gender': self.gender,
-            'balance': self.balance,
-        }
+        try:
+
+            mapping = {
+                'pid': self.pid,
+                'name': self.name,
+                'width': self.width,
+                'height': self.height,
+                'date_of_birth': self.date_of_birth.strftime("%Y/%m/%d, %H:%M:%S"),
+                'gender': self.gender,
+                'balance': self.balance,
+            }
+            return mapping
+        except AttributeError as e:
+            logger.error("Error in serializing player: %s", e.args[0])
+            raise errors.DataValidationError("DataValidationError in serialize player!!")
 
     @staticmethod
     def create_model():
