@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify
-from player_model import Player
+from flask import Blueprint, request, jsonify, make_response
+from src.Player.player_model import Player
 from src.common import status
-from player_service import  PlayerService
+from src.Player.player_service import PlayerService
 
 
 playerBp = Blueprint("player_info", __name__)
@@ -19,11 +19,10 @@ def create_player():
     create player route...
     maybe this should be on the sign-in process?
     """
-    try:
-        res = player_service.create_player_usecase(player_json=request.get_json())
-        return res
-    except Exception :
-        return status.HTTP_400_BAD_REQUEST
+    statusCode = player_service.create_player_usecase(request.get_json())
+    response = make_response()
+    response.status_code = statusCode
+    return response
 
 
 @playerBp.route("/player", methods=["GET"])
@@ -33,11 +32,12 @@ def read_player():
     a (Token) should be present to identify
     player and return info
     """
-    try:
-        player_service.read_player_usecase()
-    except Exception :
-        return status.HTTP_400_BAD_REQUEST
-    return status.HTTP_503_SERVICE_UNAVAILABLE
+    print("READ method get json: ", request.get_json())
+    print("READ method get data: ", request.get_data())
+    player = player_service.read_player_usecase(request.get_json()[0])
+    if player is int:
+        return {}, player
+    return make_response(player.serialize(), status.HTTP_200_OK)
 
 
 @playerBp.route("/player", methods=["PUT"])
@@ -46,8 +46,10 @@ def update_player():
     Update player info.
     info should be in json format
     """
-    try:
-        res = Player.deserialize(request.get_json())
-    except Exception :
-        return status.HTTP_400_BAD_REQUEST
-    return res
+    stat = player_service.update_player_usecase(request.get_json())
+    return make_response("Updated Successfully!", stat)
+
+
+@playerBp.route("/player", methods=["DELETE"])
+def delete_player():
+    return {}, player_service.delete_player_usecase(request.get_json()[0])

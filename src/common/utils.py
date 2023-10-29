@@ -4,6 +4,10 @@ from datetime import datetime
 import random
 from uuid import uuid4
 from threading import Lock, Timer
+import logging
+
+
+logger = logging.getLogger("flask.app")
 
 
 class SingletonMeta(type):

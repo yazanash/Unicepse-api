@@ -1,7 +1,6 @@
 import logging
 from firebase_admin import db
-
-logger = logging.getLogger("flask.app")
+from src.common.utils import logger
 
 
 class PlayerPersistentBase:
@@ -71,5 +70,3 @@ class PlayerPersistentBase:
         return None
 
 
-class DataValidationError(Exception):
-    """Used for data validation errors when deserializing"""

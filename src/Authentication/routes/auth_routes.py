@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, abort
 from src.Authentication.models.user_model import User
 from src.common import status
-from tests.factories import UserFactory
+# from tests.factories import UserFactory
 
 auth_Bp = Blueprint('email_auth', __name__)
 
