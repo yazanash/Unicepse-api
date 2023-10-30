@@ -1,5 +1,8 @@
+import os
 import unittest
 import logging
+
+import jwt
 
 from src.Authentication.models.user_model import User
 from tests.factories import UserFactory
@@ -10,6 +13,7 @@ BASE_URL = "/auth"
 content_json = "application/json"
 
 users_test = []
+test_password = "123456789"
 
 
 class MyTestCase(unittest.TestCase):
@@ -55,6 +59,20 @@ class MyTestCase(unittest.TestCase):
             users_test.append(user)
         return users
 
+    def _create_users_with_password(self):
+        """Factory method to create accounts in bulk"""
+        user = UserFactory()
+        user.password = test_password
+        response = self.client.post(BASE_URL, json=user.serialize())
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED,
+            "Could not create test user",
+        )
+        new_user = response.get_json()
+        user.uid = new_user["uid"]
+        users_test.append(user)
+        return user
     # def test_index(self):
     #     """It should get 200_OK from the Home Page"""
     #     response = self.client.get('/')
@@ -121,3 +139,16 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertGreater(len(data), 0)
+
+    def test_login_user(self):
+        """It should verify cred"""
+        user = self._create_users_with_password()
+        resp = self.client.post(f"{BASE_URL}/login",
+                                json={"email": user.email,
+                                      'password': user.password},
+                                content_type=content_json)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        token_val = jwt.decode(jwt=data, key=os.environ["SECRET_KEY"], algorithms="HS256")
+        print(token_val['public_id'])
+        self.assertEqual(token_val['public_id'], user.uid)
