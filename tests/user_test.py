@@ -1,4 +1,7 @@
+import os
 import unittest
+
+import jwt
 
 from src.common.models import DataValidationError, AuthValidationError
 from . import factories
@@ -27,6 +30,7 @@ class UserTest(unittest.TestCase):
 
     def tearDown(self):
         """This runs after each test"""
+        User.delete_multi_users(users_test)
 
     def test_deserialize_a_user(self):
         """It should deserialize a User data and assert that it true"""
@@ -124,3 +128,24 @@ class UserTest(unittest.TestCase):
         user_by_email = User.get_user_by_email(user.email)
         user_n = User.find(user.uid)
         self.assertIsNotNone(user_n)
+
+    def test_user_login(self):
+        """It should verify user credential """
+        user = factories.UserFactory()
+        user.create()
+        users_test.append(user.uid)
+        credential = {"email": user.email, "password": user.password}
+        auth_user = User.get_user_by_email(credential['email'])
+        token = auth_user.login_user(credential)
+        data = jwt.decode(jwt=token, key=os.environ['SECRET_KEY'], algorithms='HS256')
+        self.assertEqual(data['public_id'], auth_user.uid)
+
+    def test_user_login_failed(self):
+        """It should verify user credential and assert it false """
+        user = factories.UserFactory()
+        user.create()
+        users_test.append(user.uid)
+        credential = {"email": user.email, "password": "Wrong password"}
+        auth_user = User.get_user_by_email(credential['email'])
+        token = auth_user.login_user(credential)
+        self.assertIsNone(token)

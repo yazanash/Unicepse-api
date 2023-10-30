@@ -1,3 +1,7 @@
+import os
+
+import jwt
+from firebase_admin import auth
 from flask import Blueprint, request, jsonify, make_response, abort
 from src.Authentication.models.user_model import User
 from src.common import status
@@ -44,3 +48,14 @@ def get_users_list():
     users = User.all()
     users_list = [user.serialize() for user in users]
     return jsonify(users_list), status.HTTP_200_OK
+
+
+@auth_Bp.route("/auth/login", methods=["POST"])
+def login_user():
+    """this function will UPDATE user data a"""
+    credential = request.get_json()
+    auth_user = User.get_user_by_email(credential['email'])
+    token = auth_user.login_user(credential)
+    if not token:
+        abort(status.HTTP_401_UNAUTHORIZED, f"invalid Credential")
+    return make_response(jsonify(token), status.HTTP_200_OK)

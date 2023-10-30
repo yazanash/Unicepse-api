@@ -2,6 +2,8 @@
 base CRUD Model
 
 """
+import base64
+import hashlib
 import logging
 import os
 
@@ -30,14 +32,15 @@ class AuthService:
             email=self.email,
             email_verified=False,
             display_name=self.username,
-            password=self.password,
             disabled=False
         )
         self.uid = user.uid
+
         auth.set_custom_user_claims(self.uid, {
             'Role': 'player',
             'token': self.generate_token(),
-            'date_joined': str(self.date_joined)
+            'date_joined': str(self.date_joined),
+            'password': generate_password_hash(self.password)
         })
         logger.info("Successfully created new user %s", self.uid)
 
@@ -50,12 +53,13 @@ class AuthService:
             self.uid,
             email=self.email,
             email_verified=False,
-            password=self.password,
             disabled=False)
+
         auth.set_custom_user_claims(self.uid, {
             'Role': 'player',
             'token': self.generate_token(),
-            'date_joined': str(self.date_joined)
+            'date_joined': str(self.date_joined),
+            'password': generate_password_hash(self.password)
         })
         return self
 
@@ -66,14 +70,20 @@ class AuthService:
 
     def generate_token(self):
         """generate token key for users"""
-        token = jwt.encode({
+        token = jwt.encode(payload={
             'public_id': str(self.uid),
             'exp': datetime.utcnow() + timedelta(days=90)
-        }, os.environ['SECRET_KEY'])
-        self.token = token
+        }, key=os.environ['SECRET_KEY'], algorithm="HS256")
 
-    def login_user(self):
+        self.token = token
+        return self.token
+
+    def login_user(self, credentials):
         """verify user credentials """
+        if check_password_hash(self.password, credentials['password']):
+            return self.generate_token()
+        else:
+            return None
 
     @classmethod
     def all(cls):
@@ -99,6 +109,7 @@ class AuthService:
         """Returns all the records in the database"""
         logger.info("Processing delete multi users")
         result = auth.delete_users(users)
+        print(len(users))
 
     @classmethod
     def check_if_exist(cls, uid):
@@ -121,6 +132,9 @@ class AuthService:
         user = cls.create_model()
         user.uid = data.uid
         user.email = data.email
+        user.password = data.custom_claims.get('password')
+
+        # print(user.password)
         return user
 
     @classmethod
@@ -134,6 +148,7 @@ class AuthService:
             user.username = data.display_name
             user.email = data.email
             user.date_joined = data.custom_claims.get('date_joined')
+            user.password = data.custom_claims.get('password')
             return user
         except _auth_utils.UserNotFoundError as error:
             return None
