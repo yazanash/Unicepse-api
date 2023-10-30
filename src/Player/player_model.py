@@ -25,7 +25,7 @@ class Player(PlayerPersistentBase):
         try:
             logger.info(f"deserializing a player")
             player = Player(
-                json['pid'],
+                json["pid"],
                 json['name'],
                 json['width'],
                 json['height'],
