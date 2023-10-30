@@ -51,7 +51,7 @@ class PlayerPersistentBase:
         """check if record is exist in database"""
         logger.info("check if data exist")
         player_ref = db.reference(cls.dt_name).child(cls.players_table).child(str(uid)).get()
-        print(player_ref)
+        print("player ref in check if exist: ", player_ref)
         if player_ref is not None:
             return True
 
