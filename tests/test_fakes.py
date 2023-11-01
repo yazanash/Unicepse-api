@@ -41,15 +41,15 @@ class TestFakes(unittest.TestCase):
         self.assertIsNotNone(subs.pl_id, f"")
         self.assertIsNotNone(subs.sp_id, f"")
         self.assertIsNotNone(subs.tr_id, f"")
-        self.assertIsNotNone(subs.startDate, f"")
-        self.assertIsNotNone(subs.endDate, f"")
+        self.assertIsNotNone(subs.start_date, f"")
+        self.assertIsNotNone(subs.end_date, f"")
         self.assertIsNotNone(subs.price, f"")
-        self.assertIsNotNone(subs.priceAD, f"")
-        self.assertIsNotNone(subs.isD, f"")
-        self.assertIsNotNone(subs.isPay, f"")
-        self.assertIsNotNone(subs.paymentTotal, f"")
-        self.assertIsNotNone(subs.discountValue, f"")
-        self.assertIsNotNone(subs.discountDes, f"")
+        self.assertIsNotNone(subs.price_ad, f"")
+        self.assertIsNotNone(subs.is_discount, f"")
+        self.assertIsNotNone(subs.is_pay, f"")
+        self.assertIsNotNone(subs.payment_total, f"")
+        self.assertIsNotNone(subs.discount_value, f"")
+        self.assertIsNotNone(subs.discount_des, f"")
 
     def test_fake_player(self):
         """It should make a fake Player"""
