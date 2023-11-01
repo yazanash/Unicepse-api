@@ -2,7 +2,7 @@ from flask import request, jsonify
 from flask import current_app
 import jwt
 from functools import wraps
-from src.Authentication.models.user_model import User
+from src.Authentication.user_model import User
 from src.common import status
 
 
