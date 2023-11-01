@@ -38,8 +38,11 @@ class TestSubscriptions(unittest.TestCase):
     def _create_range(self, count, with_payment: bool):
         """Helper method for creating subscriptions in bulk"""
         subscriptions = []
-        for _ in range(count):
+        pl_id = SubscriptionFactory().pl_id
+
+        for _ in range(count-1):
             subs = SubscriptionFactory()
+            subs.pl_id = pl_id
             if with_payment:
                 payments = []
                 for _ in range(3):
@@ -119,3 +122,11 @@ class TestSubscriptions(unittest.TestCase):
         self.assertEqual(temp_sub.payments[1].serialize(), subs.payments[1].serialize())
         self.assertEqual(temp_sub.payments[2].serialize(), subs.payments[2].serialize())
 
+    def test_read_all_subscription(self):
+        """It should read all subscriptions"""
+        subs_list = self._create_range(4+1, with_payment=True)
+        pl_id = subs_list[0].pl_id
+        temp_list = Subscription.all(pl_id)
+
+        for i in range(4):
+            self.assertEqual(temp_list[i].serialize(), subs_list[i].serialize())

@@ -31,24 +31,26 @@ class SubscriptionPersistentBase:
         db.reference(self.dt_name).child(self.pl_id).child(str(self.id)).delete()
 
     @classmethod
-    def all(cls):
+    def all(cls, pl_id):
         """Returns all the records in the database"""
-        logger.info("Processing all Player records")
-        player_ref = db.reference(cls.dt_name).child(str(cls.pl_id)).get()
+        logger.info("Processing all Player-transaction records")
+        player_ref = db.reference(cls.dt_name).child(str(pl_id)).get()
         print(player_ref)
         data = []
         print(type(player_ref))
         if player_ref is not None:
-            for key, val in player_ref.items():
-                subs = cls.deserialize(val)
-                data.append(subs)
+            for val in player_ref:
+                if val is not None:
+                    print("Val in ref: ", type(val))
+                    subs = cls.deserialize(val)
+                    data.append(subs)
         return data
 
     @classmethod
-    def check_if_exist(cls, uid):
+    def check_if_exist(cls, pl_id,uid):
         """check if record is exist in database"""
         logger.info("check if data exist")
-        subs_ref = db.reference(cls.dt_name).child(cls.pl_id).child(str(uid)).get()
+        subs_ref = db.reference(cls.dt_name).child(str(pl_id)).child(str(uid)).get()
         print("player ref in check if exist: ", subs_ref)
         if subs_ref is not None:
             return True
