@@ -47,6 +47,21 @@ class SubscriptionPersistentBase:
         return data
 
     @classmethod
+    def all_json(cls, pl_id):
+        """Returns all the records in the database"""
+        logger.info("Processing all Player-transaction records")
+        player_ref = db.reference(cls.dt_name).child(str(pl_id)).get()
+        print(player_ref)
+        print(type(player_ref))
+        if player_ref is not None:
+            print("all_json: ", player_ref)
+            for val in player_ref:
+                if val is not None:
+                    logger.info("Val in ref: ", val)
+            return player_ref
+        return []
+
+    @classmethod
     def check_if_exist(cls, pl_id,uid):
         """check if record is exist in database"""
         logger.info("check if data exist")
