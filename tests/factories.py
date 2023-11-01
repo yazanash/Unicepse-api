@@ -3,7 +3,7 @@ import uuid
 import factory
 from factory import fuzzy
 from datetime import datetime
-from src.Authentication.models.user_model import User
+from src.Authentication.user_model import User
 from src.Training.models.training import Training
 from src.Payment.subscription import Subscription
 from src.Training.models.training_program import TrainingProgram

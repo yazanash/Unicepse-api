@@ -4,10 +4,9 @@ import logging
 
 import jwt
 
-from src.Authentication.models.user_model import User
+from src.Authentication.user_model import User
 from tests.factories import UserFactory
 from src.common import status  # HTTP Status Codes
-from firebase_admin import db
 from src import app
 BASE_URL = "/auth"
 content_json = "application/json"

@@ -3,10 +3,9 @@ import unittest
 
 import jwt
 
-from src.common.models import DataValidationError, AuthValidationError
+from src.common.models import DataValidationError
 from . import factories
-from firebase_admin import auth
-from src.Authentication.models.user_model import User
+from src.Authentication.user_model import User
 # from src.common.models import database, base
 
 users_test = []
