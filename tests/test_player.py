@@ -2,10 +2,11 @@ import unittest
 import logging
 
 from firebase_admin import db
-from src.Player.player_presistent_base import PlayerPersistentBase
 from src.Player.player_model import Player
 from tests.factories import PlayerFactory
-from src.common import status
+from src.common import status, errors
+from src.Player.player_service import PlayerService
+from src.Player.player_validator import validate_player
 
 dt_node = "test"
 
@@ -88,20 +89,44 @@ class TestPlayerModel(unittest.TestCase):
         self.assertIsNone(Player.find(serial['pid']))
         self.assertFalse(Player.check_if_exist(serial['pid']))
 
-    def test_create_player_with_error(self):
-        """It should raise Exception on invalid create"""
-        player = Player()
+    ######################################################################
+    #  T E S T   P L A Y E R   S E R V I C E   M O D E L S
+    ######################################################################
 
-        # with Empty
-        self.assertRaises(AttributeError, player.create)
+    def test_create_usecase(self):
+        """It should test create usecase in player service"""
+        service = PlayerService()
+        fake_player = PlayerFactory()
+        validate_player(fake_player.serialize())
+        self.assertEqual(service.create_player_usecase(fake_player.serialize()), status.HTTP_201_CREATED)
 
-        # with pid
-        player.pid = 0
-        self.assertRaises(AttributeError, player.create)
-        player.pid = None
+    def test_read_usecase(self):
+        """It should read a player from service"""
+        service = PlayerService()
+        player = PlayerFactory()
+        player.create()
+        player2 = service.read_player_usecase(player.pid)
+        self.assertEqual(player.name, player2.name)
 
-        # with date
-        player.date_of_birth = "2000/01/15 01:01:01"
-        self.assertRaises(AttributeError, player.create)
-        player.date_of_birth = None
+    def test_update_usecase(self):
+        """It should update a player from service"""
+        service = PlayerService()
+        player = PlayerFactory()
+        player.create()
+        name = player.name
+        # update
+        player.name = "Test"
+        service.update_player_usecase(player.serialize())
+        self.assertEqual(service.read_player_usecase(player.pid).name, player.name)
+        self.assertNotEquals(service.read_player_usecase(player.pid), name)
 
+    def test_delete_usecase(self):
+        """It should delete a player from service"""
+        service = PlayerService()
+        player = PlayerFactory()
+        player.create()
+        pid = player.pid
+        # delete
+        service.delete_player_usecase(player.pid)
+        self.assertFalse(Player.check_if_exist(pid))
+        self.assertEqual(service.read_player_usecase(pid), status.HTTP_404_NOT_FOUND)

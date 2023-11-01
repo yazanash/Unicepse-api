@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from src.Authentication.user_model import User
 from src.common import status
 
+
 auth_Bp = Blueprint('email_auth', __name__)
 
 
