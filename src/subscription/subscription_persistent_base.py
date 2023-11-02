@@ -28,20 +28,17 @@ class SubscriptionPersistentBase:
     def delete(self):
         """Removes a Player from the data store"""
         logger.info("Deleting %s", self.id)
-        db.reference(self.dt_name).child(self.pl_id).child(str(self.id)).delete()
+        db.reference(self.dt_name).child(str(self.pl_id)).child(str(self.id)).delete()
 
     @classmethod
     def all(cls, pl_id):
         """Returns all the records in the database"""
         logger.info("Processing all Player-transaction records")
         player_ref = db.reference(cls.dt_name).child(str(pl_id)).get()
-        print(player_ref)
         data = []
-        print(type(player_ref))
         if player_ref is not None:
             for val in player_ref:
                 if val is not None:
-                    print("Val in ref: ", type(val))
                     subs = cls.deserialize(val)
                     data.append(subs)
         return data
@@ -51,10 +48,7 @@ class SubscriptionPersistentBase:
         """Returns all the records in the database"""
         logger.info("Processing all Player-transaction records")
         player_ref = db.reference(cls.dt_name).child(str(pl_id)).get()
-        print(player_ref)
-        print(type(player_ref))
         if player_ref is not None:
-            print("all_json: ", player_ref)
             for val in player_ref:
                 if val is not None:
                     logger.info("Val in ref: ", val)
@@ -66,10 +60,8 @@ class SubscriptionPersistentBase:
         """check if record is exist in database"""
         logger.info("check if data exist")
         subs_ref = db.reference(cls.dt_name).child(str(pl_id)).child(str(uid)).get()
-        print("player ref in check if exist: ", subs_ref)
         if subs_ref is not None:
             return True
-
         return False
 
     @classmethod

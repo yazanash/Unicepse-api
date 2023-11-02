@@ -6,8 +6,8 @@ from datetime import datetime
 from src.Authentication.user_model import User
 from src.Training.models.training import Training
 from src.Training.models.training_program import TrainingProgram
-from src.Payment.subscription_model import Subscription
-from src.Payment.payment_model import Payment
+from src.subscription.subscription_model import Subscription
+from src.payment.payment_model import Payment
 from src.Player.player_model import Player
 from src.common.utils import TokenGenerator
 
@@ -67,7 +67,6 @@ class SubscriptionFactory(factory.Factory):
     is_discount = factory.fuzzy.FuzzyChoice([True, False])
     is_pay = factory.fuzzy.FuzzyChoice([True, False])
     payment_total = random.randrange(0, 1000001)
-    payments = []
 
 
 class PaymentFactory(factory.Factory):

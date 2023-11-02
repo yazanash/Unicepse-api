@@ -1,4 +1,4 @@
-from src.common import models
+from src.Authentication import models
 
 
 class Training(models.PersistentBase):
