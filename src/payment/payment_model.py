@@ -1,9 +1,12 @@
 from datetime import datetime
+from src.payment import payment_persistent_base
 
 
-class Payment:
-    def __init__(self, id, value, description, date: datetime):
+class Payment(payment_persistent_base.PaymentPersistentBase):
+    def __init__(self, id, pl_id, sub_id, value, description, date: datetime):
         self.id = id
+        self.pl_id = pl_id
+        self.sub_id = sub_id
         self.value = value
         self.description = description
         self.date = date
@@ -11,6 +14,8 @@ class Payment:
     def serialize(self):
         return {
             'id': self.id,
+            'pl_id': self.pl_id,
+            'sub_id': self.sub_id,
             'value': self.value,
             'description': self.description,
             'date': self.date.strftime("%Y/%m/%d, %H:%M:%S")
@@ -20,6 +25,8 @@ class Payment:
     def deserialize(json):
         return Payment(
             json['id'],
+            json['pl_id'],
+            json['sub_id'],
             json['value'],
             json['description'],
             datetime.strptime(json['date'], "%Y/%m/%d, %H:%M:%S"),
