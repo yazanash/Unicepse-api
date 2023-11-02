@@ -6,7 +6,7 @@ for validate user auth
 
 from datetime import datetime as date
 
-from src.common import models
+from src.Authentication import models
 
 
 class User(models.AuthService):

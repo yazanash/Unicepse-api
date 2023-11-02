@@ -1,4 +1,4 @@
-from .payment_model import Payment
+from src.payment.payment_model import Payment
 from datetime import datetime
 from .subscription_persistent_base import SubscriptionPersistentBase
 
@@ -22,7 +22,6 @@ class Subscription(SubscriptionPersistentBase):
             is_discount,
             is_pay,
             payment_total,
-            payments: list[Payment]
     ):
         self.id = id
         self.pl_id = pl_id
@@ -37,15 +36,10 @@ class Subscription(SubscriptionPersistentBase):
         self.is_discount = is_discount
         self.is_pay = is_pay
         self.payment_total = payment_total
-        self.payments = payments
 
     @classmethod
     def deserialize(cls, json: dict):
-        payments = []
-        if 'payments' in json.keys():
-            for item in json['payments']:
-                payments.append(Payment.deserialize(item))
-
+        """should return json map for this model"""
         return Subscription(
             json['id'],
             json['pl_id'],
@@ -60,15 +54,9 @@ class Subscription(SubscriptionPersistentBase):
             json['is_discount'],
             json['is_pay'],
             json['payment_total'],
-            payments
         )
 
     def serialize(self):
-        serial_payments = []
-        if len(self.payments) > 0:
-            for p in self.payments:
-                serial_payments.append(p.serialize())
-
         return {
             'id': self.id,
             'pl_id': self.pl_id,
@@ -83,5 +71,4 @@ class Subscription(SubscriptionPersistentBase):
             'is_discount': self.is_discount,
             'is_pay': self.is_pay,
             'payment_total': self.payment_total,
-            'payments': serial_payments
         }
