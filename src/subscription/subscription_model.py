@@ -1,4 +1,3 @@
-from src.payment.payment_model import Payment
 from datetime import datetime
 from .subscription_persistent_base import SubscriptionPersistentBase
 
