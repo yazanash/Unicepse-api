@@ -11,6 +11,10 @@ firebase-admin
 Flask-Mail
 PyJWT
 
+# Mongo db packages
+pymongo
+Flask-PyMongo
+
 # Runtime dependencies
 gunicorn
 honcho
