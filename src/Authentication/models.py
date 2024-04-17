@@ -2,26 +2,17 @@
 base CRUD Model
 
 """
-import base64
-import hashlib
 import logging
 import os
-
 import pyotp
-
-# from app import mail
-# from flask_mail import Mail, Message
 from bson import ObjectId
-from flask import Flask, current_app
+from flask import current_app
 from flask_mail import Message, Mail
 from werkzeug.security import check_password_hash, generate_password_hash
-import firebase_admin
-from firebase_admin import auth, _auth_utils
 import jwt
 from datetime import datetime, timedelta
 from db import db
 from app import mail
-# firebase_admin.initialize_app()
 logger = logging.getLogger("flask.app")
 
 
@@ -53,11 +44,6 @@ class AuthService:
 
         return self
 
-    def delete(self):
-        """Removes a user from the data store"""
-        logger.info("Deleting %s", self.username)
-        user = auth.delete_user(self.uid)
-
     def generate_token(self):
         """generate token key for users"""
         token = jwt.encode(payload={
@@ -70,8 +56,6 @@ class AuthService:
 
     def login_user(self, credentials):
         """verify user credentials """
-        print(credentials)
-        print(self.password)
         if check_password_hash(self.password, credentials['password']):
             return self.generate_token()
         else:
@@ -88,34 +72,20 @@ class AuthService:
         return data
 
     @classmethod
-    def delete_multi_users(cls, users):
-        """Returns all the records in the database"""
-        logger.info("Processing delete multi users")
-        result = auth.delete_users(users)
-        print(len(users))
-
-    @classmethod
-    def check_if_exist(cls, uid):
-        """check if record is exist in database"""
-        logger.info("check is data exist")
-        try:
-            data = auth.get_user(uid)
-            user = cls.create_model()
-            user.uid = data.uid
-            user.email = data.email
-            return user
-        except auth.UserNotFoundError as error:
-            raise AuthValidationError(error.args[0]) from error
-
-    @classmethod
     def get_user_by_email(cls, email):
-        """check if record is exist in database"""
-        logger.info("check is data exist")
-        data = db.Users.find_one({"email": email})
-        user = cls.create_model()
-        user.deserialize_from_db(data)
-        # print(user.password)
-        return user
+        """send email verification to user """
+        try:
+            logger.info("check is data exist")
+            data = db.Users.find_one({"email": email})
+            if data is not None:
+                user = cls.create_model()
+                print(data)
+                user.deserialize_from_db(data)
+                return user
+            else:
+                raise UserNotFoundError
+        except UserNotFoundError:
+            return None
 
     @classmethod
     def find(cls, by_uid):
@@ -129,31 +99,35 @@ class AuthService:
                 return user
             else:
                 return None
-        except _auth_utils.UserNotFoundError as error:
+        except UserNotFoundError:
             return None
 
     @classmethod
     def send_email(cls, email):
         """Finds a record by its ID"""
         logger.info("Processing send verify email for email %s ...", email)
-        print(email)
-        asd = current_app.app_context()
+
         msg = Message('Hello From Unicepse', sender='unicepse@gmail.com',
                       recipients=[email])
         secret = pyotp.random_base32()
         totp = pyotp.TOTP(secret)
         otp = totp.now()
-        print(otp)
-        # print(mail)
+
         msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
         with current_app.app_context():
-            msg = Message("Hello",
-                          sender="from@example.com",
-                          recipients=[email])
-            msg.body = "This is a test email from our Flask app."
             mail.send(msg)
-        # print(mail)
-        db.emails.insert_one({email: otp})
+        db.emails.insert_one({"email": email, "otp": otp})
+        print("saved")
+
+    @classmethod
+    def verify_otp(cls, email, otp):
+        """Finds a record by its ID"""
+        logger.info("Processing send verify email for email %s ...", email)
+        returned_email = db.emails.find_one({"email": email})
+        if returned_email["otp"] == otp:
+            return True
+        else:
+            return False
 
 
 class DataValidationError(Exception):
@@ -161,6 +135,10 @@ class DataValidationError(Exception):
 
 
 class AuthValidationError(Exception):
+    """Used for auth validation errors """
+
+
+class UserNotFoundError(Exception):
     """Used for auth validation errors """
 
 

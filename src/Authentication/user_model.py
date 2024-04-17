@@ -19,6 +19,7 @@ class User(models.AuthService):
                  date_joined=None,
                  notify_token=None,
                  user_type=None,
+                 is_verified=None,
                  ):
         super().__init__()
         self.uid = uid
@@ -29,7 +30,7 @@ class User(models.AuthService):
         self.date_joined = date_joined
         self.notify_token = notify_token
         self.user_type = user_type
-
+        self.is_verified = is_verified
     dt_name = "user"
 
     def serialize(self):
@@ -41,6 +42,7 @@ class User(models.AuthService):
             'password': self.password,
             'date_joined': self.date_joined,
             'notify_token': self.notify_token,
+            'is_verified': self.is_verified,
             'user_type': self.user_type,
             'token': self.token,
         }
@@ -57,6 +59,7 @@ class User(models.AuthService):
             self.email = data["email"]
             self.password = data["password"]
             self.notify_token = data["notify_token"]
+            self.is_verified = data["is_verified"]
             self.date_joined = None
             date_joined = data.get("date_joined")
             if date_joined:
@@ -86,6 +89,7 @@ class User(models.AuthService):
             self.password = data["password"]
             self.notify_token = data["notify_token"]
             self.token = data["token"]
+            self.is_verified = data["is_verified"]
             self.date_joined = None
             date_joined = data.get("date_joined")
             if date_joined:

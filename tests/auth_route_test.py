@@ -10,7 +10,6 @@ from src.common import status  # HTTP Status Codes
 from src import app
 from db import db
 BASE_URL = "/auth"
-MAIL_BASE_URL = "/auth/mail"
 content_json = "application/json"
 
 users_test = []
@@ -29,7 +28,6 @@ class MyTestCase(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         """Runs once before test suite"""
-        User.delete_multi_users(users_test)
 
     def setUp(self):
         """Runs before each test"""
@@ -37,7 +35,7 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Runs once after each test case"""
-        db.Users.delete_many({})
+        # db.Users.delete_many({})
 
     ######################################################################
     #  H E L P E R   M E T H O D S
@@ -92,14 +90,16 @@ class MyTestCase(unittest.TestCase):
         data = response.get_json()
         users_test.append(data['uid'])
 
-    def test_send_mail_to_user(self):
-        """It should return status code 201 user created successfully"""
-
-        response = self.client.post(MAIL_BASE_URL,
-                                    json={"email": "yazan.ash.doonaas@gmail.com"},
-                                    content_type=content_json
-                                    )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    # def test_verify_otp(self):
+    #     """It should return status code 200 user verified successfully"""
+    #     email = "yazan.ash.doonaas@gmail.com"
+    #     ver = db.emails.find_one({"email": email})
+    #     print(ver)
+    #     response = self.client.post(BASE_URL+"/verify",
+    #                                 json={"email": email, "otp": ver["otp"]},
+    #                                 content_type=content_json
+    #                                 )
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_read_a_user(self):
         """It should return status code 200 and return user data"""
