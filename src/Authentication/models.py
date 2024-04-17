@@ -7,12 +7,20 @@ import hashlib
 import logging
 import os
 
+import pyotp
+
+# from app import mail
+# from flask_mail import Mail, Message
+from bson import ObjectId
+from flask import Flask, current_app
+from flask_mail import Message, Mail
 from werkzeug.security import check_password_hash, generate_password_hash
 import firebase_admin
 from firebase_admin import auth, _auth_utils
 import jwt
 from datetime import datetime, timedelta
-
+from db import db
+from app import mail
 # firebase_admin.initialize_app()
 logger = logging.getLogger("flask.app")
 
@@ -28,20 +36,10 @@ class AuthService:
         Creates an Account to the database
         """
         logger.info("Creating %s", self.email)
-        user = auth.create_user(
-            email=self.email,
-            email_verified=False,
-            display_name=self.username,
-            disabled=False
-        )
-        self.uid = user.uid
+        self.password = generate_password_hash(self.password)
+        user = db.Users.insert_one(self.serialize())
 
-        auth.set_custom_user_claims(self.uid, {
-            'Role': 'player',
-            'token': self.generate_token(),
-            'date_joined': str(self.date_joined),
-            'password': generate_password_hash(self.password)
-        })
+        self.uid = user.inserted_id
         logger.info("Successfully created new user %s", self.uid)
 
     def update(self):
@@ -49,18 +47,10 @@ class AuthService:
         Updates an Account to the database
         """
         logger.info("Updating %s", self.uid)
-        user = auth.update_user(
-            self.uid,
-            email=self.email,
-            email_verified=False,
-            disabled=False)
+        self.password = generate_password_hash(self.password)
+        user = db.Users.update_one({'_id': ObjectId(self.uid)},
+                                   {'$set': self.serialize()})
 
-        auth.set_custom_user_claims(self.uid, {
-            'Role': 'player',
-            'token': self.generate_token(),
-            'date_joined': str(self.date_joined),
-            'password': generate_password_hash(self.password)
-        })
         return self
 
     def delete(self):
@@ -80,6 +70,8 @@ class AuthService:
 
     def login_user(self, credentials):
         """verify user credentials """
+        print(credentials)
+        print(self.password)
         if check_password_hash(self.password, credentials['password']):
             return self.generate_token()
         else:
@@ -89,19 +81,10 @@ class AuthService:
     def all(cls):
         """Returns all the records in the database"""
         logger.info("Processing all records")
-        page = auth.list_users()
         data = []
-        while page:
-            for user in page.users:
-                user_data = cls.create_model()
-                user_data.uid = user.uid
-                user_data.username = user.display_name
-                user_data.email = user.email
-                if user.custom_claims is not None:
-                    user_data.date_joined = user.custom_claims.get('date_joined')
-                data.append(user_data)
-            # Get next batch of users.
-            page = page.get_next_page()
+        for item in db.Users.find():
+            user = cls.create_model()
+            data.append(user.deserialize_from_db(item))
         return data
 
     @classmethod
@@ -128,12 +111,9 @@ class AuthService:
     def get_user_by_email(cls, email):
         """check if record is exist in database"""
         logger.info("check is data exist")
-        data = auth.get_user_by_email(email)
+        data = db.Users.find_one({"email": email})
         user = cls.create_model()
-        user.uid = data.uid
-        user.email = data.email
-        user.password = data.custom_claims.get('password')
-
+        user.deserialize_from_db(data)
         # print(user.password)
         return user
 
@@ -142,16 +122,38 @@ class AuthService:
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
         try:
-            data = auth.get_user(str(by_uid))
-            user = cls.create_model()
-            user.uid = data.uid
-            user.username = data.display_name
-            user.email = data.email
-            user.date_joined = data.custom_claims.get('date_joined')
-            user.password = data.custom_claims.get('password')
-            return user
+            if ObjectId.is_valid(by_uid):
+                data = db.Users.find_one({"_id": ObjectId(by_uid)})
+                user = cls.create_model()
+                user.deserialize_from_db(data)
+                return user
+            else:
+                return None
         except _auth_utils.UserNotFoundError as error:
             return None
+
+    @classmethod
+    def send_email(cls, email):
+        """Finds a record by its ID"""
+        logger.info("Processing send verify email for email %s ...", email)
+        print(email)
+        asd = current_app.app_context()
+        msg = Message('Hello From Unicepse', sender='unicepse@gmail.com',
+                      recipients=[email])
+        secret = pyotp.random_base32()
+        totp = pyotp.TOTP(secret)
+        otp = totp.now()
+        print(otp)
+        # print(mail)
+        msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
+        with current_app.app_context():
+            msg = Message("Hello",
+                          sender="from@example.com",
+                          recipients=[email])
+            msg.body = "This is a test email from our Flask app."
+            mail.send(msg)
+        # print(mail)
+        db.emails.insert_one({email: otp})
 
 
 class DataValidationError(Exception):

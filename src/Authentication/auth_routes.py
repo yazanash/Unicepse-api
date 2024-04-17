@@ -16,6 +16,14 @@ def create_user():
     return make_response(jsonify(message), status.HTTP_201_CREATED)
 
 
+@auth_Bp.route("/auth/mail", methods=["POST"])
+def send_mail_user():
+    """this function will register a user"""
+    User.send_email(request.get_json()['email'])
+    message = "email sending successfully"
+    return make_response(jsonify(message), status.HTTP_200_OK)
+
+
 @auth_Bp.route("/auth/<string:account_id>", methods=["GET"])
 def get_user(account_id):
     """this function will return user data"""
@@ -48,9 +56,10 @@ def get_users_list():
 
 @auth_Bp.route("/auth/login", methods=["POST"])
 def login_user():
-    """this function will UPDATE user data a"""
+    """this function will log in user """
     credential = request.get_json()
     auth_user = User.get_user_by_email(credential['email'])
+    print(auth_user.serialize())
     token = auth_user.login_user(credential)
     if not token:
         abort(status.HTTP_401_UNAUTHORIZED, f"invalid Credential")
