@@ -1,21 +1,23 @@
 import logging
-from firebase_admin import db
+
+from bson import ObjectId
+
+from db import db
 from src.common.utils import logger
+
+node_name = "players"
 
 
 class PlayerPersistentBase:
     """Base class added persistent methods"""
-    dt_name = "players"
-    players_table = "players_table"
 
     def create(self):
         """
         Creates a Player to the database
         """
         logger.info("Creating %s", self.name)
-        # self.uid = None  # id must be none to generate next primary key
-        players_ref = db.reference(self.dt_name).child(self.players_table).child(str(self.pid))
-        players_ref.set(self.serialize())
+        player_ref = db["Gyms"][self.gym_id][node_name]
+        player_ref.insert_one(self.serialize())
         logger.info("Created %s successfully", self.name)
 
     def update(self):
@@ -23,50 +25,50 @@ class PlayerPersistentBase:
         Updates a Player to the database
         """
         logger.info("Updating %s", self.name)
-        players_ref = db.reference(self.dt_name).child(self.players_table).child(str(self.pid))
-        players_ref.update(self.serialize())
-
-    def delete(self):
-        """Removes a Player from the data store"""
-        logger.info("Deleting %s", self.name)
-        db.reference(self.dt_name).child(self.players_table).child(str(self.pid)).delete()
+        player_ref = db["Gyms"][self.gym_id][node_name]
+        player_ref.update_one({'pid': self.pid}, {'$set': self.serialize()})
+        logger.info("Updated Successfully %s", self.name)
 
     @classmethod
-    def all(cls):
+    def all(cls, gym_id):
         """Returns all the records in the database"""
         logger.info("Processing all Player records")
-        player_ref = db.reference(cls.dt_name).child(cls.players_table).get()
-        print(player_ref)
+        player_ref = db["Gyms"][gym_id][node_name]
         data = []
-        print(type(player_ref))
         if player_ref is not None:
-            for key, val in player_ref.items():
-                user = cls.create_model()
-                user.deserialize(val)
-                data.append(user)
+            for val in player_ref:
+                player = cls.create_model()
+                player.deserialize(val)
+                data.append(player)
         return data
 
     @classmethod
-    def check_if_exist(cls, uid):
-        """check if record is exist in database"""
-        logger.info("check if data exist")
-        player_ref = db.reference(cls.dt_name).child(cls.players_table).child(str(uid)).get()
-        print("player ref in check if exist: ", player_ref)
-        if player_ref is not None:
-            return True
-
-        return False
-
-    @classmethod
-    def find(cls, by_uid):
+    def find(cls, gym_id, by_uid):
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
-        players_ref = db.reference(cls.dt_name).child(cls.players_table).child(str(by_uid))
-        if players_ref.get() is not None:
+        try:
+            data = db["Gyms"][gym_id][node_name]
+            player_data = data.find_one({"pid": by_uid})
+            if player_data is not None:
+                player = cls.create_model()
+                player.deserialize(player_data)
+                return player
+            else:
+                return None
+        except PlayerNotFoundError:
+            return None
 
-            player = cls.deserialize(players_ref.get())
-            return player
+    @classmethod
+    def check_if_exist(cls, gym_id, by_uid):
+        """check if record is exist in database"""
+        logger.info("check if data exist")
+        data = db["Gyms"][gym_id][node_name]
+        player_data = data.find_one({"pid": by_uid})
+        if player_data is not None:
+            return True
+        return False
 
-        return None
 
+class PlayerNotFoundError(Exception):
+    """Used for auth validation errors """
 
