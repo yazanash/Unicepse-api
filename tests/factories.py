@@ -78,6 +78,7 @@ class PaymentFactory(factory.Factory):
     id = factory.Sequence(lambda n: n)
     pl_id = factory.Sequence(lambda n: n)
     sub_id = factory.Sequence(lambda n: n)
+    gym_id = factory.Sequence(lambda n: n)
     value = random.randrange(0, 100001)
     description = factory.Faker("catch_phrase")
     date = factory.Faker("date_time")

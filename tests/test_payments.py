@@ -1,11 +1,7 @@
 import unittest
-from firebase_admin import db
+import db
 from src.payment.payment_model import Payment
 from .factories import SubscriptionFactory, PaymentFactory
-from datetime import datetime
-
-
-dt_node = "TestSubscription"
 
 
 class TestPayments(unittest.TestCase):
@@ -14,22 +10,19 @@ class TestPayments(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """This runs once before the entire test suite"""
-        # Player.dt_name = dt_node
+
+
 
     @classmethod
     def tearDownClass(cls):
         """This runs once after the entire test suite"""
-        db.reference(dt_node).delete()
-        Payment.dt_name = "Subscriptions"
+        print("drop Gyms: ", db.client.drop_database("flask_db"))
 
     def setUp(self):
         """This runs before each test"""
-        Payment.dt_name = dt_node
-        db.reference(dt_node).delete()
 
     def tearDown(self):
         """This runs after each test"""
-        db.reference(dt_node).delete()
 
     ######################################################################
     #  H E L P E R   M E T H O D S
@@ -41,10 +34,12 @@ class TestPayments(unittest.TestCase):
         payments = []
         pl_id = SubscriptionFactory().pl_id
         sub_id = SubscriptionFactory().id
-        for _ in range(count-1):
+        gym_id = PaymentFactory().gym_id
+        for _ in range(count):
             pays = PaymentFactory()
             pays.pl_id = pl_id
             pays.sub_id = sub_id
+            pays.gym_id = gym_id
             pays.create()
             payments.append(pays)
         return payments
@@ -79,15 +74,19 @@ class TestPayments(unittest.TestCase):
         """It should create subscription with no payments"""
         payment = PaymentFactory()
         payment.create()
-        temp_pay = Payment.find(payment.pl_id, payment.sub_id, payment.id)
+        temp_pay = Payment.find(gym_id=payment.gym_id, player_id=payment.pl_id, sub_id=payment.sub_id, uid=payment.id)
+        print(temp_pay.id, payment.id)
         self.assertEqual(temp_pay.value, payment.value)
 
     def test_read_all_payments(self):
         """It should read all subscriptions"""
-        pays_list = self._create_range(4+1)
+        pays_list = self._create_range(4)
         pl_id = pays_list[0].pl_id
         sub_id = pays_list[0].sub_id
-        temp_list = Payment.all(pl_id,sub_id)
+        gym_id = pays_list[0].gym_id
+        temp_list = Payment.all(gym_id, pl_id, sub_id)
+
+        print(len(temp_list), len(pays_list))
 
         for i in range(4):
             self.assertEqual(temp_list[i].serialize(), pays_list[i].serialize())
@@ -98,7 +97,7 @@ class TestPayments(unittest.TestCase):
         pays.create()
         pays.value = 15000
         pays.update()
-        temp_sub = Payment.find(pays.pl_id, pays.sub_id, pays.id)
+        temp_sub = Payment.find(pays.gym_id, pays.pl_id, pays.sub_id, pays.id)
         self.assertEqual(temp_sub.value, 15000)
 
     def test_delete_payment(self):
@@ -106,5 +105,5 @@ class TestPayments(unittest.TestCase):
         pays = PaymentFactory()
         pays.create()
         pays.delete()
-        temp_sub = Payment.find(pays.pl_id, pays.sub_id, pays.id)
+        temp_sub = Payment.find(pays.gym_id, pays.pl_id, pays.sub_id, pays.id)
         self.assertIsNone(temp_sub)
