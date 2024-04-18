@@ -10,7 +10,7 @@ def validate_player(json):
         assert (type(json["name"]) is str)
         assert (type(json['width']) is float)
         assert (type(json['height']) is float)
-        assert (type(datetime.strptime(json['date_of_birth'], "%Y/%m/%d, %H:%M:%S")) is datetime)
+        assert (type(json['date_of_birth']) is int)
         assert (type(json['gender']) is str)
         assert (type(json['balance']) is int)
     except ValueError:

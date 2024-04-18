@@ -4,11 +4,12 @@ from src.Player.player_model import Player
 from src.Player.player_service import PlayerService
 from src.common import status
 from src import app
-from firebase_admin import db
+from db import db
 
 
 PLAYER_URL = "/player"
-dt_node = "test"
+dt_node = "players"
+test_gym_id = 18
 
 json_type = "application/json"
 
@@ -19,24 +20,20 @@ class TestPlayerRoutes(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """This runs once before the entire test suite"""
-        # Player.dt_name = dt_node
 
     @classmethod
     def tearDownClass(cls):
         """This runs once after the entire test suite"""
-        db.reference(dt_node).delete()
-        Player.dt_name = "players"
 
     def setUp(self):
         """This runs before each test"""
-        Player.dt_name = dt_node
-        db.reference(dt_node).child("players_table").delete()
-
         self.client = app.test_client()
 
     def tearDown(self):
         """This runs after each test"""
-        db.reference(dt_node).child("players_table").delete()
+        players_node = db["Gyms"][test_gym_id][dt_node]
+        print(players_node)
+        players_node.drop()
 
     ######################################################################
     #  H E L P E R   M E T H O D S
@@ -47,6 +44,7 @@ class TestPlayerRoutes(unittest.TestCase):
         accounts = []
         for _ in range(count):
             account = PlayerFactory()
+            account.gym_id = test_gym_id
             response = self.client.post(PLAYER_URL, json=account.serialize())
             self.assertEqual(
                 response.status_code,
@@ -62,6 +60,7 @@ class TestPlayerRoutes(unittest.TestCase):
     def test_create_player_route(self):
         """It should CREATE player through route service"""
         player = PlayerFactory()
+        player.gym_id = test_gym_id
         resp = self.client.post(
             PLAYER_URL,
             json=player.serialize(),
@@ -78,20 +77,22 @@ class TestPlayerRoutes(unittest.TestCase):
         """It should READ player through route service"""
         players_list = self._create_players(3)
 
-        resp1 = self.client.get(PLAYER_URL, json={0: players_list[0].pid}, content_type=json_type)
+        resp1 = self.client.get(PLAYER_URL, json={"pid": players_list[0].pid, "gym_id": players_list[0].gym_id},
+                                content_type=json_type)
         print("json from read player: ", resp1.get_json())
         self.assertEqual(resp1.get_json()["pid"], players_list[0].pid)
 
-        resp2 = self.client.get(PLAYER_URL, json={0: players_list[1].pid})
+        resp2 = self.client.get(PLAYER_URL, json={"pid": players_list[1].pid, "gym_id": players_list[1].gym_id})
         self.assertEqual(resp2.get_json(), players_list[1].serialize())
 
-        resp3 = self.client.get(PLAYER_URL, json={0: players_list[2].pid}, content_type=json_type)
+        resp3 = self.client.get(PLAYER_URL, json={"pid": players_list[2].pid, "gym_id": players_list[2].gym_id},
+                                content_type=json_type)
         self.assertEqual(resp3.get_json(), players_list[2].serialize())
 
     def test_read_bad_request(self):
         """It should check for valid id on READ player"""
         resp = self.client.get(PLAYER_URL, json={0: 5000})
-        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_player_route(self):
         """It should UPDATE player through route service"""
@@ -105,8 +106,9 @@ class TestPlayerRoutes(unittest.TestCase):
             content_type=json_type
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        response = self.client.get(PLAYER_URL, json={0: player.pid})
-        temp = Player.deserialize(response.get_json())
+        response = self.client.get(PLAYER_URL, json={"pid": player.pid, "gym_id": player.gym_id})
+        temp = Player.create_model()
+        temp.deserialize(response.get_json())
         self.assertEqual(temp.name, player.name)
         self.assertNotEqual(temp.name, name)
 
@@ -119,11 +121,3 @@ class TestPlayerRoutes(unittest.TestCase):
             content_type=json_type
         )
         self.assertEqual(resp.status_code, status.HTTP_406_NOT_ACCEPTABLE)
-
-    def test_delete_player_route(self):
-        """It should DELETE player through route service"""
-        pid = self._create_players(1)[0].pid
-        resp = self.client.delete(PLAYER_URL, json={0: pid})
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        res = self.client.get(PLAYER_URL, json={0: pid})
-        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

@@ -92,7 +92,7 @@ class PlayerFactory(factory.Factory):
     name = factory.Faker("name")
     width = fuzzy.FuzzyFloat(10, 100)
     height = fuzzy.FuzzyFloat(10, 100)
-    date_of_birth = factory.Faker("date_time")
+    date_of_birth = fuzzy.FuzzyInteger(1999, 2024)
     gender = fuzzy.FuzzyChoice(["male", 'female'])
     balance = random.randrange(0, 100000)
 
