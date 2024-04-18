@@ -1,5 +1,5 @@
 import logging
-from firebase_admin import db
+from db import db
 from src.common.utils import logger
 
 
@@ -11,18 +11,19 @@ class SubscriptionPersistentBase:
         """
         Creates a Player to the database
         """
-        logger.info("Creating %s", self.id)
-        # self.uid = None  # id must be none to generate next primary key
-        subs_ref = db.reference(self.dt_name).child(str(self.pl_id)).child(str(self.id))
-        subs_ref.set(self.serialize())
-        logger.info("Created %s successfully", self.id)
+        logger.info("Creating Subscription: %s", self.id)
+
+        subs_ref = db["Gyms"][self.gym_id]["Subs"]
+        subs_ref.insert_one(self.serialize())
+
+        logger.info("Subscription %s Created successfully", self.id)
 
     def update(self):
         """
         Updates a Player to the database
         """
         logger.info("Updating %s", self.id)
-        subs_ref = db.reference(self.dt_name).child(str(self.pl_id)).child(str(self.id))
+        subs_ref = db["Gyms"][self.gym_id]
         subs_ref.update(self.serialize())
 
     def delete(self):
