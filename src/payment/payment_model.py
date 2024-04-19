@@ -2,7 +2,6 @@ from datetime import datetime
 from src.payment import payment_persistent_base
 
 
-
 class Payment(payment_persistent_base.PaymentPersistentBase):
     def __init__(self, id, pl_id, sub_id, gym_id, value, description, date: datetime):
         self.id = id
