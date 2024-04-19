@@ -49,6 +49,10 @@ class TrainingFactory(factory.Factory):
     image_url = factory.Faker("email")
 
 
+def pays():
+    return [PaymentFactory() for i in range(2)]
+
+
 class SubscriptionFactory(factory.Factory):
     """Creates Fake Subscriptions"""
     class Meta:
@@ -56,17 +60,16 @@ class SubscriptionFactory(factory.Factory):
 
     id = factory.Sequence(lambda n: n)
     pl_id = factory.Sequence(lambda n: n)
-    sp_id = factory.Sequence(lambda n: n)
-    tr_id = factory.Sequence(lambda n: n)
+    gym_id = factory.Sequence(lambda n: n)
+    sport_name = factory.Faker("user_name")
+    trainer_name = factory.Faker("user_name")
     start_date = factory.Faker("date_time")
     end_date = factory.Faker("date_time")
     price = random.randrange(0, 1000001)
-    price_ad = random.randrange(0, 1000001)
     discount_value = random.randrange(0, 1000001)
     discount_des = factory.Faker("catch_phrase")
-    is_discount = factory.fuzzy.FuzzyChoice([True, False])
-    is_pay = factory.fuzzy.FuzzyChoice([True, False])
-    payment_total = random.randrange(0, 1000001)
+    is_payed = factory.fuzzy.FuzzyChoice([True, False])
+    list_of_payments = None
 
 
 class PaymentFactory(factory.Factory):
