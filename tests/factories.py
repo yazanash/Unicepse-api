@@ -9,6 +9,7 @@ from src.Training.models.training_program import TrainingProgram
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
+from src.metrics.metrics_model import Metric
 from src.common.utils import TokenGenerator
 
 
@@ -99,3 +100,28 @@ class PlayerFactory(factory.Factory):
     gender = fuzzy.FuzzyChoice(["male", 'female'])
     balance = random.randrange(0, 100000)
 
+
+class MetricsFactory(factory.Factory):
+
+    class Meta:
+        model = Metric
+
+    id = factory.Sequence(lambda n: n)
+    pl_id = factory.Sequence(lambda n: n)
+    gym_id = factory.Sequence(lambda n: n)
+    height = factory.Sequence(lambda n: n)
+    weight = factory.Sequence(lambda n: n)
+    l_arm = factory.Sequence(lambda n: n)
+    r_arm = factory.Sequence(lambda n: n)
+    l_humerus = factory.Sequence(lambda n: n)
+    r_humerus = factory.Sequence(lambda n: n)
+    l_thigh = factory.Sequence(lambda n: n)
+    r_thigh = factory.Sequence(lambda n: n)
+    l_leg = factory.Sequence(lambda n: n)
+    r_leg = factory.Sequence(lambda n: n)
+    neck = factory.Sequence(lambda n: n)
+    shoulders = factory.Sequence(lambda n: n)
+    waist = factory.Sequence(lambda n: n)
+    chest = factory.Sequence(lambda n: n)
+    hips = factory.Sequence(lambda n: n)
+    check_date = factory.Faker("date_time")
