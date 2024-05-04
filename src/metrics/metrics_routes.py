@@ -1,26 +1,27 @@
 from flask import Blueprint, request
-from metrics_service import MetricsService
+from src.metrics.metrics_service import MetricsService
 
-subscriptionBp = Blueprint("Metrics", __name__)
+metrics_bp = Blueprint("Metrics", __name__, subdomain="api")
 route = "/metrics"
 service = MetricsService()
 
 
-@subscriptionBp.route(route, methods=["GET"])
+@metrics_bp.route(route, methods=["GET"])
 def read_all_transactions():
-    return service.read_metrics_usecase(request.get_json())
+    return "<h1>Metrics Route, WELCOME</h1>"
+    # return service.read_metrics_usecase(request.get_json())
 
 
-@subscriptionBp.route(route, methods=["POST"])
+@metrics_bp.route(route, methods=["POST"])
 def create_transaction():
     return service.create_metric_usecase(request.get_json())
 
 
-@subscriptionBp.route(route, method=["PUT"])
+@metrics_bp.route(route, methods=["PUT"])
 def update_transaction():
     return service.update_metric_usecase(request.get_json())
 
 
-@subscriptionBp.route(route, method=["DELETE"])
+@metrics_bp.route(route, methods=["DELETE"])
 def delete_transaction():
     return service.delete_metric_usecase(request.get_json())

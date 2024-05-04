@@ -1,6 +1,6 @@
-from metrics_validator import validate_metric
-from metrics_model import Metric
-from src.common import  status
+from src.metrics.metrics_validator import validate_metric
+from src.metrics.metrics_model import Metric
+from src.common import status
 from src.common.errors import DataValidationError
 
 
