@@ -6,11 +6,12 @@ from src.common.utils import logger
 
 class Player(PlayerPersistentBase):
 
-    def __init__(self, pid=None, name=None, width=None, height=None,
+    def __init__(self, pid=None, name=None, phone_num=None, width=None, height=None,
                  date_of_birth=None, gender=None, balance=None, gym_id=None):
         super().__init__()
         self.pid = pid
         self.name = name
+        self.phone_num = phone_num
         self.width = width
         self.height = height
         self.date_of_birth = date_of_birth
@@ -23,14 +24,15 @@ class Player(PlayerPersistentBase):
         try:
             logger.info(f"deserializing a player")
             print(json)
-            self.pid = json["pid"]
+            self.pid = json.get("pid")                      # NULLABLE
             self.name = json['name']
-            self.width = json['width']
-            self.height = json['height']
+            self.phone_num = json['phone_num']
+            self.width = json.get('width')                  # NULLABLE
+            self.height = json.get('height')                # NULLABLE
             self.date_of_birth = json['date_of_birth']
             self.gender = json['gender']
-            self.balance = json['balance']
-            self.gym_id = json["gym_id"]
+            self.balance = json.get('balance')              # NULLABLE
+            self.gym_id = json.get("gym_id")                # NULLABLE
         except AttributeError as e:
             logger.error("Error deserializing player: %s", e)
             raise errors.DataValidationError("Player deserializing Error!")
@@ -44,6 +46,7 @@ class Player(PlayerPersistentBase):
             mapping = {
                 'pid': self.pid,
                 'gym_id': self.gym_id,
+                'phone_num': self.phone_num,
                 'name': self.name,
                 'width': self.width,
                 'height': self.height,
