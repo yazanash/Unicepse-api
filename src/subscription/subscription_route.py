@@ -16,11 +16,11 @@ def create_transaction():
     return service.create_subscription_use_case(request.get_json())
 
 
-@subscriptionBp.route(route, method=["PUT"])
+@subscriptionBp.route(route, methods=["PUT"])
 def update_transaction():
     return service.update_subscription_use_case(request.get_json())
 
 
-@subscriptionBp.route(route, method=["DELETE"])
+@subscriptionBp.route(route, methods=["DELETE"])
 def delete_transaction():
     return service.delete_subscription_use_case(request.get_json())
