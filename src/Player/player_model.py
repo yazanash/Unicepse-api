@@ -22,7 +22,6 @@ class Player(PlayerPersistentBase):
         """Deserializes a player from dict {json}"""
         try:
             logger.info(f"deserializing a player")
-            print(json)
             self.pid = json["pid"]
             self.name = json['name']
             self.width = json['width']

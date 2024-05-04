@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_mail import Mail
 
-from src.Training.routes.training_route import trainingBlueprint
+from src.Training.training_route import trainingBlueprint
 from src.Authentication.auth_routes import auth_Bp
 import firebase_admin
 from firebase_admin import credentials
