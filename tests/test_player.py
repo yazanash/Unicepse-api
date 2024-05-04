@@ -18,7 +18,6 @@ class TestPlayerModel(unittest.TestCase):
     def setUpClass(cls):
         """This runs once before the entire test suite"""
 
-
     @classmethod
     def tearDownClass(cls):
         """This runs once after the entire test suite"""

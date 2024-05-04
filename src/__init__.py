@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_mail import Mail
 
-from src.Training.routes.training_route import trainingBlueprint
+from src.Training.training_route import trainingBlueprint
 from src.Authentication.auth_routes import auth_Bp
 from src.metrics.metrics_routes import metrics_bp
 from src.subscription.subscription_route import subscriptionBp

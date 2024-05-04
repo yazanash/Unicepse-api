@@ -4,8 +4,6 @@ import factory
 from factory import fuzzy
 from datetime import datetime
 from src.Authentication.user_model import User
-from src.Training.models.training import Training
-from src.Training.models.training_program import TrainingProgram
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
@@ -29,26 +27,26 @@ class UserFactory(factory.Factory):
     date_joined = factory.LazyFunction(datetime.utcnow)
 
 
-class TrainingProgFactory(factory.Factory):
-    class Meta:
-        model = TrainingProgram
-
-    id = factory.Sequence(lambda n: n)
-    name = factory.Faker("name")
-    training_list = ['train1', 'train2']
-    provider = factory.Faker("name")
-
-
-class TrainingFactory(factory.Factory):
-    """ Creates Fake Training Objects"""
-    class Meta:
-        model = Training
-
-    id = factory.Sequence(lambda n: n)
-    name = factory.Faker("name")
-    rounds = factory.fuzzy.FuzzyInteger(1, 15)
-    image_url = factory.Faker("email")
-
+# class TrainingProgFactory(factory.Factory):
+#     class Meta:
+#         model = TrainingProgram
+#
+#     id = factory.Sequence(lambda n: n)
+#     name = factory.Faker("name")
+#     training_list = ['train1', 'train2']
+#     provider = factory.Faker("name")
+#
+#
+# class TrainingFactory(factory.Factory):
+#     """ Creates Fake Training Objects"""
+#     class Meta:
+#         model = Training
+#
+#     id = factory.Sequence(lambda n: n)
+#     name = factory.Faker("name")
+#     rounds = factory.fuzzy.FuzzyInteger(1, 15)
+#     image_url = factory.Faker("email")
+#
 
 def pays():
     return [PaymentFactory() for i in range(2)]
