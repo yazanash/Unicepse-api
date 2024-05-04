@@ -12,7 +12,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import jwt
 from datetime import datetime, timedelta
 from db import db
-from app import mail
+# from src import mail
 logger = logging.getLogger("flask.app")
 
 
