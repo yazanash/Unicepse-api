@@ -1,6 +1,6 @@
 from .subscription_validator import validate_subscription
 from .subscription_model import Subscription
-from src.common.errors import DataValidationError
+from src.common.errors import *
 from src.common import status
 
 
@@ -18,6 +18,8 @@ class SubscriptionService:
             return status.HTTP_409_CONFLICT
         except DataValidationError:
             return status.HTTP_400_BAD_REQUEST
+        except DuplicateRecordError:
+            return status.HTTP_409_CONFLICT
 
     @staticmethod
     def read_subscription_use_case(pl_id):

@@ -7,6 +7,7 @@ from src.Authentication.user_model import User
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
+from src.metrics.metrics_model import Metric
 from src.common.utils import TokenGenerator
 
 
@@ -47,6 +48,10 @@ class UserFactory(factory.Factory):
 #     image_url = factory.Faker("email")
 #
 
+def pays():
+    return [PaymentFactory() for i in range(2)]
+
+
 class SubscriptionFactory(factory.Factory):
     """Creates Fake Subscriptions"""
     class Meta:
@@ -54,17 +59,16 @@ class SubscriptionFactory(factory.Factory):
 
     id = factory.Sequence(lambda n: n)
     pl_id = factory.Sequence(lambda n: n)
-    sp_id = factory.Sequence(lambda n: n)
-    tr_id = factory.Sequence(lambda n: n)
+    gym_id = factory.Sequence(lambda n: n)
+    sport_name = factory.Faker("user_name")
+    trainer_name = factory.Faker("user_name")
     start_date = factory.Faker("date_time")
     end_date = factory.Faker("date_time")
     price = random.randrange(0, 1000001)
-    price_ad = random.randrange(0, 1000001)
     discount_value = random.randrange(0, 1000001)
     discount_des = factory.Faker("catch_phrase")
-    is_discount = factory.fuzzy.FuzzyChoice([True, False])
-    is_pay = factory.fuzzy.FuzzyChoice([True, False])
-    payment_total = random.randrange(0, 1000001)
+    is_payed = factory.fuzzy.FuzzyChoice([True, False])
+    list_of_payments = None
 
 
 class PaymentFactory(factory.Factory):
@@ -94,3 +98,28 @@ class PlayerFactory(factory.Factory):
     gender = fuzzy.FuzzyChoice(["male", 'female'])
     balance = random.randrange(0, 100000)
 
+
+class MetricsFactory(factory.Factory):
+
+    class Meta:
+        model = Metric
+
+    id = factory.Sequence(lambda n: n)
+    pl_id = factory.Sequence(lambda n: n)
+    gym_id = factory.Sequence(lambda n: n)
+    height = factory.Sequence(lambda n: n)
+    weight = factory.Sequence(lambda n: n)
+    l_arm = factory.Sequence(lambda n: n)
+    r_arm = factory.Sequence(lambda n: n)
+    l_humerus = factory.Sequence(lambda n: n)
+    r_humerus = factory.Sequence(lambda n: n)
+    l_thigh = factory.Sequence(lambda n: n)
+    r_thigh = factory.Sequence(lambda n: n)
+    l_leg = factory.Sequence(lambda n: n)
+    r_leg = factory.Sequence(lambda n: n)
+    neck = factory.Sequence(lambda n: n)
+    shoulders = factory.Sequence(lambda n: n)
+    waist = factory.Sequence(lambda n: n)
+    chest = factory.Sequence(lambda n: n)
+    hips = factory.Sequence(lambda n: n)
+    check_date = factory.Faker("date_time")

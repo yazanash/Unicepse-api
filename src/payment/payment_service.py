@@ -1,5 +1,5 @@
-from payment_validator import validate_payment
-from payment_model import Payment
+from src.payment.payment_validator import validate_payment
+from src.payment.payment_model import Payment
 from src.common.errors import DataValidationError
 from src.common import status
 

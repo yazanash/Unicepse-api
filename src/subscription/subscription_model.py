@@ -69,13 +69,14 @@ class Subscription(SubscriptionPersistentBase):
         return {
             'id': self.id,
             'pl_id': self.pl_id,
-            'sp_id': self.sport_name,
-            'tr_id': self.trainer_name,
+            'gym_id': self.gym_id,
+            'sport_name': self.sport_name,
+            'trainer_name': self.trainer_name,
             'start_date': self.start_date.strftime("%Y/%m/%d, %H:%M:%S"),
             'end_date': self.end_date.strftime("%Y/%m/%d, %H:%M:%S"),
             'price': self.price,
             'discount_value': self.discount_value,
             'discount_des': self.discount_des,
-            'is_pay': self.is_payed,
+            'is_payed': self.is_payed,
             'list_of_payments': data,
         }
