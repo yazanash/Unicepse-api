@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from src.metrics.metrics_service import MetricsService
 
-metrics_bp = Blueprint("Metrics", __name__, subdomain="api")
+metrics_bp = Blueprint("Metrics", __name__)
 route = "/metrics"
 service = MetricsService()
 
@@ -25,3 +25,8 @@ def update_transaction():
 @metrics_bp.route(route, methods=["DELETE"])
 def delete_transaction():
     return service.delete_metric_usecase(request.get_json())
+
+
+@metrics_bp.errorhandler(404)
+def error_handler():
+    return "<h1>Welcome<h1>"

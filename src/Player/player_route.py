@@ -32,14 +32,15 @@ def read_player():
     a (Token) should be present to identify
     player and return info
     """
-    data = request.get_json()
-    try:
-        player = player_service.read_player_usecase(data["gym_id"], data["pid"])
-        if type(player) is int:
-            return {}, player
-        return make_response(player.serialize(), status.HTTP_200_OK)
-    except:
-        return make_response("Bad request", status.HTTP_400_BAD_REQUEST)
+    return "<h1>Player<h1>"
+    # data = request.get_json()
+    # try:
+    #     player = player_service.read_player_usecase(data["gym_id"], data["pid"])
+    #     if type(player) is int:
+    #         return {}, player
+    #     return make_response(player.serialize(), status.HTTP_200_OK)
+    # except:
+    #     return make_response("Bad request", status.HTTP_400_BAD_REQUEST)
 
 
 @playerBp.route("/player", methods=["PUT"])
