@@ -11,8 +11,8 @@ from src.metrics.metrics_routes import metrics_bp
 from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 
-import firebase_admin
-from firebase_admin import credentials
+# import firebase_admin
+# from firebase_admin import credentials
 
 from src.routes import general_Bp
 from src.Player.player_route import playerBp
