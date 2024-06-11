@@ -1,6 +1,5 @@
 import os
 import pyotp
-import firebase_admin
 
 from flask import Flask
 from flask_mail import Mail, Message
@@ -34,15 +33,17 @@ mail = Mail(app)
 
 app.config['SECRET_KEY'] = '8fbdb21ddb2142c1b356b7b57b6c9700'
 os.environ['SECRET_KEY'] = app.config['SECRET_KEY']
-cred = firebase_admin.credentials.Certificate("key.json")
-init = firebase_admin.initialize_app(cred, {
-    "databaseURL": "https://platinum-8b28f-default-rtdb.firebaseio.com"
-})
 
 
 @app.route("/hello")
 def hello():
     return "<h1>Hello<h1>"
+
+
+@app.route("/", methods=["GET"])
+def hello_app():
+    return "Unicepse Api; version=1.0.0"
+
 
 
 @app.route("/send_mail")
