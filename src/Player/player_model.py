@@ -24,8 +24,13 @@ class Player(PlayerPersistentBase):
         try:
             logger.info(f"deserializing a player")
             self.pid = json["pid"]
+<<<<<<< docker
+            # print(json)
+            # self.pid = json.get("pid")
+=======
             print(json)
             self.pid = json.get("pid")                      # NULLABLE
+>>>>>>> main
             self.name = json['name']
             self.phone_num = json['phone_num']
             self.width = json.get('width')                  # NULLABLE
