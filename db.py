@@ -6,6 +6,7 @@ uri = "mongodb+srv://yazankaboshash:SZuSEJKcBRAk6qYK@cluster0.aksycvo.mongodb.ne
 # Create a new client and connect to the server
 client = mongo_client.MongoClient(uri, server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
+print("try ping mongo db ")
 try:
     client.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
