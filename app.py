@@ -42,21 +42,21 @@ def hello_app():
     return "Unicepse Api; version=1.0.0"
 
 
-@app.route("/send_mail")
-def index():
-    email = "yazan.ash.doonaas@gmail.com"
-    print(email)
-    msg = Message('Hello From Unicepse', sender='unicepse@gmail.com',
-                  recipients=[email])
-    secret = pyotp.random_base32()
-    totp = pyotp.TOTP(secret)
-    otp = totp.now()
-    print(otp)
-    # print(mail)
-    msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
-    mail.send(msg)
-    # print(mail)
-    return "Mail Sent please check"
+# @app.route("/send_mail")
+# def index():
+#     email = "yazan.ash.doonaas@gmail.com"
+#     print(email)
+#     msg = Message('Hello From Unicepse', sender='unicepse@gmail.com',
+#                   recipients=[email])
+#     secret = pyotp.random_base32()
+#     totp = pyotp.TOTP(secret)
+#     otp = totp.now()
+#     print(otp)
+#     # print(mail)
+#     msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
+#     mail.send(msg)
+#     # print(mail)
+#     return "Mail Sent please check"
 
 
 if __name__ == "__main__":
