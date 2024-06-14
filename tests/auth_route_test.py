@@ -7,7 +7,7 @@ import jwt
 from src.Authentication.user_model import User
 from tests.factories import UserFactory
 from src.common import status  # HTTP Status Codes
-from src import app
+from app import app
 from db import db
 BASE_URL = "/auth"
 content_json = "application/json"
@@ -35,7 +35,7 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Runs once after each test case"""
-        # db.Users.delete_many({})
+        db.Users.delete_many({})
 
     ######################################################################
     #  H E L P E R   M E T H O D S

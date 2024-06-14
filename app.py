@@ -45,7 +45,6 @@ def hello_app():
     return "Unicepse Api; version=1.0.0"
 
 
-
 @app.route("/send_mail")
 def index():
     email = "yazan.ash.doonaas@gmail.com"
