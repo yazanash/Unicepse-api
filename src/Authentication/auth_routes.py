@@ -24,7 +24,6 @@ def create_user():
     #     return make_response(jsonify(error), status.HTTP_201_CREATED)
 
 
-
 @auth_Bp.route("/auth/verify", methods=["POST"])
 def verify_otp():
     """this function will register a user"""
