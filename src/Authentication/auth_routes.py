@@ -17,7 +17,7 @@ def create_user():
     user.deserialize(request.get_json())
     user.create()
 
-    # User.send_email(user.email)
+    User.send_email(user.email)
     message = user.serialize()
     return make_response(jsonify(message), status.HTTP_201_CREATED)
     # except Exception as error:
