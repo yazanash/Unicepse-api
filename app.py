@@ -2,7 +2,7 @@ import os
 import pyotp
 
 from flask import Flask
-from flask_mail import Mail, Message
+
 
 from src.Training.training_route import trainingBlueprint
 from src.Authentication.auth_routes import auth_Bp
@@ -10,7 +10,7 @@ from src.metrics.metrics_routes import metrics_bp
 from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 from src.Player.player_route import playerBp
-
+from mail import mail
 app = Flask(__name__)
 
 app.register_blueprint(trainingBlueprint)
@@ -22,13 +22,14 @@ app.register_blueprint(playerBp)
 
 app.app_context().push()
 
-app.config['MAIL_SERVER'] = os.environ['MAIL_SERVER']
-app.config['MAIL_PORT'] = os.environ['MAIL_PORT']
-app.config['MAIL_USERNAME'] = os.environ['MAIL_USERNAME']
-app.config['MAIL_PASSWORD'] = os.environ['MAIL_PASSWORD']
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'yazan.ash.doonaas@gmail.com'
+app.config['MAIL_PASSWORD'] = 'kumjcthvitqbdyah'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
+
+mail.init_app(app)
 
 
 @app.route("/hello")

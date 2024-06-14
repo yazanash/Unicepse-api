@@ -11,8 +11,10 @@ from flask_mail import Message, Mail
 from werkzeug.security import check_password_hash, generate_password_hash
 import jwt
 from datetime import datetime, timedelta
+
 from db import db
-# from src import mail
+# from app import mail
+from mail import mail
 logger = logging.getLogger("flask.app")
 
 
@@ -115,8 +117,8 @@ class AuthService:
         otp = totp.now()
 
         msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
-        with current_app.app_context():
-            mail.send(msg)
+        # with current_app.app_context():
+        mail.send(msg)
         db.emails.insert_one({"email": email, "otp": otp})
         print("saved")
 
