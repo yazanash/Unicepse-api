@@ -79,9 +79,10 @@ def login_user():
     auth_user = User.get_user_by_email(credential['email'])
     print(auth_user.serialize())
     token = auth_user.login_user(credential)
-    if not token:
-        abort(status.HTTP_401_UNAUTHORIZED, f"invalid Credential")
     return make_response(jsonify(token), status.HTTP_200_OK)
+    # if not token:
+    #     abort(status.HTTP_401_UNAUTHORIZED, f"invalid Credential")
+    # return make_response(jsonify(token), status.HTTP_200_OK)
 
 
 @auth_Bp.route("/auth/reset", methods=["POST"])
