@@ -12,14 +12,14 @@ auth_Bp = Blueprint('auth', __name__)
 def create_user():
     """this function will register a user"""
     # try:
-    return make_response(jsonify("request called correctly"), status.HTTP_200_OK)
-    # user = User()
-    # user.deserialize(request.get_json())
-    # user.create()
-    #
+    # return make_response(jsonify("request called correctly"), status.HTTP_200_OK)
+    user = User()
+    user.deserialize(request.get_json())
+    user.create()
+
     # User.send_email(user.email)
-    # message = user.serialize()
-    # return make_response(jsonify(message), status.HTTP_201_CREATED)
+    message = user.serialize()
+    return make_response(jsonify(message), status.HTTP_201_CREATED)
     # except Exception as error:
     #     return make_response(jsonify(error), status.HTTP_201_CREATED)
 
