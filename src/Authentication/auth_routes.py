@@ -11,12 +11,17 @@ auth_Bp = Blueprint('auth', __name__)
 @auth_Bp.route("/auth", methods=["POST"])
 def create_user():
     """this function will register a user"""
-    user = User()
-    user.deserialize(request.get_json())
-    user.create()
-    User.send_email(user.email)
-    message = user.serialize()
-    return make_response(jsonify(message), status.HTTP_201_CREATED)
+    try:
+        user = User()
+        user.deserialize(request.get_json())
+        user.create()
+
+        User.send_email(user.email)
+        message = user.serialize()
+        return make_response(jsonify(message), status.HTTP_201_CREATED)
+    except Exception as error:
+        return make_response(jsonify(error), status.HTTP_201_CREATED)
+
 
 
 @auth_Bp.route("/auth/verify", methods=["POST"])
