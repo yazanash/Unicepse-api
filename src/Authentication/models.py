@@ -57,6 +57,7 @@ class AuthService:
     def login_user(self, credentials):
         """verify user credentials """
         if check_password_hash(self.password, credentials['password']):
+            print(self.token)
             return self.generate_token()
         else:
             return None

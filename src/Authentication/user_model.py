@@ -59,7 +59,7 @@ class User(models.AuthService):
             self.email = data["email"]
             self.password = data["password"]
             self.notify_token = data["notify_token"]
-            self.is_verified = data["is_verified"]
+            # self.is_verified = data["is_verified"]
             self.date_joined = None
             date_joined = data.get("date_joined")
             if date_joined:
