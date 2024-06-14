@@ -30,8 +30,6 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
-os.environ['SECRET_KEY'] = app.config['SECRET_KEY']
-
 
 @app.route("/hello")
 def hello():
