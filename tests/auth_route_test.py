@@ -156,7 +156,7 @@ class MyTestCase(unittest.TestCase):
         user = self._create_users_with_password()
         resp = self.client.post(f"{BASE_URL}/login",
                                 json={"email": user.email,
-                                      'password': user.password},
+                                      'password': test_password},
                                 content_type=content_json)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
