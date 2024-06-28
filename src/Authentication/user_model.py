@@ -47,6 +47,17 @@ class User(models.AuthService):
             'token': self.token,
         }
 
+    def secret_serialize(self):
+        """Serializes a User into a dictionary"""
+        return {
+            'uid': str(self.uid),
+            'username': self.username,
+            'email': self.email,
+            'date_joined': self.date_joined,
+            'is_verified': self.is_verified,
+            'user_type': self.user_type,
+        }
+
     def deserialize(self, data):
         """
         Deserializes a User from a dictionary
@@ -66,6 +77,25 @@ class User(models.AuthService):
                 self.date_joined = date_joined
             else:
                 self.date_joined = date.today()
+        except KeyError as error:
+            raise models.DataValidationError("Invalid User: missing " + error.args[0]) from error
+        except TypeError as error:
+            raise models.DataValidationError(
+                "Invalid User: body of request contained "
+                "bad or no data - " + error.args[0]
+            ) from error
+        return self
+
+    def deserialize_update(self, data):
+        """
+        Deserializes a User from a dictionary
+        Args:
+            data (dict): A dictionary containing the resource data
+        """
+        # print(data)
+        try:
+            self.username = data["username"]
+            self.notify_token = data["notify_token"]
         except KeyError as error:
             raise models.DataValidationError("Invalid User: missing " + error.args[0]) from error
         except TypeError as error:

@@ -29,6 +29,7 @@ class AuthService:
         Creates an Account to the database
         """
         logger.info("Creating %s", self.email)
+        print(self.password)
         self.password = generate_password_hash(self.password)
         user = db.Users.insert_one(self.serialize())
 
@@ -40,10 +41,18 @@ class AuthService:
         Updates an Account to the database
         """
         logger.info("Updating %s", self.uid)
+        user = db.Users.update_one({'_id': ObjectId(self.uid)},
+                                   {'$set': self.serialize()})
+        return self
+
+    def update_password(self):
+        """
+        Updates an Account to the database
+        """
+        logger.info("Updating password %s", self.uid)
         self.password = generate_password_hash(self.password)
         user = db.Users.update_one({'_id': ObjectId(self.uid)},
                                    {'$set': self.serialize()})
-
         return self
 
     def generate_token(self):
@@ -58,8 +67,15 @@ class AuthService:
 
     def login_user(self, credentials):
         """verify user credentials """
+        # plain_password = '123456'
+        # hashed_password = generate_password_hash(plain_password)
+        #
+        # # Verify a password
+        # is_valid = check_password_hash(hashed_password, plain_password)
+        # print(f"Password is valid: {is_valid}")
+
         if check_password_hash(self.password, credentials['password']):
-            print(self.token)
+            print(credentials)
             return self.generate_token()
         else:
             return None
@@ -82,7 +98,7 @@ class AuthService:
             data = db.Users.find_one({"email": email})
             if data is not None:
                 user = cls.create_model()
-                print(data)
+                # print(data)
                 user.deserialize_from_db(data)
                 return user
             else:
@@ -119,8 +135,9 @@ class AuthService:
         msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
         # with current_app.app_context():
         mail.send(msg)
+        db.emails.delete_one({"email": email})
         db.emails.insert_one({"email": email, "otp": otp})
-        print("saved")
+        # print("saved")
 
     @classmethod
     def verify_otp(cls, email, otp):
@@ -131,6 +148,12 @@ class AuthService:
             return True
         else:
             return False
+
+    @classmethod
+    def delete_from_otp(cls, email):
+        """Delete email after verifying"""
+        logger.info("Processing delete email after verify %s ...", email)
+        db.emails.delete_one({"email": email})
 
 
 class DataValidationError(Exception):
@@ -145,5 +168,5 @@ class UserNotFoundError(Exception):
     """Used for auth validation errors """
 
 
-class PersistentBase():
+class PersistentBase(Exception):
     """Used for auth validation errors """
