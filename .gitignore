@@ -10,5 +10,6 @@ tests/__pycache__/
 .coverage
 key.json
 .env
+background.py
 player_routine.json
 platinum-8b28f-firebase-adminsdk-ln291-90678268e5.json

@@ -1,3 +1,5 @@
+import os
+
 from flask import request, jsonify
 from flask import current_app
 import jwt
@@ -19,8 +21,10 @@ def token_required(f):
             return jsonify({'message': 'Token is missing !! Failed to authorizing '}), status.HTTP_401_UNAUTHORIZED
         try:
             # decoding the payload to fetch the stored details
-            data = jwt.decode(token, current_app.config['SECRET_KEY'])
-            current_user = User.find(data)
+            data = jwt.decode(token, os.environ['SECRET_KEY'], algorithms=["HS256"])
+            print(data)
+            current_user = User.find(data['public_id'])
+            print(current_user.secret_serialize())
         except TypeError:
             return jsonify({
                 'message': 'Token is invalid !!'
