@@ -168,5 +168,5 @@ class UserNotFoundError(Exception):
     """Used for auth validation errors """
 
 
-class PersistentBase(Exception):
+class PersistentBase:
     """Used for auth validation errors """

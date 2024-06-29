@@ -3,6 +3,8 @@ import uuid
 import factory
 from factory import fuzzy
 from datetime import datetime
+
+from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
@@ -27,26 +29,18 @@ class UserFactory(factory.Factory):
     date_joined = factory.LazyFunction(datetime.utcnow)
 
 
-# class TrainingProgFactory(factory.Factory):
-#     class Meta:
-#         model = TrainingProgram
-#
-#     id = factory.Sequence(lambda n: n)
-#     name = factory.Faker("name")
-#     training_list = ['train1', 'train2']
-#     provider = factory.Faker("name")
-#
-#
-# class TrainingFactory(factory.Factory):
-#     """ Creates Fake Training Objects"""
-#     class Meta:
-#         model = Training
-#
-#     id = factory.Sequence(lambda n: n)
-#     name = factory.Faker("name")
-#     rounds = factory.fuzzy.FuzzyInteger(1, 15)
-#     image_url = factory.Faker("email")
-#
+class ProfileFactory(factory.Factory):
+    """Creates fake Profiles"""
+    class Meta:
+        model = Profile
+
+    full_name = factory.Faker("name")
+    phone = "+963994916917"
+    birth_date = fuzzy.FuzzyInteger(1999, 2024)
+    gender_male = fuzzy.FuzzyChoice([True, False])
+    weight = fuzzy.FuzzyFloat(10, 100)
+    height = fuzzy.FuzzyFloat(10, 100)
+
 
 def pays():
     return [PaymentFactory() for i in range(2)]
