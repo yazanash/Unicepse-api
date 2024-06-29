@@ -1,5 +1,5 @@
 import unittest
-from .factories import PlayerFactory
+from tests.factories import PlayerFactory
 from src.Player.player_model import Player
 from src.Player.player_service import PlayerService
 from src.common import status

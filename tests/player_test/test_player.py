@@ -75,7 +75,7 @@ class TestPlayerModel(unittest.TestCase):
         # update player with new name
         player.name = "the kick boxer"
         player.update()
-        self.assertNotEquals(player.name, name)
+        self.assertNotEqual(player.name, name)
         self.assertEqual(player.name, "the kick boxer")
 
     ######################################################################
@@ -110,5 +110,5 @@ class TestPlayerModel(unittest.TestCase):
         player.name = "Test"
         service.update_player_usecase(player.serialize())
         self.assertEqual(service.read_player_usecase(test_gym_id, player.pid).name, player.name)
-        self.assertNotEquals(service.read_player_usecase(test_gym_id, player.pid), name)
+        self.assertNotEqual(service.read_player_usecase(test_gym_id, player.pid), name)
 
