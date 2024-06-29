@@ -4,7 +4,7 @@ import unittest
 import jwt
 
 from src.Authentication.models import DataValidationError
-from . import factories
+from tests import factories
 from src.Authentication.user_model import User
 # from src.common.models import database, base
 from db import db

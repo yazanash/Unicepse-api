@@ -1,17 +1,16 @@
 from src.Player.player_presistent_base import PlayerPersistentBase
-from datetime import datetime
-from src.common import status, errors
+from src.common import errors
 from src.common.utils import logger
 
 
 class Player(PlayerPersistentBase):
 
-    def __init__(self, pid=None, name=None, phone_num=None, width=None, height=None,
+    def __init__(self, pid=None, name=None, phone_number=None, width=None, height=None,
                  date_of_birth=None, gender=None, balance=None, gym_id=None):
         super().__init__()
         self.pid = pid
         self.name = name
-        self.phone_num = phone_num
+        self.phone_number = phone_number
         self.width = width
         self.height = height
         self.date_of_birth = date_of_birth
@@ -23,13 +22,9 @@ class Player(PlayerPersistentBase):
         """Deserializes a player from dict {json}"""
         try:
             logger.info(f"deserializing a player")
-            self.pid = json["pid"]
-            # print(json)
-            # self.pid = json.get("pid
-            print(json)
             self.pid = json.get("pid")
             self.name = json['name']
-            self.phone_num = json['phone_num']
+            self.phone_number = json['phone_number']
             self.width = json.get('width')                  # NULLABLE
             self.height = json.get('height')                # NULLABLE
             self.date_of_birth = json['date_of_birth']
@@ -49,7 +44,7 @@ class Player(PlayerPersistentBase):
             mapping = {
                 'pid': self.pid,
                 'gym_id': self.gym_id,
-                'phone_num': self.phone_num,
+                'phone_number': self.phone_number,
                 'name': self.name,
                 'width': self.width,
                 'height': self.height,

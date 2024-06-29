@@ -1,8 +1,6 @@
-from flask import Blueprint, request, jsonify, make_response
-from src.Player.player_model import Player
-from src.common import status
+from flask import Blueprint, request, make_response, jsonify
 from src.Player.player_service import PlayerService
-
+from src.common import status
 
 playerBp = Blueprint("player_info", __name__)
 player_service = PlayerService()
@@ -19,9 +17,9 @@ def create_player():
     create player route...
     maybe this should be on the sign-in process?
     """
-    statusCode = player_service.create_player_usecase(request.get_json())
+    status_code = player_service.create_player_usecase(request.get_json())
     response = make_response()
-    response.status_code = statusCode
+    response.status_code = status_code
     return response
 
 
@@ -32,15 +30,17 @@ def read_player():
     a (Token) should be present to identify
     player and return info
     """
-    return "<h1>Player<h1>"
-    # data = request.get_json()
-    # try:
-    #     player = player_service.read_player_usecase(data["gym_id"], data["pid"])
-    #     if type(player) is int:
-    #         return {}, player
-    #     return make_response(player.serialize(), status.HTTP_200_OK)
-    # except:
-    #     return make_response("Bad request", status.HTTP_400_BAD_REQUEST)
+    data = request.get_json()
+    try:
+        if 'gym_id' in data and 'pid' in data:
+            player = player_service.read_player_usecase(data["gym_id"], data["pid"])
+            if type(player) is int:
+                return {}, player
+            return make_response(player.serialize(), status.HTTP_200_OK)
+        else:
+            return make_response(jsonify({"Bad request": "required data is missing "}), status.HTTP_400_BAD_REQUEST)
+    except Exception as error:
+        return make_response(jsonify({"Bad request": error}), status.HTTP_400_BAD_REQUEST)
 
 
 @playerBp.route("/player", methods=["PUT"])
