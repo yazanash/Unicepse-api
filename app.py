@@ -1,11 +1,13 @@
 import os
 import pyotp
+from dotenv import load_dotenv
 
 from flask import Flask
 from werkzeug.security import check_password_hash
 
 from src.Training.training_route import trainingBlueprint
 from src.Authentication.auth_routes import auth_Bp
+from src.Authentication.profile_routes import profile_Bp
 from src.metrics.metrics_routes import metrics_bp
 from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
@@ -13,8 +15,11 @@ from src.Player.player_route import playerBp
 from mail import mail
 app = Flask(__name__)
 
+load_dotenv()
+
 app.register_blueprint(trainingBlueprint)
 app.register_blueprint(auth_Bp)
+app.register_blueprint(profile_Bp)
 app.register_blueprint(metrics_bp)
 app.register_blueprint(subscriptionBp)
 app.register_blueprint(payments_bp)

@@ -3,7 +3,7 @@ from .factories import PlayerFactory
 from src.Player.player_model import Player
 from src.Player.player_service import PlayerService
 from src.common import status
-from src import app
+from app import app
 from db import db
 
 
