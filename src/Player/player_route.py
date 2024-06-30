@@ -23,17 +23,18 @@ def create_player():
     return response
 
 
-@playerBp.route("/player", methods=["GET"])
-def read_player():
+@playerBp.route("/player/<int:gym_id>/<int:pid>", methods=["GET"])
+def read_player(gym_id, pid):
     """
     get handler to retrieve player info
     a (Token) should be present to identify
     player and return info
     """
-    data = request.get_json()
     try:
-        if 'gym_id' in data and 'pid' in data:
-            player = player_service.read_player_usecase(data["gym_id"], data["pid"])
+        print(f"Route accessed {gym_id}/{pid}")
+        if gym_id is not None and pid is not None:
+            print("check gym and player")
+            player = player_service.read_player_usecase(gym_id, pid)
             if type(player) is int:
                 return {}, player
             return make_response(player.serialize(), status.HTTP_200_OK)

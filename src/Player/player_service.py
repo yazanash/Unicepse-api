@@ -28,7 +28,9 @@ class PlayerService:
     def read_player_usecase(self, gym_id, by_id):
         """read player service called from route to handle use case"""
         try:
+            print(f"read player accessed {gym_id}, {by_id}")
             if Player.check_if_exist(gym_id, by_id):
+                print("player is exists")
                 player = Player.find(gym_id, by_id)
                 return player
             return status.HTTP_404_NOT_FOUND
