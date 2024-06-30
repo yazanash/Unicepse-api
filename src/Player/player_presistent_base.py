@@ -16,7 +16,7 @@ class PlayerPersistentBase:
         Creates a Player to the database
         """
         logger.info("Creating %s", self.name)
-        player_ref = db["Gyms"][self.gym_id][node_name]
+        player_ref = db.players
         player_ref.insert_one(self.serialize())
         logger.info("Created %s successfully", self.name)
 
@@ -25,7 +25,7 @@ class PlayerPersistentBase:
         Updates a Player to the database
         """
         logger.info("Updating %s", self.name)
-        player_ref = db["Gyms"][self.gym_id][node_name]
+        player_ref = db.players
         player_ref.update_one({'pid': self.pid}, {'$set': self.serialize()})
         logger.info("Updated Successfully %s", self.name)
 
@@ -33,7 +33,7 @@ class PlayerPersistentBase:
     def all(cls, gym_id):
         """Returns all the records in the database"""
         logger.info("Processing all Player records")
-        player_ref = db["Gyms"][gym_id][node_name]
+        player_ref = db.players
         data = []
         if player_ref is not None:
             for val in player_ref:
@@ -47,7 +47,7 @@ class PlayerPersistentBase:
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
         try:
-            data = db["Gyms"][gym_id][node_name]
+            data = db.players
             player_data = data.find_one({"pid": by_uid})
             if player_data is not None:
                 player = cls.create_model()
@@ -62,7 +62,7 @@ class PlayerPersistentBase:
     def check_if_exist(cls, gym_id, by_uid):
         """check if record is exist in database"""
         logger.info("check if data exist")
-        data = db["Gyms"][gym_id][node_name]
+        data = db.players
         player_data = data.find_one({"pid": by_uid})
         if player_data is not None:
             return True
