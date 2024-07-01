@@ -31,9 +31,7 @@ def read_player(gym_id, pid):
     player and return info
     """
     try:
-        print(f"Route accessed {gym_id}/{pid}")
         if gym_id is not None and pid is not None:
-            print("check gym and player")
             player = player_service.read_player_usecase(gym_id, pid)
             if type(player) is int:
                 return {}, player
@@ -50,6 +48,5 @@ def update_player():
     Update player info.
     info should be in json format
     """
-    print("update methode request json: ", request.get_json())
     stat = player_service.update_player_usecase(request.get_json())
     return make_response("Updated Successfully!", stat)

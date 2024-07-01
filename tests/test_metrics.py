@@ -14,7 +14,6 @@ class TestMetrics(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         """This runs once after the entire test suite"""
-        print("drop Gyms: ", db.client.drop_database("flask_db"))
 
     def setUp(self):
         """This runs before each test"""
@@ -67,7 +66,6 @@ class TestMetrics(unittest.TestCase):
         metric = MetricsFactory()
         metric.create()
         temp_met = Metric.find(gym_id=metric.gym_id, pl_id=metric.pl_id, met_id=metric.id)
-        print("temp: ", temp_met['id'], "real: ", metric.serialize())
         self.assertEqual(temp_met['check_date'], metric.check_date.strftime("%Y/%m/%d, %H:%M:%S"))
 
     def test_read_all_Metrics(self):

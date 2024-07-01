@@ -40,7 +40,6 @@ class Profile(profile_services.ProfileService):
         Args:
             data (dict): A dictionary containing the resource data
         """
-        # print(data)
         try:
             self.uid = data["uid"]
             self.full_name = data["full_name"]
@@ -64,7 +63,6 @@ class Profile(profile_services.ProfileService):
         Args:
             data (dict): A dictionary containing the resource data
         """
-        # print(data)
         try:
             self.full_name = data["full_name"]
             self.phone = data["phone"]

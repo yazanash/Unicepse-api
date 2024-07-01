@@ -36,7 +36,6 @@ class RoutineServiceBase:
         try:
             data = db["Gyms"][gym_id][dt_node]
             routine_data = data.find_one({"RoutineId": by_uid})
-            print(routine_data)
             if routine_data is not None:
                 routine = cls.create_model()
                 routine.deserialize(routine_data)

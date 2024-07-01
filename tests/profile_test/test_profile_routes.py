@@ -80,7 +80,6 @@ class TestPlayerRoutes(unittest.TestCase):
 
         resp1 = self.client.get(PROFILE_URL+"/"+test_uid,
                                 content_type=json_type)
-        print("json from read player: ", resp1.get_json())
         self.assertEqual(resp1.get_json()["uid"], profiles_list[0].uid)
 
     # def test_read_bad_request(self):
@@ -94,7 +93,6 @@ class TestPlayerRoutes(unittest.TestCase):
         profile = profiles_list[0]
         full_name = profile.full_name
         profile.full_name = "testimonial"
-        print(profile.serialize())
         resp = self.client.put(
             PROFILE_URL,
             json=profile.serialize(),

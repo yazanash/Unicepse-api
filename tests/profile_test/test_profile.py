@@ -44,7 +44,6 @@ class TestProfileModel(unittest.TestCase):
         """It should deserialize a profile with no errors"""
         profile = ProfileFactory()
         profile.uid = test_uid
-        print(profile.serialize())
         ser = profile.serialize()
         profile.deserialize(ser)
         self.assertEqual(profile.full_name, ser['full_name'])

@@ -11,7 +11,6 @@ class MetricPersistentBase:
         logger.info("creating new metric for player %s", self.pl_id)
 
         metrics_ref = db["Gyms"][self.gym_id]["Players"][self.pl_id]["Metrics"]
-        print("metrics_ref: ",metrics_ref)
 
         if len(loads(dumps(metrics_ref.find({"id": self.id})))) == 0:
             metrics_ref.insert_one(self.serialize())

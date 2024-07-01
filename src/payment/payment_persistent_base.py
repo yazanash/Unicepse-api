@@ -26,7 +26,6 @@ class PaymentPersistentBase:
         logger.info("Creating Payment in subscription= %s", self.sub_id)
 
         payments = db["Gyms"][self.gym_id]["Players"][self.pl_id]["Subs"][self.sub_id]["Payments"]
-        print("create in persistent: ", type(payments))
         payments.insert_one(self.serialize())
 
         logger.info("Payment %s Created successfully", self.sub_id)
@@ -68,8 +67,6 @@ class PaymentPersistentBase:
         if pays is not None:
             for val in pays:
                 if val is not None:
-                    print("payments in all(): ", type(pays), pays)
-                    print("val in all(): ", type(val), val)
 
                     pay = cls.deserialize(val)
                     data.append(pay)
@@ -106,7 +103,6 @@ class PaymentPersistentBase:
         if payment is not None:
             pays = loads(dumps(payment))
             if pays is not None:
-                print("Pays in find(): ", type(pays), pays)
                 pay = cls.deserialize(pays)
                 return pay
 

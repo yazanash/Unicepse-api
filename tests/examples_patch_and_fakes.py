@@ -5,7 +5,6 @@ from unittest.mock import patch
 
 def imdb_info(title):
     """ Gets the movie from IMDB """
-    print(f"Searching for the movie {title}!")
     result = requests.get(f"https://imdb-api.com/API/SearchTitle/{title}")
     return result.json()
 

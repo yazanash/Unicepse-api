@@ -11,12 +11,9 @@ class TestPayments(unittest.TestCase):
     def setUpClass(cls):
         """This runs once before the entire test suite"""
 
-
-
     @classmethod
     def tearDownClass(cls):
         """This runs once after the entire test suite"""
-        print("drop Gyms: ", db.client.drop_database("flask_db"))
 
     def setUp(self):
         """This runs before each test"""
@@ -75,7 +72,6 @@ class TestPayments(unittest.TestCase):
         payment = PaymentFactory()
         payment.create()
         temp_pay = Payment.find(gym_id=payment.gym_id, player_id=payment.pl_id, sub_id=payment.sub_id, uid=payment.id)
-        print(temp_pay.id, payment.id)
         self.assertEqual(temp_pay.value, payment.value)
 
     def test_read_all_payments(self):
@@ -85,8 +81,6 @@ class TestPayments(unittest.TestCase):
         sub_id = pays_list[0].sub_id
         gym_id = pays_list[0].gym_id
         temp_list = Payment.all(gym_id, pl_id, sub_id)
-
-        print(len(temp_list), len(pays_list))
 
         for i in range(4):
             self.assertEqual(temp_list[i].serialize(), pays_list[i].serialize())

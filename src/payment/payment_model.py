@@ -25,7 +25,6 @@ class Payment(payment_persistent_base.PaymentPersistentBase):
 
     @staticmethod
     def deserialize(json):
-        print("json: ", json)
         return Payment(
             json["id"],
             json['value'],

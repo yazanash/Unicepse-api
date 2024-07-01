@@ -54,7 +54,6 @@ class MyTestCase(unittest.TestCase):
             )
             new_user = response.get_json()
             user.uid = new_user["uid"]
-            print(user.uid)
             users.append(user)
             users_test.append(user)
         return users
@@ -94,7 +93,6 @@ class MyTestCase(unittest.TestCase):
     #     """It should return status code 200 user verified successfully"""
     #     email = "yazan.ash.doonaas@gmail.com"
     #     ver = db.emails.find_one({"email": email})
-    #     print(ver)
     #     response = self.client.post(BASE_URL+"/verify",
     #                                 json={"email": email, "otp": ver["otp"]},
     #                                 content_type=content_json
@@ -128,7 +126,6 @@ class MyTestCase(unittest.TestCase):
         user.uid = data['uid']
         users_test.append(user.uid)
         user.username = "User Number 3"
-        print(f"{BASE_URL}/{user.uid}")
         resp = self.client.put(
             f"{BASE_URL}/{user.uid}", json=user.serialize(), content_type=content_json
         )
@@ -161,5 +158,4 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         token_val = jwt.decode(jwt=data, key=os.environ["SECRET_KEY"], algorithms="HS256")
-        print(token_val['public_id'])
         self.assertEqual(token_val['public_id'], user.uid)

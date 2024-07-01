@@ -22,9 +22,7 @@ def token_required(f):
         try:
             # decoding the payload to fetch the stored details
             data = jwt.decode(token, os.environ['SECRET_KEY'], algorithms=["HS256"])
-            print(data)
             current_user = User.find(data['public_id'])
-            print(current_user.secret_serialize())
         except TypeError:
             return jsonify({
                 'message': 'Token is invalid !!'
