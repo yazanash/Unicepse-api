@@ -26,7 +26,6 @@ class Routine (RoutineServiceBase):
     def deserialize(self, json):
         """ deserialize player routine data  """
         try:
-            print(json["RoutineNumber"])
             logger.info("deserialize player routine")
             self.lid = json["RoutineId"]
             self.pid = json["pid"]
@@ -52,8 +51,6 @@ class Routine (RoutineServiceBase):
                 "GroupMapping": self.days_group_map,
                 "Schedule": self.routine_items,
             }
-            print(self.routine_no)
-            print(mapping["RoutineNumber"])
             return mapping
         except AttributeError as e:
             logger.error("Error serializing player routine error : %s", e)

@@ -40,9 +40,7 @@ def verify_otp():
         if user is not None:
             user.is_verified = True
             User.delete_from_otp((data['email']))
-            print(user.serialize())
             user.update()
-            print(user.serialize())
             return make_response(jsonify(message), status.HTTP_200_OK)
         message = "email is not exist"
         return make_response(jsonify(message), status.HTTP_404_NOT_FOUND)

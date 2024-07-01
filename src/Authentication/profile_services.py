@@ -65,12 +65,9 @@ class ProfileService:
     def find(cls, by_uid):
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
-        print(f"uid is {by_uid}")
         try:
             data = db.profiles.find_one({"uid": str(by_uid)})
-            print(data)
             if data is not None:
-                print(data)
                 profile = cls.create_model()
                 profile.deserialize(data)
                 return profile

@@ -29,7 +29,6 @@ class AuthService:
         Creates an Account to the database
         """
         logger.info("Creating %s", self.email)
-        print(self.password)
         self.password = generate_password_hash(self.password)
         user = db.Users.insert_one(self.serialize())
 
@@ -67,15 +66,7 @@ class AuthService:
 
     def login_user(self, credentials):
         """verify user credentials """
-        # plain_password = '123456'
-        # hashed_password = generate_password_hash(plain_password)
-        #
-        # # Verify a password
-        # is_valid = check_password_hash(hashed_password, plain_password)
-        # print(f"Password is valid: {is_valid}")
-
         if check_password_hash(self.password, credentials['password']):
-            print(credentials)
             return self.generate_token()
         else:
             return None
@@ -98,7 +89,6 @@ class AuthService:
             data = db.Users.find_one({"email": email})
             if data is not None:
                 user = cls.create_model()
-                # print(data)
                 user.deserialize_from_db(data)
                 return user
             else:
@@ -137,7 +127,6 @@ class AuthService:
         mail.send(msg)
         db.emails.delete_one({"email": email})
         db.emails.insert_one({"email": email, "otp": otp})
-        # print("saved")
 
     @classmethod
     def verify_otp(cls, email, otp):

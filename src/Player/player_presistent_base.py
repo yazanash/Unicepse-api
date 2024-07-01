@@ -48,7 +48,7 @@ class PlayerPersistentBase:
         logger.info("Processing lookup for id %s ...", by_uid)
         try:
             data = db.players
-            player_data = data.find_one({"pid": by_uid})
+            player_data = data.find_one({"pid": by_uid, "gym_id": gym_id})
             if player_data is not None:
                 player = cls.create_model()
                 player.deserialize(player_data)
@@ -63,7 +63,7 @@ class PlayerPersistentBase:
         """check if record is exist in database"""
         logger.info("check if data exist")
         data = db.players
-        player_data = data.find_one({"pid": by_uid})
+        player_data = data.find_one({"pid": by_uid, "gym_id": gym_id})
         if player_data is not None:
             return True
         return False

@@ -28,7 +28,6 @@ class TestPlayerModel(unittest.TestCase):
     def tearDown(self):
         """This runs after each test"""
         players_node = db["Gyms"][test_gym_id][dt_node]
-        print(players_node)
         players_node.drop()
 
     ######################################################################

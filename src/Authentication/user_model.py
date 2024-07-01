@@ -64,7 +64,6 @@ class User(models.AuthService):
         Args:
             data (dict): A dictionary containing the resource data
         """
-        # print(data)
         try:
             self.username = data["username"]
             self.email = data["email"]
@@ -92,7 +91,6 @@ class User(models.AuthService):
         Args:
             data (dict): A dictionary containing the resource data
         """
-        # print(data)
         try:
             self.username = data["username"]
             self.notify_token = data["notify_token"]

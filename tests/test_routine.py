@@ -43,7 +43,6 @@ class TestRoutineModel(unittest.TestCase):
             routine_ob = Routine.create_model()
             routine_ob.deserialize(routine)
             routine_ob.gym_id = test_gym_id
-            print(routine_ob.serialize())
             routine_ob.create()
             self.assertTrue(Routine.check_if_exist(test_gym_id, routine_ob.lid), f"db-routine-id: {routine_ob.lid}")
 

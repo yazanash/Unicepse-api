@@ -75,9 +75,7 @@ class TestPlayerRoutes(unittest.TestCase):
     def test_read_player_route(self):
         """It should READ player through route service"""
         players_list = self._create_players(3)
-        print(f"{PLAYER_URL}/{players_list[0].gym_id}/{players_list[0].pid}")
         resp1 = self.client.get(f"{PLAYER_URL}/{players_list[0].gym_id}/{players_list[0].pid}")
-        print("json from read player: ", resp1.get_json())
         self.assertEqual(resp1.get_json()["pid"], players_list[0].pid)
 
         resp2 = self.client.get(f"{PLAYER_URL}/{players_list[1].gym_id}/{players_list[1].pid}")
@@ -105,7 +103,6 @@ class TestPlayerRoutes(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         response = self.client.get(f"{PLAYER_URL}/{player.gym_id}/{player.pid}")
         temp = Player.create_model()
-        print(response.get_json())
         temp.deserialize(response.get_json())
         self.assertEqual(temp.name, player.name)
         self.assertNotEqual(temp.name, name)

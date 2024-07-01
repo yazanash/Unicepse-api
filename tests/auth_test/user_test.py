@@ -136,12 +136,9 @@ class UserTest(unittest.TestCase):
         user.uid = None
         user.create()
         users_test.append(user.uid)
-        print(user.serialize())
         credential = {"email": user.email, "password": password}
         auth_user = User.get_user_by_email(credential['email'])
         token = auth_user.login_user(credential)
-        print(token)
-        print(os.environ['SECRET_KEY'])
         data = jwt.decode(jwt=token, key=os.environ['SECRET_KEY'], algorithms='HS256')
         self.assertEqual(data['public_id'], str(auth_user.uid))
 
