@@ -7,12 +7,12 @@ from src.common.utils import logger
 def validate_subscription(json: dict):
     try:
         assert (type(json["id"]) is int)
-        assert (type(json["pl_id"]) is int)
-        assert (type(json['sport_name']) is int)
-        assert (type(json['trainer_name']) is int)
-        assert (type(json['price']) is int)
-        assert (type(json['start_date']) is str)
-        assert (type(json['end_date']) is str)
+        assert (type(json["pid"]) is int)
+        assert (type(json['sport_name']) is str)
+        assert (type(json['trainer_name']) is str)
+        # assert (type(json['price']) is int)
+        # assert (type(json['start_date']) is str)
+        # assert (type(json['end_date']) is str)
         # assert (type(json['discount_value']) is int)      #  NULLABLE
         # assert (type(json['discount_des']) is str)        #  NULLABLE
         # assert (type(json['is_payed']) is bool)           #  NULLABLE

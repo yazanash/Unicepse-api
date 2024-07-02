@@ -7,21 +7,22 @@ class Subscription(SubscriptionPersistentBase):
 
     def __init__(
             self,
-            id,
-            pl_id,
-            gym_id,
-            sport_name,
-            trainer_name,
-            start_date: datetime,
-            end_date: datetime,
-            price,
-            discount_value,
-            discount_des,
-            is_payed,
-            list_of_payments,
+            id=None,
+            pid=None,
+            gym_id=None,
+            sport_name=None,
+            trainer_name=None,
+            start_date=None,
+            end_date=None,
+            price=None,
+            discount_value=None,
+            discount_des=None,
+            is_paid=None,
+            paid_value=None,
+            payments=None,
     ):
         self.id = id
-        self.pl_id = pl_id
+        self.pid = pid
         self.gym_id = gym_id
         self.sport_name = sport_name
         self.trainer_name = trainer_name
@@ -30,53 +31,57 @@ class Subscription(SubscriptionPersistentBase):
         self.price = price
         self.discount_value = discount_value
         self.discount_des = discount_des
-        self.is_payed = is_payed
-        self.list_of_payments = list_of_payments
+        self.is_paid = is_paid
+        self.paid_value = paid_value
+        self.payments = payments
 
-    @classmethod
-    def deserialize(cls, json: dict):
+    def deserialize(self, json: dict):
         """should return json map for this model"""
 
-        pays = json['list_of_payments']
+        pays = json['payments']
         data = []
         if pays is not None:
 
             for p in pays:
                 data.append(Payment.deserialize(p))
 
-        return Subscription(
-            id=json['id'],
-            pl_id=json['pl_id'],
-            gym_id=json["gym_id"],
-            sport_name=json['sport_name'],
-            trainer_name=json['trainer_name'],
-            start_date=datetime.strptime(json['start_date'], "%Y/%m/%d, %H:%M:%S"),
-            end_date=datetime.strptime(json['end_date'], "%Y/%m/%d, %H:%M:%S"),
-            price=json['price'],
-            discount_value=json['discount_value'],
-            discount_des=json['discount_des'],
-            is_payed=json['is_payed'],
-            list_of_payments=data,
-        )
+            self.id = json['id']
+            self.pid = json['pid']
+            self.gym_id = json["gym_id"]
+            self.sport_name = json['sport_name']
+            self.trainer_name = json['trainer_name']
+            self.start_date = datetime.strptime(json['start_date'], "%d/%m/%Y")
+            self.end_date = datetime.strptime(json['end_date'], "%d/%m/%Y")
+            self.price = json['price']
+            self.discount_value = json['discount_value']
+            self.discount_des = json['discount_des']
+            self.is_paid = json['is_paid']
+            self.paid_value = json['paid_value']
+            self.payments = data
 
     def serialize(self):
         data = []
-        if self.list_of_payments is not None:
+        if self.payments is not None:
 
-            for p in self.list_of_payments:
+            for p in self.payments:
                 data.append(p.serialize())
 
         return {
             'id': self.id,
-            'pl_id': self.pl_id,
+            'pid': self.pid,
             'gym_id': self.gym_id,
             'sport_name': self.sport_name,
             'trainer_name': self.trainer_name,
-            'start_date': self.start_date.strftime("%Y/%m/%d, %H:%M:%S"),
-            'end_date': self.end_date.strftime("%Y/%m/%d, %H:%M:%S"),
+            'start_date': self.start_date.strftime("%d/%m/%Y"),
+            'end_date': self.end_date.strftime("%d/%m/%Y"),
             'price': self.price,
             'discount_value': self.discount_value,
             'discount_des': self.discount_des,
-            'is_payed': self.is_payed,
-            'list_of_payments': data,
+            'is_paid': self.is_paid,
+            'paid_value': self.paid_value,
+            'payments': data,
         }
+
+    @staticmethod
+    def create_model():
+        return Subscription()
