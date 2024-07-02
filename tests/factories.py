@@ -52,7 +52,7 @@ class SubscriptionFactory(factory.Factory):
         model = Subscription
 
     id = factory.Sequence(lambda n: n)
-    pl_id = factory.Sequence(lambda n: n)
+    pid = factory.Sequence(lambda n: n)
     gym_id = factory.Sequence(lambda n: n)
     sport_name = factory.Faker("user_name")
     trainer_name = factory.Faker("user_name")
@@ -61,8 +61,9 @@ class SubscriptionFactory(factory.Factory):
     price = random.randrange(0, 1000001)
     discount_value = random.randrange(0, 1000001)
     discount_des = factory.Faker("catch_phrase")
-    is_payed = factory.fuzzy.FuzzyChoice([True, False])
-    list_of_payments = None
+    is_paid = factory.fuzzy.FuzzyChoice([True, False])
+    paid_value = random.randrange(0, 1000001)
+    payments = None
 
 
 class PaymentFactory(factory.Factory):
