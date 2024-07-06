@@ -36,35 +36,37 @@ class Subscription(SubscriptionPersistentBase):
         self.payments = payments
 
     def deserialize(self, json: dict):
-        """should return json map for this model"""
-
+        """should return this model from dict"""
         pays = json['payments']
         data = []
         if pays is not None:
-
-            for p in pays:
-                data.append(Payment.deserialize(p))
-
-            self.id = json['id']
-            self.pid = json['pid']
-            self.gym_id = json["gym_id"]
-            self.sport_name = json['sport_name']
-            self.trainer_name = json['trainer_name']
-            self.start_date = datetime.strptime(json['start_date'], "%d/%m/%Y")
-            self.end_date = datetime.strptime(json['end_date'], "%d/%m/%Y")
-            self.price = json['price']
-            self.discount_value = json['discount_value']
-            self.discount_des = json['discount_des']
-            self.is_paid = json['is_paid']
-            self.paid_value = json['paid_value']
-            self.payments = data
+            for p in pays.values():
+                payment = Payment.create_model()
+                payment.deserialize(p)
+                print(payment)
+                data.append(payment)
+            print(f"data : {data}")
+        self.id = json['id']
+        self.pid = json['pid']
+        self.gym_id = json["gym_id"]
+        self.sport_name = json['sport_name']
+        self.trainer_name = json['trainer_name']
+        self.start_date = datetime.strptime(json['start_date'], "%d/%m/%Y")
+        self.end_date = datetime.strptime(json['end_date'], "%d/%m/%Y")
+        self.price = json['price']
+        self.discount_value = json['discount_value']
+        self.discount_des = json['discount_des']
+        self.is_paid = json['is_paid']
+        self.paid_value = json['paid_value']
+        self.payments = data
 
     def serialize(self):
-        data = []
+        """should return json map for this model"""
+        data = {}
         if self.payments is not None:
 
             for p in self.payments:
-                data.append(p.serialize())
+                data[p.id] = (p.serialize())
 
         return {
             'id': self.id,
@@ -79,7 +81,7 @@ class Subscription(SubscriptionPersistentBase):
             'discount_des': self.discount_des,
             'is_paid': self.is_paid,
             'paid_value': self.paid_value,
-            'payments': data,
+            # 'payments': data,
         }
 
     @staticmethod
