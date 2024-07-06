@@ -1,6 +1,7 @@
 import unittest
+
+from src.subscription.subscription_model import Subscription
 from tests.factories import SubscriptionFactory
-from src.Player.player_model import Player
 from src.common import status
 from app import app
 from db import db
@@ -70,7 +71,7 @@ class TestSubscriptionsRoutes(unittest.TestCase):
     def test_bad_request(self):
         """It should check for valid data on create route"""
         resp = self.client.post(SUBSCRIPTION_URL, json={'sport_name': "not enough data"}, content_type=json_type)
-        self.assertEqual(resp.status_code, status.HTTP_406_NOT_ACCEPTABLE)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_read_single_subscription_route(self):
         """It should READ subscription through route service"""
@@ -93,7 +94,7 @@ class TestSubscriptionsRoutes(unittest.TestCase):
         resp1 = self.client.get(f"{SUBSCRIPTION_URL}/{subscriptions_list[0].gym_id}/{subscriptions_list[0].pid}")
 
         for i in range(4):
-            self.assertEqual(subscriptions_list[i].serialize(), resp1[i].serialize())
+            self.assertEqual(subscriptions_list[i].serialize(), resp1[i])
 
     def test_read_bad_request(self):
         """It should check for valid id on READ subscription"""
@@ -113,7 +114,7 @@ class TestSubscriptionsRoutes(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         response = self.client.get(f"{SUBSCRIPTION_URL}/{subscription.gym_id}/{subscription.pid}/{subscription.id}")
-        temp = Player.create_model()
+        temp = Subscription.create_model()
         temp.deserialize(response.get_json())
         self.assertEqual(temp.sport_name, subscription.name)
         self.assertNotEqual(temp.sport_name, sport_name)

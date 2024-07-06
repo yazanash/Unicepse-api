@@ -7,11 +7,11 @@ from src.common.utils import logger
 def validate_payment(json: dict):
     try:
         assert (type(json["id"]) is int)
-        assert (type(json["pl_id"]) is int)
-        assert (type(json["sub_id"]) is int)
+        assert (type(json["pid"]) is int)
+        assert (type(json["sid"]) is int)
         assert (type(json["gym_id"]) is int)
         # assert (type(json["description"]) is str)     Nullable
-        assert (type(json["value"]) is int)
+        assert (type(json["value"]) is float)
         assert (type(json["date"]) is str)
     except ValueError:
         logger.error("ValueError in payment data")
