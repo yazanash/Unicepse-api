@@ -6,27 +6,22 @@ route = "/metrics"
 service = MetricsService()
 
 
-@metrics_bp.route(route, methods=["GET"])
-def read_all_transactions():
-    return "<h1>Metrics Route, WELCOME</h1>"
-    # return service.read_metrics_usecase(request.get_json())
+@metrics_bp.route(f"{route}/<int:gym_id>/<int:pid>", methods=["GET"])
+def read_all_metrics(gym_id, pid):
+    return service.read_metrics_use_case(gym_id, pid)
+
+
+@metrics_bp.route(f"{route}/<int:gym_id>/<int:pid>/<int:id>", methods=["GET"])
+def read_single_metrics(gym_id, pid, id):
+    return service.read_single_metrics_use_case(gym_id, pid, id)
 
 
 @metrics_bp.route(route, methods=["POST"])
-def create_transaction():
-    return service.create_metric_usecase(request.get_json())
+def create_metrics():
+    return service.create_metric_use_case(request.get_json())
 
 
 @metrics_bp.route(route, methods=["PUT"])
-def update_transaction():
-    return service.update_metric_usecase(request.get_json())
+def update_metrics():
+    return service.update_metric_use_case(request.get_json())
 
-
-@metrics_bp.route(route, methods=["DELETE"])
-def delete_transaction():
-    return service.delete_metric_usecase(request.get_json())
-
-
-@metrics_bp.errorhandler(404)
-def error_handler():
-    return "<h1>Welcome<h1>"

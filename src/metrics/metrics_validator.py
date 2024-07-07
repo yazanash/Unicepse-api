@@ -6,8 +6,7 @@ def validate_metric(json: dict):
 
     try:
         assert (type(json["id"]) is int)
-        assert (type(json["pl_id"]) is int)
-        assert (type(json["met_id"]) is int)
+        assert (type(json["pid"]) is int)
         assert (type(json["gym_id"]) is int)
         assert (type(json["check_date"]) is str)
         assert (type(json['height'],) is float)
