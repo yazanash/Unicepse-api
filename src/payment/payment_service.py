@@ -31,7 +31,6 @@ class PaymentService:
         pays_list = Payment.all(gym_id, pid, sid)
         if len(pays_list) > 0:
             pays_dict = [pay.serialize() for pay in pays_list]
-            print(pays_dict)
             return make_response(jsonify(pays_dict),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
@@ -56,7 +55,7 @@ class PaymentService:
             if pay is None:
                 return make_response(jsonify({"result": "Not found", "message": "this payment is not exist"}),
                                      status.HTTP_404_NOT_FOUND)
-            pay=Payment.create_model()
+            pay = Payment.create_model()
             pay.deserialize(data)
             pay.update()
             return make_response(
