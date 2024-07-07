@@ -43,8 +43,8 @@ class MetricPersistentBase:
     def check_if_exist(cls, gym_id, pid, id):
         """Checks if record exists in DB"""
         logger.info("Checking if metric %s exists", id)
-
-        metric = db.Metrics.find_one({"id": id, "pid": pid, "gym_id": gym_id})
+        metric = db.metrics.find_one({"id": id, "pid": pid, "gym_id": gym_id})
+        print(metric)
         if metric is not None:
             return True
         return False
