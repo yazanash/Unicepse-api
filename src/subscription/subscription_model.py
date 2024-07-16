@@ -37,15 +37,6 @@ class Subscription(SubscriptionPersistentBase):
 
     def deserialize(self, json: dict):
         """should return this model from dict"""
-        pays = json['payments']
-        data = []
-        if pays is not None:
-            for p in pays.values():
-                payment = Payment.create_model()
-                payment.deserialize(p)
-                print(payment)
-                data.append(payment)
-            print(f"data : {data}")
         self.id = json['id']
         self.pid = json['pid']
         self.gym_id = json["gym_id"]
@@ -58,7 +49,6 @@ class Subscription(SubscriptionPersistentBase):
         self.discount_des = json['discount_des']
         self.is_paid = json['is_paid']
         self.paid_value = json['paid_value']
-        self.payments = data
 
     def serialize(self):
         """should return json map for this model"""
@@ -81,7 +71,6 @@ class Subscription(SubscriptionPersistentBase):
             'discount_des': self.discount_des,
             'is_paid': self.is_paid,
             'paid_value': self.paid_value,
-            # 'payments': data,
         }
 
     @staticmethod
