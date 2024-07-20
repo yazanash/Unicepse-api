@@ -38,7 +38,7 @@ app.config['MAIL_USE_SSL'] = True
 mail.init_app(app)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/api/v1", methods=["GET"])
 def hello_app():
     return "<h1>Unicepse Api; version=1.0.0<h1>"
 

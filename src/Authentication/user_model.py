@@ -12,7 +12,6 @@ from src.Authentication import models
 class User(models.AuthService):
 
     def __init__(self, uid=None,
-                 username=None,
                  email=None,
                  password=None,
                  token=None,
@@ -23,7 +22,6 @@ class User(models.AuthService):
                  ):
         super().__init__()
         self.uid = uid
-        self.username = username
         self.email = email
         self.password = password
         self.token = token
@@ -37,12 +35,9 @@ class User(models.AuthService):
         """Serializes a User into a dictionary"""
         return {
             'uid': str(self.uid),
-            'username': self.username,
             'email': self.email,
-            'password': self.password,
             'date_joined': self.date_joined,
             'notify_token': self.notify_token,
-            'is_verified': self.is_verified,
             'user_type': self.user_type,
             'token': self.token,
         }
@@ -51,10 +46,8 @@ class User(models.AuthService):
         """Serializes a User into a dictionary"""
         return {
             'uid': str(self.uid),
-            'username': self.username,
             'email': self.email,
             'date_joined': self.date_joined,
-            'is_verified': self.is_verified,
             'user_type': self.user_type,
         }
 
@@ -65,9 +58,7 @@ class User(models.AuthService):
             data (dict): A dictionary containing the resource data
         """
         try:
-            self.username = data["username"]
             self.email = data["email"]
-            self.password = data["password"]
             self.notify_token = data["notify_token"]
             # self.is_verified = data["is_verified"]
             self.date_joined = None
@@ -92,7 +83,6 @@ class User(models.AuthService):
             data (dict): A dictionary containing the resource data
         """
         try:
-            self.username = data["username"]
             self.notify_token = data["notify_token"]
         except KeyError as error:
             raise models.DataValidationError("Invalid User: missing " + error.args[0]) from error
@@ -112,12 +102,9 @@ class User(models.AuthService):
         # print(data)
         try:
             self.uid = data.get("_id")
-            self.username = data["username"]
             self.email = data["email"]
-            self.password = data["password"]
             self.notify_token = data["notify_token"]
             self.token = data["token"]
-            self.is_verified = data["is_verified"]
             self.date_joined = None
             date_joined = data.get("date_joined")
             if date_joined:

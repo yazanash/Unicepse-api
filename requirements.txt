@@ -41,3 +41,4 @@ httpie
 pyotp
 pyjwt
 pillow
+marshmallow
