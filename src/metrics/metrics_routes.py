@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from src.metrics.metrics_service import MetricsService
 
-metrics_bp = Blueprint("Metrics", __name__)
+metrics_bp = Blueprint("Metrics", __name__, url_prefix='/api/v1')
 route = "/metrics"
 service = MetricsService()
 

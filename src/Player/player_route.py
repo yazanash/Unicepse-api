@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from src.Player.player_service import PlayerService
 from src.common import status
 
-playerBp = Blueprint("player_info", __name__)
+playerBp = Blueprint("player_info", __name__, url_prefix='/api/v1')
 player_service = PlayerService()
 
 """

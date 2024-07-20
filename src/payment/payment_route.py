@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from src.payment.payment_service import PaymentService
 
-payments_bp = Blueprint("Payments", __name__)
+payments_bp = Blueprint("Payments", __name__, url_prefix='/api/v1')
 route = "/payments"
 service = PaymentService()
 

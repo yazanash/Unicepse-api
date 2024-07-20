@@ -1,7 +1,7 @@
 from flask import Blueprint, request, make_response
 from .subscription_service import SubscriptionService
 
-subscriptionBp = Blueprint("Subscription", __name__)
+subscriptionBp = Blueprint("Subscription", __name__, url_prefix='/api/v1')
 route = "/subscription"
 service = SubscriptionService()
 

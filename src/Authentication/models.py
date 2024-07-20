@@ -4,16 +4,15 @@ base CRUD Model
 """
 import logging
 import os
+import string
+import random
 import pyotp
 from bson import ObjectId
-from flask import current_app
-from flask_mail import Message, Mail
+from flask_mail import Message
 from werkzeug.security import check_password_hash, generate_password_hash
 import jwt
 from datetime import datetime, timedelta
-
 from db import db
-# from app import mail
 from mail import mail
 logger = logging.getLogger("flask.app")
 
@@ -29,6 +28,7 @@ class AuthService:
         Creates an Account to the database
         """
         logger.info("Creating %s", self.email)
+        self.generate_password()
         self.password = generate_password_hash(self.password)
         user = db.Users.insert_one(self.serialize())
 
@@ -70,6 +70,11 @@ class AuthService:
             return self.generate_token()
         else:
             return None
+
+    def generate_password(self, length=12):
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(random.choice(characters) for i in range(length))
+        self.password = password
 
     @classmethod
     def all(cls):
