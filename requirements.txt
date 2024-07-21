@@ -42,3 +42,4 @@ pyotp
 pyjwt
 pillow
 marshmallow
+pyfcm==1.4.2
