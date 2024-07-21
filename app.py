@@ -2,8 +2,9 @@ import os
 import pyotp
 from dotenv import load_dotenv
 
-from flask import Flask
+from flask import Flask, request, jsonify
 from werkzeug.security import check_password_hash
+from pyfcm import FCMNotification
 
 from src.Training.training_route import trainingBlueprint
 from src.Authentication.auth_routes import auth_Bp
@@ -41,6 +42,25 @@ mail.init_app(app)
 @app.route("/api/v1", methods=["GET"])
 def hello_app():
     return "<h1>Unicepse Api; version=1.0.0<h1>"
+
+
+push_service = FCMNotification(api_key=os.environ['SERVER_KEY'])
+
+
+@app.route('/send_notify', methods=['POST'])
+def send_notification():
+    data = request.json
+    registration_id = data.get('registration_id')
+    message_title = data.get('title')
+    message_body = data.get('body')
+
+    result = push_service.notify_single_device(
+        registration_id=registration_id,
+        message_title=message_title,
+        message_body=message_body
+    )
+
+    return jsonify(result)
 
 
 if __name__ == "__main__":
