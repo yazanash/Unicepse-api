@@ -10,7 +10,7 @@ class UserBaseSchema(Schema):
 
 
 class UserSchema(UserBaseSchema):
-    otp = fields.Integer(required=True, error_messages={
+    otp = fields.String(required=True, error_messages={
         'required': 'otp is required.',
         'null': 'otp cannot be null.',
         'invalid': 'invalid otp.'
