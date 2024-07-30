@@ -6,6 +6,7 @@ from datetime import datetime
 
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
+from src.handshake.handshake_model import HandShake
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
@@ -118,3 +119,15 @@ class MetricsFactory(factory.Factory):
     chest = fuzzy.FuzzyFloat(10, 100)
     hips = fuzzy.FuzzyFloat(10, 100)
     check_date = factory.Faker("date_time")
+
+
+class HandShakeFactory(factory.Factory):
+    """Creates fake Payments"""
+
+    class Meta:
+        model = HandShake
+
+    pid = random.randrange(1000000, 10000100)
+    uid = 123456789
+    gym_id = 18
+
