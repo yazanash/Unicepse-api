@@ -9,6 +9,7 @@ from pyfcm import FCMNotification
 from src.Training.training_route import trainingBlueprint
 from src.Authentication.auth_routes import auth_Bp
 from src.Authentication.profile_routes import profile_Bp
+from src.gym.gym_routes import gyms_bp
 from src.handshake.handshake_routes import handshakes_bp
 from src.metrics.metrics_routes import metrics_bp
 from src.subscription.subscription_route import subscriptionBp
@@ -27,6 +28,7 @@ app.register_blueprint(subscriptionBp)
 app.register_blueprint(payments_bp)
 app.register_blueprint(playerBp)
 app.register_blueprint(handshakes_bp)
+app.register_blueprint(gyms_bp)
 
 app.app_context().push()
 
