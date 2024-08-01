@@ -6,6 +6,7 @@ from datetime import datetime
 
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
+from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
@@ -131,3 +132,17 @@ class HandShakeFactory(factory.Factory):
     uid = 123456789
     gym_id = 18
 
+
+class GymFactory(factory.Factory):
+    """Creates fake Payments"""
+
+    class Meta:
+        model = Gym
+
+    id = factory.Sequence(lambda n: n)
+    gym_name = factory.Faker("name")
+    owner_name = factory.Faker("name")
+    phone_number = "+963994916917"
+    telephone = "016235658"
+    logo = factory.Faker("url")
+    address = fuzzy.FuzzyText()

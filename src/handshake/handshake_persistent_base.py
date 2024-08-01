@@ -54,7 +54,7 @@ class HandShakePersistentBase:
         return data
 
     @classmethod
-    def check_if_exist(cls, gym_id, uid, pid, ):
+    def check_if_exist(cls, gym_id, uid, pid ):
         """check if record is exist in database"""
         logger.info("check if data exist")
         handshake = db.handshakes.find_one({"gym_id": gym_id, "pid": pid, "uid": uid})
