@@ -3,20 +3,20 @@ Werkzeug==2.1.2
 SQLAlchemy==1.4.46
 
 # Build dependencies
-Flask
+Flask~=2.1.3
 Flask-SQLAlchemy
 psycopg2-binary
-python-dotenv
+python-dotenv~=1.0.1
 firebase-admin
 Flask-Mail
-PyJWT
+PyJWT~=2.8.0
 
 # Mongo db packages
-pymongo
+pymongo~=4.8.0
 Flask-PyMongo
 
 # Runtime dependencies
-gunicorn
+gunicorn~=22.0.0
 honcho
 Flask-Talisman
 Flask-Cors
@@ -38,8 +38,13 @@ coverage
 
 # Utilities
 httpie
-pyotp
+pyotp~=2.9.0
 pyjwt
 pillow
-marshmallow
+marshmallow~=3.21.3
 pyfcm==1.4.2
+requests~=2.32.3
+shortuuid~=1.0.13
+APScheduler~=3.10.4
+hashids~=1.3.1
+python-dateutil~=2.9.0.post0

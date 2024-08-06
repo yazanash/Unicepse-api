@@ -8,6 +8,7 @@ from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
 from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
+from src.license.license_model import License
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
@@ -146,3 +147,17 @@ class GymFactory(factory.Factory):
     telephone = "016235658"
     logo = factory.Faker("url")
     address = fuzzy.FuzzyText()
+
+
+class LicenseFactory(factory.Factory):
+    """Creates fake license"""
+
+    class Meta:
+        model = License
+
+    gym_id = 18
+    plan_id = random.randrange(0, 12)
+    price = random.randrange(0, 100001)
+    subscribe_date = factory.Faker("date_time")
+    period = random.randrange(1, 12)
+
