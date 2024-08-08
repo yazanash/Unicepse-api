@@ -13,6 +13,7 @@ from src.gym.gym_routes import gyms_bp
 from src.handshake.handshake_routes import handshakes_bp
 from src.license.license_routes import licenses_bp
 from src.metrics.metrics_routes import metrics_bp
+from src.plans.plan_route import plans_bp
 from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 from src.Player.player_route import playerBp
@@ -31,6 +32,7 @@ app.register_blueprint(playerBp)
 app.register_blueprint(handshakes_bp)
 app.register_blueprint(gyms_bp)
 app.register_blueprint(licenses_bp)
+app.register_blueprint(plans_bp)
 app.app_context().push()
 
 

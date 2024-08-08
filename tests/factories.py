@@ -9,6 +9,7 @@ from src.Authentication.user_model import User
 from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
 from src.license.license_model import License
+from src.plans.plan_model import Plan
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
@@ -161,3 +162,14 @@ class LicenseFactory(factory.Factory):
     subscribe_date = factory.Faker("date_time")
     period = random.randrange(1, 12)
 
+
+class PlanFactory(factory.Factory):
+    """Creates fake license"""
+
+    class Meta:
+        model = Plan
+
+    plan_name = factory.Faker("name")
+    price = random.randrange(0, 100001)
+    period = random.randrange(1, 12)
+    description = factory.Faker("catch_phrase")
