@@ -7,7 +7,7 @@ from src.Authentication.user_model import User
 from src.common import status
 
 
-profile_Bp = Blueprint('profile', __name__)
+profile_Bp = Blueprint('profile', __name__, url_prefix='/api/v1')
 
 
 @profile_Bp.route("/profile", methods=["POST"])

@@ -6,8 +6,11 @@ from datetime import datetime
 
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
+from src.offer.offer_model import Offer
 from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
+from src.license.license_model import License
+from src.plans.plan_model import Plan
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
@@ -146,3 +149,40 @@ class GymFactory(factory.Factory):
     telephone = "016235658"
     logo = factory.Faker("url")
     address = fuzzy.FuzzyText()
+
+
+class LicenseFactory(factory.Factory):
+    """Creates fake license"""
+
+    class Meta:
+        model = License
+
+    gym_id = 18
+    plan_id = random.randrange(0, 12)
+    price = random.randrange(0, 100001)
+    subscribe_date = factory.Faker("date_time")
+    period = random.randrange(1, 12)
+
+
+class PlanFactory(factory.Factory):
+    """Creates fake plans"""
+
+    class Meta:
+        model = Plan
+
+    plan_name = factory.Faker("name")
+    price = random.randrange(0, 100001)
+    period = random.randrange(1, 12)
+    description = factory.Faker("catch_phrase")
+
+
+class OfferFactory(factory.Factory):
+    """Creates fake offer"""
+
+    class Meta:
+        model = Offer
+
+    offer_name = factory.Faker("name")
+    offer_percent = random.randrange(0, 100)
+    period = random.randrange(1, 12)
+    description = factory.Faker("catch_phrase")
