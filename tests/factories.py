@@ -6,6 +6,7 @@ from datetime import datetime
 
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
+from src.offer.offer_model import Offer
 from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
 from src.license.license_model import License
@@ -164,12 +165,24 @@ class LicenseFactory(factory.Factory):
 
 
 class PlanFactory(factory.Factory):
-    """Creates fake license"""
+    """Creates fake plans"""
 
     class Meta:
         model = Plan
 
     plan_name = factory.Faker("name")
     price = random.randrange(0, 100001)
+    period = random.randrange(1, 12)
+    description = factory.Faker("catch_phrase")
+
+
+class OfferFactory(factory.Factory):
+    """Creates fake offer"""
+
+    class Meta:
+        model = Offer
+
+    offer_name = factory.Faker("name")
+    offer_percent = random.randrange(0, 100)
     period = random.randrange(1, 12)
     description = factory.Faker("catch_phrase")
