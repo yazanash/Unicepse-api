@@ -42,7 +42,7 @@ def get_profile(account_id):
 
 @profile_Bp.route("/profile", methods=["GET"])
 @token_required
-def get_profile(current_user):
+def get_auth_profile(current_user):
     """this function will return user data"""
     profile = Profile.find(current_user.uid)
     if profile is None:
