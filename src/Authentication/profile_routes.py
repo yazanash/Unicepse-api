@@ -40,6 +40,17 @@ def get_profile(account_id):
     return make_response(jsonify(message), status.HTTP_200_OK)
 
 
+@profile_Bp.route("/profile", methods=["GET"])
+@token_required
+def get_profile(current_user):
+    """this function will return user data"""
+    profile = Profile.find(current_user.uid)
+    if profile is None:
+        abort(status.HTTP_404_NOT_FOUND, f"Profile with id [{current_user.uid}] could not be found.")
+    message = profile.serialize()
+    return make_response(jsonify(message), status.HTTP_200_OK)
+
+
 @profile_Bp.route("/profile", methods=["PUT"])
 @token_required
 def update_profile(current_user):
@@ -53,7 +64,7 @@ def update_profile(current_user):
     return make_response(jsonify(message), status.HTTP_200_OK)
 
 
-@profile_Bp.route("/profile", methods=["GET"])
+@profile_Bp.route("/profile/all", methods=["GET"])
 def get_profiles_list():
     """this function will return all users """
     profiles = Profile.all()

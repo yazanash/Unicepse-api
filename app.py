@@ -19,7 +19,11 @@ from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 from src.Player.player_route import playerBp
 from mail import mail
+import firebase_admin
+from firebase_admin import credentials, messaging
+
 app = Flask(__name__)
+
 
 load_dotenv()
 
@@ -56,20 +60,26 @@ def hello_app():
 push_service = FCMNotification(api_key=os.environ['SERVER_KEY'])
 
 
-@app.route('/send_notify', methods=['POST'])
-def send_notification():
-    data = request.json
-    registration_id = data.get('registration_id')
-    message_title = data.get('title')
-    message_body = data.get('body')
-
-    result = push_service.notify_single_device(
-        registration_id=registration_id,
-        message_title=message_title,
-        message_body=message_body
-    )
-
-    return jsonify(result)
+# @app.route('/api/v1/send_notify', methods=['POST'])
+# def send_notification():
+#     data = request.json
+#     # registration_id = data.get('registration_id')
+#     # message_title = data.get('title')
+#     # message_body = data.get('body')
+#     message = messaging.Message(
+#         notification=messaging.Notification(
+#             title=data.get('title'),
+#             body=data.get('body'),
+#         ),
+#         token=data.get('registration_id'),
+#     )
+#     # result = push_service.notify_single_device(
+#     #     registration_id=registration_id,
+#     #     message_title=message_title,
+#     #     message_body=message_body
+#     # )
+#     response = messaging.send(message)
+#     print('Successfully sent message:', response)
 
 
 if __name__ == "__main__":
