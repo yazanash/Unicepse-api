@@ -19,9 +19,6 @@ from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 from src.Player.player_route import playerBp
 from mail import mail
-import firebase_admin
-from firebase_admin import credentials, messaging
-
 app = Flask(__name__)
 
 
