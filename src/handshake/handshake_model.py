@@ -30,15 +30,13 @@ class HandShake(handshake_persistent_base.HandShakePersistentBase):
         self.uid = json["uid"]
         self.pid = json["pid"]
         self.gym_id = json["gym_id"]
-        self.created_at = json['created_at']
-        self.status = json['status']
 
     def deserialize_from_db(self, json):
         """should return this model from dict"""
         self.uid = json["uid"]
         self.pid = json["pid"]
         self.gym_id = json["gym_id"]
-        self.created_at =json['created_at']
+        self.created_at = json['created_at']
         self.status = json['status']
 
     @staticmethod
