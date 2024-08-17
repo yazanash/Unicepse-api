@@ -1,6 +1,7 @@
 import json
 import logging
 
+from bson import ObjectId
 from flask import jsonify
 
 from db import db
@@ -19,9 +20,8 @@ class GymPersistentBase:
         """
         logger.info("Creating Gym  %s", self.gym_name)
 
-        gyms = db.gyms
-        gyms.insert_one(self.serialize())
-
+        gyms = db.gyms.insert_one(self.serialize_to_db())
+        self.id = gyms.inserted_id
         logger.info("gym %s Created successfully", self.gym_name)
 
     def update(self):
@@ -49,7 +49,7 @@ class GymPersistentBase:
             for val in gyms:
                 if val is not None:
                     gym = cls.create_model()
-                    gym.deserialize(val)
+                    gym.deserialize_from_db(val)
                     data.append(gym)
         return data
 
@@ -66,9 +66,10 @@ class GymPersistentBase:
     def find(cls, gym_id):
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", gym_id)
-        gyms = db.gyms.find_one({'id': int(gym_id)})
+        obj_id = ObjectId(gym_id)
+        gyms = db.gyms.find_one({'_id': obj_id})
         if gyms is not None:
             gym = cls.create_model()
-            gym.deserialize(gyms)
+            gym.deserialize_from_db(gyms)
             return gym
         return None
