@@ -9,7 +9,7 @@ route = "/gyms"
 service = GymService()
 
 
-@gyms_bp.route(f"{route}/<int:id>", methods=["GET"])
+@gyms_bp.route(f"{route}/<id>", methods=["GET"])
 def read_gym(id):
     return service.read_gym_use_case(id)
 

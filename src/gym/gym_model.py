@@ -22,7 +22,18 @@ class Gym(gym_presistent_base.GymPersistentBase):
     def serialize(self):
         """should return json map for this model"""
         return {
-            'id': self.id,
+            'id': str(self.id),
+            'gym_name': self.gym_name,
+            'owner_name': self.owner_name,
+            'phone_number': self.phone_number,
+            'telephone': self.telephone,
+            'logo': self.logo,
+            'address': self.address
+        }
+
+    def serialize_to_db(self):
+        """should return json map for this model"""
+        return {
             'gym_name': self.gym_name,
             'owner_name': self.owner_name,
             'phone_number': self.phone_number,
@@ -33,7 +44,16 @@ class Gym(gym_presistent_base.GymPersistentBase):
 
     def deserialize(self, json):
         """should return this model from dict"""
-        self.id = json["id"]
+        self.gym_name = json["gym_name"]
+        self.owner_name = json["owner_name"]
+        self.phone_number = json["phone_number"]
+        self.telephone = json["telephone"]
+        self.logo = json["logo"]
+        self.address = json["address"]
+
+    def deserialize_from_db(self, json):
+        """should return this model from dict"""
+        self.id = json.get("_id")
         self.gym_name = json["gym_name"]
         self.owner_name = json["owner_name"]
         self.phone_number = json["phone_number"]

@@ -6,12 +6,17 @@ route = "/licenses"
 service = LicenseService()
 
 
-@licenses_bp.route(f"{route}/<lid>", methods=["GET"])
+@licenses_bp.route(f"{route}/get/<lid>", methods=["GET"])
 def read_license(lid):
     return service.read_license_use_case(lid)
 
 
-@licenses_bp.route(f"{route}/gym/<int:gym_id>", methods=["GET"])
+@licenses_bp.route(f"{route}/<product_key>", methods=["GET"])
+def read_license_by_product_key(product_key):
+    return service.read_license_by_product_key_use_case(product_key)
+
+
+@licenses_bp.route(f"{route}/gym/<gym_id>", methods=["GET"])
 def read_gym_licenses(gym_id):
     return service.read_gym_licenses_use_case(gym_id)
 

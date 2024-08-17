@@ -2,11 +2,6 @@ from marshmallow import Schema, fields, ValidationError
 
 
 class GymBaseSchema(Schema):
-    id = fields.Int(required=True, error_messages={
-        'required': 'gym id is required.',
-        'null': 'gym id cannot be null.',
-        'invalid': 'invalid gym id.'
-    })
     gym_name = fields.String(required=True, error_messages={
         'required': 'gym name is required.',
         'null': 'gym name cannot be null.',

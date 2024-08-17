@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 from src.license.license_model import License
 from src.license.license_validation import LicenseBaseSchema
 from src.common import status
+from src.plans.plan_model import Plan
 
 license_schema = LicenseBaseSchema()
 
@@ -37,7 +38,7 @@ class LicenseService:
             if gym_license is not None:
                 gym_license.deserialize_secret(data)
                 gym_license.update()
-                return make_response(jsonify({"result": "Created successfully", "message": f"{gym_license.gym_id}"}),
+                return make_response(jsonify({"result": "updated successfully", "message": f"{gym_license.gym_id}"}),
                                      status.HTTP_200_OK)
             return make_response(jsonify({"result": "Not Exists Exception", "message": "this record is not exists"}),
                                  status.HTTP_404_NOT_FOUND)
@@ -63,6 +64,26 @@ class LicenseService:
         if gym_license is not None:
             return make_response(jsonify(gym_license.serialize()),
                                  status.HTTP_200_OK)
+        return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
+                             status.HTTP_204_NO_CONTENT)
+
+    @staticmethod
+    def read_license_by_product_key_use_case(product_key):
+        """Reads license"""
+        gym_license = License.find_by_product_key(product_key)
+        if gym_license is not None:
+            plan = Plan.find(gym_license.plan_id)
+            if plan is not None:
+                obj = {
+                    'gym_id': gym_license.gym_id,
+                    'plan': plan.plan_name,
+                    'subscribe_date': gym_license.subscribe_date,
+                    'subscribe_end_date': gym_license.subscribe_end_date,
+                    'token': gym_license.token,
+                }
+                return make_response(jsonify(obj),status.HTTP_200_OK)
+            return make_response(jsonify({"result": "No content", "message": "cannot found any plans"}),
+                                 status.HTTP_204_NO_CONTENT)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
                              status.HTTP_204_NO_CONTENT)
 
