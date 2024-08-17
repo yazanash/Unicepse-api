@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 
@@ -18,7 +19,8 @@ class HandShakePersistentBase:
         Creates a handshakes in the database
         """
         logger.info("Creating Payment in subscription= %s", self.pid)
-
+        self.status = True
+        self.created_at = datetime.datetime.now()
         handshakes = db.handshakes
         handshakes.insert_one(self.serialize())
 
@@ -29,6 +31,8 @@ class HandShakePersistentBase:
         Updates a handshakes to the database
         """
         logger.info("Updating handshake: %s", self.pid)
+        self.status = True
+        self.created_at = datetime.datetime.now()
         handshakes = db.handshakes
         res = handshakes.update_one(
             {'uid': self.sid,'pid': self.pid, "gym_id": self.gym_id},
@@ -49,7 +53,7 @@ class HandShakePersistentBase:
             for val in handshakes:
                 if val is not None:
                     handshake = cls.create_model()
-                    handshake.deserialize(val)
+                    handshake.deserialize_from_db(val)
                     data.append(handshake)
         return data
 
@@ -69,6 +73,6 @@ class HandShakePersistentBase:
         handshakes = db.handshakes.find_one({'uid': uid, 'pid': pid, "gym_id": gym_id})
         if handshakes is not None:
             handshake = cls.create_model()
-            handshake.deserialize(handshakes)
+            handshake.deserialize_from_db(handshakes)
             return handshake
         return None
