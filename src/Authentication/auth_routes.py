@@ -41,8 +41,9 @@ def verify_otp():
             if exist_user is None:
                 user = User()
                 user.deserialize(data)
-                token = user.generate_token()
                 user.create()
+                token = user.generate_token()
+                user.update()
                 User.delete_from_otp((data['email']))
                 return make_response(jsonify({"message": message, "token": token}), status.HTTP_201_CREATED)
             elif exist_user is not None:

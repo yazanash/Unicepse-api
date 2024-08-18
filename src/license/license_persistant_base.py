@@ -23,12 +23,17 @@ class LicensePersistentBase:
         """
         logger.info("Creating license in subscription= %s", self.gym_id)
         print("creation process")
-        self.generate_token()
         self.generate_product_key()
-        print(self.product_key)
         self.subscribe_end_date = self.subscribe_date + relativedelta(months=self.period)
-        licenses = db.licenses.insert_one(self.serialize_to_db())
+        licenses = db.licenses.insert_one(self.serialize_to_db_without_token())
         self._id = licenses.inserted_id
+        self.generate_token()
+        licenses = db.licenses
+        res = licenses.update_one(
+            {'_id': self._id},
+            {'$set': self.serialize_to_db()}
+        )
+
         logger.info("license %s Created successfully", self.gym_id)
 
     def update(self):
@@ -52,7 +57,7 @@ class LicensePersistentBase:
     def generate_token(self):
         """generate token key for users"""
         token = jwt.encode(payload={
-            'public_id': str(self.gym_id),
+            'public_id': str(self._id),
             'exp': datetime.utcnow() + timedelta(days=30 * self.period)
         }, key=os.environ['SECRET_KEY'], algorithm="HS256")
 

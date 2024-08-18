@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from src.license.license_service import LicenseService
-
+from src.license.license_middleware import token_verification
 licenses_bp = Blueprint("License", __name__, url_prefix='/api/v1')
 route = "/licenses"
 service = LicenseService()
@@ -9,6 +9,12 @@ service = LicenseService()
 @licenses_bp.route(f"{route}/get/<lid>", methods=["GET"])
 def read_license(lid):
     return service.read_license_use_case(lid)
+
+
+@licenses_bp.route(f"{route}/verify", methods=["GET"])
+@token_verification
+def verify_license(current_license):
+    return service.verify_license_use_case(current_license)
 
 
 @licenses_bp.route(f"{route}/<product_key>", methods=["GET"])

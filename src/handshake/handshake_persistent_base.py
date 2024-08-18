@@ -47,7 +47,7 @@ class HandShakePersistentBase:
     def all(cls, uid):
         """Returns all the records in the database"""
         logger.info("Processing all Player-handshakes records")
-        handshakes = db.handshakes.find({'uid': int(uid)})
+        handshakes = db.handshakes.find({'uid': str(uid)})
         data = []
         if handshakes is not None:
             for val in handshakes:

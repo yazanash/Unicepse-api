@@ -1,5 +1,6 @@
 from flask import make_response, jsonify
 
+from src.handshake.handshake_model import HandShake
 from src.metrics.metrics_validator import validate_metric
 from src.metrics.metrics_model import Metric
 from src.common import status
@@ -27,12 +28,18 @@ class MetricsService:
                                  status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def read_metrics_use_case(gym_id, pid):
+    def read_metrics_use_case(current_user):
         """Reads all metrics for player"""
-        metrics_list = Metric.all(gym_id, pid)
-        if len(metrics_list) > 0:
-            metrics_dict = [metric.serialize() for metric in metrics_list]
-            return make_response(jsonify(metrics_dict),
+        user_handshake_data = HandShake.all(current_user.uid)
+        print(current_user.uid)
+        if len(user_handshake_data) > 0:
+            data = {}
+            for handshake in user_handshake_data:
+                metrics_list = Metric.all(handshake.gym_id, handshake.pid)
+                if len(metrics_list) > 0:
+                    for metric in metrics_list:
+                        data.update(metric.serialize())
+            return make_response(jsonify(data),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any metrics"}),
                              status.HTTP_204_NO_CONTENT)
