@@ -7,12 +7,12 @@ class HandShakeBaseSchema(Schema):
         'null': 'player cannot be null.',
         'invalid': 'invalid player id.'
     })
-    uid = fields.Integer(required=True, error_messages={
+    uid = fields.String(required=True, error_messages={
         'required': 'user id is required.',
         'null': 'user id cannot be null.',
         'invalid': 'invalid user id.'
     })
-    gym_id = fields.Integer(required=True, error_messages={
+    gym_id = fields.String(required=True, error_messages={
         'required': 'gym id is required.',
         'null': 'gym id cannot be null.',
         'invalid': 'invalid gym id.'

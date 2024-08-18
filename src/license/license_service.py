@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from bson import ObjectId
 from flask import make_response, jsonify
 from marshmallow import ValidationError
@@ -66,6 +68,19 @@ class LicenseService:
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
                              status.HTTP_204_NO_CONTENT)
+
+    @staticmethod
+    def verify_license_use_case(current_license):
+        """Reads license"""
+        gym_license = License.find(current_license._id)
+        if gym_license is not None:
+            if gym_license.subscribe_end_date > datetime.now():
+                return make_response(jsonify({"result": "Verified ", "message": "verified successfully"}),
+                                     status.HTTP_202_ACCEPTED)
+            return make_response(jsonify({"result": "Expired", "message": "license is expired"}),
+                                 status.HTTP_406_NOT_ACCEPTABLE)
+        return make_response(jsonify({"result": "No License", "message": "license is not exist"}),
+                             status.HTTP_404_NOT_FOUND)
 
     @staticmethod
     def read_license_by_product_key_use_case(product_key):

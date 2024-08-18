@@ -4,6 +4,7 @@ from .subscription_validator import validate_subscription
 from .subscription_model import Subscription
 from src.common.errors import *
 from src.common import status
+from ..payment.payment_model import Payment
 
 
 class SubscriptionService:
@@ -30,7 +31,15 @@ class SubscriptionService:
         """Reads All Subscription-subscription for player"""
         subs_list = Subscription.all(gym_id, pid)
         if len(subs_list) > 0:
-            subs_dict = [subs.serialize() for subs in subs_list]
+            subs_dict = {}
+            for subs in subs_list:
+                sub_dict = {}
+                sub_dict.update(subs.serialize())
+                payment_list = Payment.all(gym_id, pid, subs.id)
+                print(payment_list)
+                pay_dict = [payment.serialize() for payment in payment_list]
+                sub_dict.update({"payments": pay_dict})
+                subs_dict.update(sub_dict)
             return make_response(jsonify(subs_dict),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any transactions"}),
