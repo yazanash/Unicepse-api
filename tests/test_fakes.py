@@ -20,7 +20,7 @@ class TestFakes(unittest.TestCase):
     #  T E S T   C A S E S
     ######################################################################
     def test_fake_training(self):
-        """It should make a fake Training"""
+        """It should make a fake routine"""
         training = fake.TrainingFactory()
         logger.info("Testing fake training!")
         self.assertIsNotNone(training.id, f"training.id: {training.id}")
@@ -28,7 +28,7 @@ class TestFakes(unittest.TestCase):
         self.assertIsNotNone(training.image_url, f"training.images: {training.image_url}")
 
     def test_fake_training_program(self):
-        """It should make a fake Training program"""
+        """It should make a fake routine program"""
         training_prog = fake.TrainingProgFactory()
         logger.info("Testing fake training program")
         self.assertIsNotNone(training_prog.id, f"trainingProgram.id: {training_prog.id}")

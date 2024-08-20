@@ -1,7 +1,7 @@
 import json
 import unittest
 from db import db
-from src.Training.training import Routine
+from src.routine.routine_model import Routine
 
 test_gym_id = 18
 dt_node = "routines"
