@@ -3,9 +3,9 @@ src/Authentication/__pycache__/
 src/common/__pycache__/
 src/subscription/__pycache__/
 src/Player/__pycache__/
-src/Training/models/__pycache__/
-src/Training/routes/__pycache__/
-src/Training/service/__pycache__/
+src/routine/models/__pycache__/
+src/routine/routes/__pycache__/
+src/routine/service/__pycache__/
 tests/__pycache__/
 .coverage
 key.json

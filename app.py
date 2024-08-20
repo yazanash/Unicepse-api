@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from werkzeug.security import check_password_hash
 from pyfcm import FCMNotification
 
-from src.Training.training_route import trainingBlueprint
+from src.routine.routine_route import routineBlueprint
 from src.Authentication.auth_routes import auth_Bp
 from src.Authentication.profile_routes import profile_Bp
 from src.gym.gym_routes import gyms_bp
@@ -24,7 +24,7 @@ app = Flask(__name__)
 
 load_dotenv()
 
-app.register_blueprint(trainingBlueprint)
+app.register_blueprint(routineBlueprint)
 app.register_blueprint(auth_Bp)
 app.register_blueprint(profile_Bp)
 app.register_blueprint(metrics_bp)
