@@ -6,11 +6,13 @@ from datetime import datetime
 
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
+from src.attedence.attendance_model import Attendance
 from src.offer.offer_model import Offer
 from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
 from src.license.license_model import License
 from src.plans.plan_model import Plan
+from src.routine.routine_model import Routine
 from src.subscription.subscription_model import Subscription
 from src.payment.payment_model import Payment
 from src.Player.player_model import Player
@@ -186,3 +188,42 @@ class OfferFactory(factory.Factory):
     offer_percent = random.randrange(0, 100)
     period = random.randrange(1, 12)
     description = factory.Faker("catch_phrase")
+
+
+class AttendanceFactory(factory.Factory):
+    """Creates fake attendance """
+
+    class Meta:
+        model = Attendance
+
+    aid = random.randrange(0, 100)
+    date = factory.Faker("date_time")
+    login_time = factory.Faker("date_time")
+    logout_time = factory.Faker("date_time")
+    pid = 123456789
+    sid = random.randrange(0, 100)
+    gym_id = 18
+
+
+class RoutineFactory(factory.Factory):
+    """Creates fake attendance """
+
+    class Meta:
+        model = Routine
+
+    rid = random.randrange(0, 100)
+    pid = 123456789
+    gym_id = 18
+    routine_no = factory.Faker("catch_phrase")
+    routine_date = login_time = factory.Faker("date_time")
+    days_group_map = [{random.randrange(1, 6): factory.Faker("catch_phrase")} for n in range(5)]
+    routine_items = [
+        {
+            "id": 118,
+            "ExerciseName":  factory.Faker("catch_phrase"),
+            "ExerciseImage": random.randrange(1, 5),
+            "Muscle_Group": random.randrange(1, 8),
+            "orders": factory.Faker("catch_phrase"),
+            "notes": factory.Faker("catch_phrase"),
+            "itemOrder": 1
+        } for i in range(8)]
