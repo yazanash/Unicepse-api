@@ -31,7 +31,6 @@ class MetricsService:
     def read_metrics_use_case(current_user):
         """Reads all metrics for player"""
         user_handshake_data = HandShake.all(current_user.uid)
-        print(current_user.uid)
         if len(user_handshake_data) > 0:
             data = {}
             for handshake in user_handshake_data:
@@ -39,9 +38,12 @@ class MetricsService:
                 if len(metrics_list) > 0:
                     for metric in metrics_list:
                         data.update(metric.serialize())
+                else:
+                    return make_response(jsonify({"result": "No content", "message": "cannot found any metrics"}),
+                                         status.HTTP_204_NO_CONTENT)
             return make_response(jsonify(data),
                                  status.HTTP_200_OK)
-        return make_response(jsonify({"result": "No content", "message": "cannot found any metrics"}),
+        return make_response(jsonify({"result": "No content", "message": "cannot found any handshakes"}),
                              status.HTTP_204_NO_CONTENT)
 
     @staticmethod
@@ -72,5 +74,3 @@ class MetricsService:
             return make_response(jsonify({"result": "Validation Error",
                                           "message": "required data is missing "}),
                                  status.HTTP_400_BAD_REQUEST)
-
-
