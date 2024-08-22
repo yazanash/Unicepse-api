@@ -66,7 +66,7 @@ class TestAttendance(unittest.TestCase):
         attendance = AttendanceFactory()
         attendance.create()
         temp_attendance = Attendance.find(attendance.aid, attendance.gym_id)
-        self.assertEqual(temp_attendance.gym_name, attendance.gym_name)
+        self.assertEqual(temp_attendance.date, attendance.date)
 
     def test_update_attendance(self):
         """It should create gym"""
@@ -76,7 +76,7 @@ class TestAttendance(unittest.TestCase):
         attendance.date = temp_date_name
         attendance.update()
         temp_attendance = Attendance.find(attendance.aid, attendance.gym_id)
-        self.assertEqual(temp_attendance.date, temp_date_name)
+        self.assertEqual(temp_attendance.date.strftime("%d/%m/%Y"), temp_date_name.strftime("%d/%m/%Y"))
 
     def test_read_attendances(self):
         """It should read all subscriptions"""

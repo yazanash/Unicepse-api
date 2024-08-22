@@ -31,10 +31,9 @@ class AttendanceService:
     def update_attendance_use_case(json):
         """update attendance"""
         try:
-            data = attendance_schema.load(json)
-            if Attendance.find(data['aid'], data["gym_id"]) is not None:
+            if Attendance.find(json['aid'], json["gym_id"]) is not None:
                 attendance = Attendance.create_model()
-                attendance.deserialize(data)
+                attendance.deserialize(json)
                 attendance.update()
                 return make_response(jsonify({"result": "Updated successfully", "message": f"{attendance.id}"}),
                                      status.HTTP_200_OK)

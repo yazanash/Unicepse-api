@@ -196,13 +196,13 @@ class AttendanceFactory(factory.Factory):
     class Meta:
         model = Attendance
 
-    aid = random.randrange(0, 100)
-    date = factory.Faker("date_time")
-    login_time = factory.Faker("date_time")
-    logout_time = factory.Faker("date_time")
+    aid = random.randrange(0, 10000)
+    date = datetime.now().strftime("%d/%m/%Y")
+    login_time = datetime.now().strftime("%MM:%HH")
+    logout_time = datetime.now().strftime("%MM:%HH")
     pid = 123456789
     sid = random.randrange(0, 100)
-    gym_id = 18
+    gym_id = "18"
 
 
 class RoutineFactory(factory.Factory):

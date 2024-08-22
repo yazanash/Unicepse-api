@@ -23,7 +23,7 @@ def create_player():
     return response
 
 
-@playerBp.route("/player/<int:gym_id>/<int:pid>", methods=["GET"])
+@playerBp.route("/player/<gym_id>/<pid>", methods=["GET"])
 def read_player(gym_id, pid):
     """
     get handler to retrieve player info

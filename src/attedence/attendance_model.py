@@ -11,8 +11,6 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
                  pid=None,
                  sid=None,
                  gym_id=None,
-                 taken_key=None,
-                 is_logged=None,
                  ):
         self.aid = aid
         self._id = _id
@@ -22,8 +20,6 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         self.pid = pid
         self.sid = sid
         self.gym_id = gym_id
-        self.taken_key = taken_key
-        self.is_logged = is_logged
 
     def serialize(self):
         """should return json map for this model"""
@@ -36,8 +32,7 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
             'pid': self.pid,
             'sid': self.sid,
             'gym_id': self.gym_id,
-            'taken_key': self.taken_key,
-            'is_logged': self.is_logged,
+
         }
 
     def serialize_to_db(self):
@@ -50,8 +45,7 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
             'pid': self.pid,
             'sid': self.sid,
             'gym_id': self.gym_id,
-            'taken_key': self.taken_key,
-            'is_logged': self.is_logged,
+
         }
 
     def deserialize(self, json):
@@ -63,8 +57,6 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         self.pid = json["pid"]
         self.sid = json["sid"]
         self.gym_id = json["gym_id"]
-        self.taken_key = json["taken_key"]
-        self.is_logged = json["is_logged"]
 
     def deserialize_from_db(self, json):
         """should return this model from dict"""
@@ -76,8 +68,6 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         self.pid = json["pid"]
         self.sid = json["sid"]
         self.gym_id = json["gym_id"]
-        self.taken_key = json["taken_key"]
-        self.is_logged = json["is_logged"]
 
     @staticmethod
     def create_model():

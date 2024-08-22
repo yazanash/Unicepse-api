@@ -8,7 +8,7 @@ route = "/handshake"
 service = HandShakeService()
 
 
-@handshakes_bp.route(f"{route}/<int:uid>", methods=["GET"])
+@handshakes_bp.route(f"{route}/<uid>", methods=["GET"])
 def read_hand_shakes(uid):
     return service.read_hand_shakes_use_case(uid)
 

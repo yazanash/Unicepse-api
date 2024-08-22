@@ -36,7 +36,7 @@ class AttendancePersistentBase:
     def all(cls, pid, gym_id):
         """Returns all the records in the database"""
         logger.info("Processing all gyms records")
-        attendances = db.attendances.find({"aid": pid, "gym_id": gym_id})
+        attendances = db.attendances.find({"pid": pid, "gym_id": gym_id})
         data = []
         if attendances is not None:
             for val in attendances:
