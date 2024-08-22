@@ -6,12 +6,12 @@ route = "/subscription"
 service = SubscriptionService()
 
 
-@subscriptionBp.route(f"{route}/<int:gym_id>/<int:pid>", methods=["GET"])
+@subscriptionBp.route(f"{route}/<gym_id>/<pid>", methods=["GET"])
 def read_all_transactions(gym_id, pid):
     return service.read_subscription_use_case(gym_id, pid)
 
 
-@subscriptionBp.route(f"{route}/<int:gym_id>/<int:pid>/<int:id>", methods=["GET"])
+@subscriptionBp.route(f"{route}/<gym_id>/<pid>/<id>", methods=["GET"])
 def read_single_transactions(gym_id, pid, id):
     return service.read_single_subscription_use_case(gym_id, pid,id)
 

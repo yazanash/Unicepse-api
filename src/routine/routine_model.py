@@ -29,6 +29,7 @@ class Routine (RoutineServiceBase):
             logger.info("deserialize player routine")
             self.rid = json["rid"]
             self.pid = json["pid"]
+            self.gym_id = json["gym_id"]
             self.routine_no = json["routine_no"],
             self.routine_date = json["routine_date"]
             self.days_group_map = json["days_group_map"]
@@ -46,6 +47,7 @@ class Routine (RoutineServiceBase):
             mapping = {
                 "rid": self.rid,
                 "pid": self.pid,
+                "gym_id": self.gym_id,
                 "routine_no": self.routine_no,
                 "routine_date": self.routine_date,
                 "days_group_map": self.days_group_map,

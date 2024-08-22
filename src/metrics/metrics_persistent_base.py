@@ -28,7 +28,7 @@ class MetricPersistentBase:
         """Returns all Records of Player Metrics"""
         logger.info("Fetching all player metric Records")
 
-        metrics_ref = db.metrics.find({"pid": int(pid), "gym_id": int(gym_id)})
+        metrics_ref = db.metrics.find({"pid": pid, "gym_id": gym_id})
         res = []
 
         for i in metrics_ref:

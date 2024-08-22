@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify
 from werkzeug.security import check_password_hash
 from pyfcm import FCMNotification
 
+from src.attedence.attendance_routes import attendances_bp
 from src.routine.routine_route import routineBlueprint
 from src.Authentication.auth_routes import auth_Bp
 from src.Authentication.profile_routes import profile_Bp
@@ -36,6 +37,7 @@ app.register_blueprint(gyms_bp)
 app.register_blueprint(licenses_bp)
 app.register_blueprint(plans_bp)
 app.register_blueprint(offers_bp)
+app.register_blueprint(attendances_bp)
 app.app_context().push()
 
 

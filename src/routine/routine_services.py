@@ -10,23 +10,23 @@ class RoutineService:
     @staticmethod
     def create_routine_use_case(json):
         """Creates Subscription-subscription for player"""
-        try:
-            if not Routine.check_if_exist(json['gym_id'], json['pid'], json['rid']):
-                routine = Routine.create_model()
-                routine.deserialize(json)
-                routine.create()
-                return make_response(jsonify({"result": "Created successfully", "message": f"{routine.rid}"}),
-                                     status.HTTP_201_CREATED)
-            return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),
-                                 status.HTTP_409_CONFLICT)
-        except DataValidationError:
-            return make_response(jsonify({"result": "Validation Error", "message": "required data is missing "}),
-                                 status.HTTP_400_BAD_REQUEST)
+        # try:
+        if not Routine.check_if_exist(json['gym_id'], json['pid'], json['rid']):
+            routine = Routine.create_model()
+            routine.deserialize(json)
+            routine.create()
+            return make_response(jsonify({"result": "Created successfully", "message": f"{routine.rid}"}),
+                                 status.HTTP_201_CREATED)
+        return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),
+                             status.HTTP_409_CONFLICT)
+        # except DataValidationError:
+        #     return make_response(jsonify({"result": "Validation Error", "message": "required data is missing "}),
+        #                          status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def read_routine_use_case(gym_id, pid):
         """Reads All Subscription-subscription for player"""
-        routine = Routine.find(gym_id, pid).sort('routine_date', -1).limit(1).next()
+        routine = Routine.find(gym_id, pid)
         if routine is not None:
             return make_response(jsonify(routine.serialize()),
                                  status.HTTP_200_OK)
