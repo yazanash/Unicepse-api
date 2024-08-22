@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 
+from src.Authentication.auth_service import token_required
 from src.gym.gym_service import GymService
 from src.handshake.handshake_service import HandShakeService
 from src.handshake.hanshake_validation import HandShakeBaseSchema
@@ -17,6 +18,12 @@ def read_gym(id):
 @gyms_bp.route(f"{route}", methods=["GET"])
 def read_gyms():
     return service.read_gyms_use_case()
+
+
+@gyms_bp.route(f"{route}", methods=["GET"])
+@token_required
+def read_gyms(current_user):
+    return service.read_user_gyms_use_case(current_user)
 
 
 @gyms_bp.route(route, methods=["POST"])
