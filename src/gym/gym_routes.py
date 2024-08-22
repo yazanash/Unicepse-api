@@ -22,7 +22,7 @@ def read_gyms():
 
 @gyms_bp.route(f"{route}", methods=["GET"])
 @token_required
-def read_gyms(current_user):
+def read_user_gyms(current_user):
     return service.read_user_gyms_use_case(current_user)
 
 
