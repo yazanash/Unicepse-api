@@ -9,7 +9,7 @@ service = AttendanceService()
 
 @attendances_bp.route(f"{route}/<gym_id>/<pid>", methods=["GET"])
 def read_attendances(gym_id, pid):
-    return service.read_attendances_use_case(gym_id, pid)
+    return service.read_attendances_use_case(pid, gym_id)
 
 
 @attendances_bp.route(route, methods=["POST"])

@@ -2,7 +2,7 @@ from marshmallow import Schema, fields, ValidationError
 
 
 class HandShakeBaseSchema(Schema):
-    pid = fields.Integer(required=True, error_messages={
+    pid = fields.String(required=True, error_messages={
         'required': 'player id is required.',
         'null': 'player cannot be null.',
         'invalid': 'invalid player id.'

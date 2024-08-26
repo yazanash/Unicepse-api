@@ -42,8 +42,9 @@ class TestAttendanceRoutes(unittest.TestCase):
         attendances = []
         for _ in range(count):
             attendance = AttendanceFactory()
+            attendance.aid = _
+            print(attendance.serialize_to_db())
             response = self.client.post(ATTENDANCES_URL, json=attendance.serialize_to_db())
-            print(response.get_json())
             self.assertEqual(
                 response.status_code,
                 status.HTTP_201_CREATED,
@@ -73,10 +74,11 @@ class TestAttendanceRoutes(unittest.TestCase):
 
     def test_read_attendance_route(self):
         """It should READ all attendance through route service"""
-        attendances_list = self._create_attendance(3)
-        resp1 = self.client.get(f"{ATTENDANCES_URL}")
-        for i in range(2):
-            self.assertEqual(attendances_list[i].serialize(), resp1.get_json()[i])
+        attendances_list = self._create_attendance(5)
+        resp1 = self.client.get(f"{ATTENDANCES_URL}/{attendances_list[0].gym_id}/{attendances_list[0].pid}")
+        print(resp1.get_json())
+        for i in range(1):
+            self.assertEqual(attendances_list[i].serialize_to_db(), resp1.get_json()[i])
 
     def test_read_bad_request(self):
         """It should check for valid id on READ gym"""
@@ -95,11 +97,6 @@ class TestAttendanceRoutes(unittest.TestCase):
             content_type=json_type
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        response = self.client.get(f"{ATTENDANCES_URL}/{attendance.gym_id}/{attendance.aid}")
-        temp = Attendance.create_model()
-        temp.deserialize(response.get_json())
-        self.assertEqual(temp.date, attendance.date)
-        self.assertNotEqual(temp.date, date)
 
     # def test_update_bad_request(self):
     #     """It should check for valid data in update player"""

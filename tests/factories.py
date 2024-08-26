@@ -198,10 +198,10 @@ class AttendanceFactory(factory.Factory):
 
     aid = random.randrange(0, 10000)
     date = datetime.now().strftime("%d/%m/%Y")
-    login_time = datetime.now().strftime("%MM:%HH")
-    logout_time = datetime.now().strftime("%MM:%HH")
-    pid = 123456789
-    sid = random.randrange(0, 100)
+    login_time = datetime.now().strftime("%M:%H")
+    logout_time = datetime.now().strftime("%M:%H")
+    pid = "123456789"
+    sid = "123456789454"
     gym_id = "18"
 
 
