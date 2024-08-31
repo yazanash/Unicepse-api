@@ -30,7 +30,7 @@ class Routine (RoutineServiceBase):
             self.rid = json["rid"]
             self.pid = json["pid"]
             self.gym_id = json["gym_id"]
-            self.routine_no = json["routine_no"],
+            self.routine_no = json["routine_no"]
             self.routine_date = json["routine_date"]
             self.days_group_map = json["days_group_map"]
             self.routine_items = json["routine_items"]

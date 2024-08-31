@@ -13,7 +13,7 @@ class MetricsService:
     def create_metric_use_case(json):
         """Creates metric for player"""
         try:
-            validate_metric(json)
+            # validate_metric(json)
             if not Metric.check_if_exist(json['gym_id'], json['pid'], json['id']):
                 metric = Metric.create_model()
                 metric.deserialize(json)

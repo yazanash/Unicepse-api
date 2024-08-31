@@ -49,6 +49,7 @@ class PlayerPersistentBase:
         try:
             data = db.players
             player_data = data.find_one({"pid": by_uid, "gym_id": gym_id})
+            print(f"player_data {player_data}")
             if player_data is not None:
                 player = cls.create_model()
                 player.deserialize(player_data)
@@ -62,8 +63,10 @@ class PlayerPersistentBase:
     def check_if_exist(cls, gym_id, by_uid):
         """check if record is exist in database"""
         logger.info("check if data exist")
+        print("if exist")
         data = db.players
         player_data = data.find_one({"pid": by_uid, "gym_id": gym_id})
+        print(player_data)
         if player_data is not None:
             return True
         return False

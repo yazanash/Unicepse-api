@@ -10,7 +10,7 @@ route = "/routines"
 service = RoutineService()
 
 
-@routineBlueprint.route(f"{route}/<int:gym_id>/<int:pid>", methods=["GET"])
+@routineBlueprint.route(f"{route}/<gym_id>/<pid>", methods=["GET"])
 def read_routine(gym_id, pid):
     return service.read_routine_use_case(gym_id, pid)
 

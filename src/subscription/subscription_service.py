@@ -13,7 +13,7 @@ class SubscriptionService:
     def create_subscription_use_case(json):
         """Creates Subscription-subscription for player"""
         try:
-            validate_subscription(json)
+            # validate_subscription(json)
             if not Subscription.check_if_exist(json['gym_id'], json['pid'], json['id']):
                 subs = Subscription.create_model()
                 subs.deserialize(json)

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.attedence import attendance_persistant_base
 
 
@@ -26,9 +28,9 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         return {
             'id': str(self._id),
             'aid': self.aid,
-            'date': self.date,
-            'login_time': self.login_time,
-            'logout_time': self.logout_time,
+            'date': self.date.strftime("%d/%m/%Y"),
+            'login_time': self.login_time.strftime("%M:%H"),
+            'logout_time': self.logout_time.strftime("%M:%H"),
             'pid': self.pid,
             'sid': self.sid,
             'gym_id': self.gym_id,
@@ -51,9 +53,9 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
     def deserialize(self, json):
         """should return this model from dict"""
         self.aid = json["aid"]
-        self.date = json["date"]
-        self.login_time = json["login_time"]
-        self.logout_time = json["logout_time"]
+        self.date = datetime.strptime(json['date'], "%d/%m/%Y")
+        self.login_time = datetime.strptime(json['login_time'], "%d/%m/%Y")
+        self.logout_time = datetime.strptime(json['logout_time'], "%d/%m/%Y")
         self.pid = json["pid"]
         self.sid = json["sid"]
         self.gym_id = json["gym_id"]
@@ -62,9 +64,9 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         """should return this model from dict"""
         self._id = json.get("_id")
         self.aid = json["aid"]
-        self.date = json["date"]
-        self.login_time = json["login_time"]
-        self.logout_time = json["logout_time"]
+        self.date = datetime.strptime(json['date'], "%d/%m/%Y")
+        self.login_time = datetime.strptime(json['login_time'], "%d/%m/%Y")
+        self.logout_time = datetime.strptime(json['logout_time'], "%d/%m/%Y")
         self.pid = json["pid"]
         self.sid = json["sid"]
         self.gym_id = json["gym_id"]

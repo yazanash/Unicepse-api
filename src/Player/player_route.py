@@ -34,7 +34,7 @@ def read_player(gym_id, pid):
         if gym_id is not None and pid is not None:
             player = player_service.read_player_usecase(gym_id, pid)
             if type(player) is int:
-                return {}, player
+                return make_response(jsonify({"addd": "asdds"}), player)
             return make_response(player.serialize(), status.HTTP_200_OK)
         else:
             return make_response(jsonify({"Bad request": "required data is missing "}), status.HTTP_400_BAD_REQUEST)

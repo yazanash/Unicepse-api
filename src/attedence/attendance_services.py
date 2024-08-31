@@ -35,7 +35,7 @@ class AttendanceService:
                 attendance = Attendance.create_model()
                 attendance.deserialize(json)
                 attendance.update()
-                return make_response(jsonify({"result": "Updated successfully", "message": f"{attendance.id}"}),
+                return make_response(jsonify({"result": "Updated successfully", "message": f"{attendance._id}"}),
                                      status.HTTP_200_OK)
             return make_response(jsonify({"result": "Not found Exception", "message": "this record is not exists"}),
                                  status.HTTP_404_NOT_FOUND)

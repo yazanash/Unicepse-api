@@ -12,7 +12,7 @@ class PaymentService:
     def create_payment_use_case(json):
         """Creates payment for player subscription"""
         try:
-            validate_payment(json)
+            # validate_payment(json)
             if not Payment.check_if_exist(json['gym_id'], json['pid'], json['sid'], json['id']):
                 pay = Payment.create_model()
                 pay.deserialize(json)
