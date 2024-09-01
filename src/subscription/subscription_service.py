@@ -30,6 +30,7 @@ class SubscriptionService:
     def read_subscription_use_case(gym_id, pid):
         """Reads All Subscription-subscription for player"""
         subs_list = Subscription.all(gym_id, pid)
+        print(len(subs_list))
         if len(subs_list) > 0:
             subs_dict = {}
             for subs in subs_list:

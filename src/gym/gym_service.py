@@ -76,13 +76,14 @@ class GymService:
         gyms = Gym.all()
         handshakes = HandShake.all(current_user.uid)
         if len(gyms) > 0:
-            gyms_dict = {}
+            gyms_dict = []
             for gym in gyms:
                 data = gym.serialize()
                 handshake = HandShake.find_single(current_user.uid, gym.id)
                 if handshake is not None:
                     data.update({"pid": handshake.pid, "created_at": handshake.created_at})
-                gyms_dict.update(data)
+                print(data)
+                gyms_dict.append(data)
             return make_response(jsonify(gyms_dict),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
