@@ -78,10 +78,10 @@ class HandShakePersistentBase:
         return None
 
     @classmethod
-    def find_single(cls, gym_id, uid):
+    def find_single(cls, uid, gym_id):
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", uid)
-        handshakes = db.handshakes.find_one({'uid': uid, "gym_id": gym_id})
+        handshakes = db.handshakes.find_one({'uid': str(uid), "gym_id": str(gym_id)})
         if handshakes is not None:
             handshake = cls.create_model()
             handshake.deserialize_from_db(handshakes)

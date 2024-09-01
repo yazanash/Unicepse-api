@@ -60,7 +60,7 @@ class PaymentPersistentBase:
     def all(cls, gym_id, pid, sid):
         """Returns all the records in the database"""
         logger.info("Processing all Player-transaction records")
-        payments = db.payments.find({'sid': int(sid), 'pid': int(pid), "gym_id": int(gym_id)})
+        payments = db.payments.find({'sid': sid, 'pid': pid, "gym_id": gym_id})
         data = []
         if payments is not None:
             for val in payments:
