@@ -20,7 +20,7 @@ def read_gyms():
     return service.read_gyms_use_case()
 
 
-@gyms_bp.route(f"{route}", methods=["GET"])
+@gyms_bp.route(f"{route}/get", methods=["GET"])
 @token_required
 def read_user_gyms(current_user):
     return service.read_user_gyms_use_case(current_user)
