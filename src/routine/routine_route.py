@@ -17,7 +17,6 @@ def read_routine(gym_id, pid):
 
 @routineBlueprint.route(f"{route}/images/<int:group_id>/<file_name>")
 def get_image(group_id, file_name):
-    print(f"image got {group_id} / {file_name} ")
     return send_from_directory(f'assets/{group_id}', file_name)
 
 
