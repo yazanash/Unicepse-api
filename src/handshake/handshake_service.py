@@ -18,7 +18,7 @@ class HandShakeService:
         """Creates payment for player subscription"""
         try:
             data = hand_shake_schema.load(json)
-            if not HandShake.check_if_exist(data['gym_id'], data['pid'], data['uid']):
+            if not HandShake.check_if_exist(data['gym_id'], data['uid']):
                 handshake = HandShake.create_model()
                 handshake.deserialize(data)
                 handshake.create()

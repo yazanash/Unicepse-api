@@ -33,12 +33,12 @@ class GymService:
                                  status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def update_gym_use_case(json):
+    def update_gym_use_case(id, json):
         """update Gyms"""
         try:
             data = gym_schema.load(json)
-            if Gym.find(data['id']) is not None:
-                gym = Gym.create_model()
+            gym = Gym.find(id)
+            if gym is not None:
                 gym.deserialize(data)
                 gym.update()
                 return make_response(jsonify({"result": "Updated successfully", "message": f"{gym.id}"}),

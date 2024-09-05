@@ -31,7 +31,7 @@ def create_gym():
     return service.create_gym_use_case(request.get_json())
 
 
-@gyms_bp.route(route, methods=["PUT"])
-def update_gym():
-    return service.update_gym_use_case(request.get_json())
+@gyms_bp.route(f"{route}/<id>", methods=["PUT"])
+def update_gym(id):
+    return service.update_gym_use_case(id, request.get_json())
 
