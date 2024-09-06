@@ -6,8 +6,8 @@ from src.common.utils import logger
 
 def validate_subscription(json: dict):
     try:
-        assert (type(json["id"]) is int)
-        assert (type(json["pid"]) is int)
+        assert (type(json["id"]) is str)
+        assert (type(json["pid"]) is str)
         assert (type(json['sport_name']) is str)
         assert (type(json['trainer_name']) is str)
         # assert (type(json['price']) is int)
