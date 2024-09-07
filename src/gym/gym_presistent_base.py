@@ -31,7 +31,7 @@ class GymPersistentBase:
         logger.info("Updating gym: %s", self.gym_name)
         gyms = db.gyms
         res = gyms.update_one(
-            {"id": self.id},
+            {"_id": self.id},
             {'$set': self.serialize()}
         )
         if res.modified_count == 1:

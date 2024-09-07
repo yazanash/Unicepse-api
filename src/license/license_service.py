@@ -95,6 +95,7 @@ class LicenseService:
                     'subscribe_date': gym_license.subscribe_date,
                     'subscribe_end_date': gym_license.subscribe_end_date,
                     'token': gym_license.token,
+                    'price': gym_license.price,
                 }
                 return make_response(jsonify(obj),status.HTTP_200_OK)
             return make_response(jsonify({"result": "No content", "message": "cannot found any plans"}),
