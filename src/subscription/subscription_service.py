@@ -29,19 +29,17 @@ class SubscriptionService:
     @staticmethod
     def read_subscription_use_case(gym_id, pid):
         """Reads All Subscription-subscription for player"""
-        subs_list = Subscription.all(gym_id, pid)
-        print(len(subs_list))
-        if len(subs_list) > 0:
-            subs_dict = {}
-            for subs in subs_list:
+        subscription_list = Subscription.all(gym_id, pid)
+        if len(subscription_list) > 0:
+            subs_list = []
+            for subs in subscription_list:
                 sub_dict = {}
                 sub_dict.update(subs.serialize())
                 payment_list = Payment.all(gym_id, pid, subs.id)
-                print(payment_list)
                 pay_dict = [payment.serialize() for payment in payment_list]
                 sub_dict.update({"payments": pay_dict})
-                subs_dict.update(sub_dict)
-            return make_response(jsonify(subs_dict),
+                subs_list.append(sub_dict)
+            return make_response(jsonify(subs_list),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any transactions"}),
                              status.HTTP_204_NO_CONTENT)

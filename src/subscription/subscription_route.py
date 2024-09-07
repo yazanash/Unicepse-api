@@ -18,7 +18,6 @@ def read_single_transactions(gym_id, pid, id):
 
 @subscriptionBp.route(route, methods=["POST"])
 def create_transaction():
-    print("create called")
     return service.create_subscription_use_case(request.get_json())
 
 
