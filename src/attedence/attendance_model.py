@@ -53,9 +53,9 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
     def deserialize(self, json):
         """should return this model from dict"""
         self.aid = json["aid"]
-        self.date = datetime.strptime(json['date'], "%d/%m/%Y")
-        self.login_time = datetime.strptime(json['login_time'], "%d/%m/%Y")
-        self.logout_time = datetime.strptime(json['logout_time'], "%d/%m/%Y")
+        self.date = json['date']
+        self.login_time = json['login_time']
+        self.logout_time = json['logout_time']
         self.pid = json["pid"]
         self.sid = json["sid"]
         self.gym_id = json["gym_id"]
@@ -64,9 +64,9 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         """should return this model from dict"""
         self._id = json.get("_id")
         self.aid = json["aid"]
-        self.date = datetime.strptime(json['date'], "%d/%m/%Y")
-        self.login_time = datetime.strptime(json['login_time'], "%d/%m/%Y")
-        self.logout_time = datetime.strptime(json['logout_time'], "%d/%m/%Y")
+        self.date = json['date']
+        self.login_time = json['login_time']
+        self.logout_time = json['logout_time']
         self.pid = json["pid"]
         self.sid = json["sid"]
         self.gym_id = json["gym_id"]
