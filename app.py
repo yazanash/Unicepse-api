@@ -2,9 +2,10 @@ import os
 import pyotp
 from dotenv import load_dotenv
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.security import check_password_hash
 from pyfcm import FCMNotification
+from werkzeug.utils import secure_filename
 
 from src.attedence.attendance_routes import attendances_bp
 from src.routine.routine_route import routineBlueprint
@@ -20,6 +21,8 @@ from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 from src.Player.player_route import playerBp
 from mail import mail
+from PIL import Image
+
 app = Flask(__name__)
 
 
@@ -40,6 +43,8 @@ app.register_blueprint(offers_bp)
 app.register_blueprint(attendances_bp)
 app.app_context().push()
 
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB limit
 
 app.config['MAIL_SERVER'] = os.environ['MAIL_SERVER']
 app.config['MAIL_PORT'] = os.environ['MAIL_PORT']
@@ -49,6 +54,9 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
 mail.init_app(app)
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 
 @app.route("/api/v1", methods=["GET"])
