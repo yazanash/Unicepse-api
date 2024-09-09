@@ -6,9 +6,6 @@ src/Player/__pycache__/
 src/routine/models/__pycache__/
 src/routine/routes/__pycache__/
 src/routine/service/__pycache__/
-src/license/__pycache__/
-src/attedence/__pycache__/
-__pycache__
 tests/__pycache__/
 uploads
 .coverage
