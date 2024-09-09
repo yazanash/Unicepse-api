@@ -22,7 +22,7 @@ class GymBaseSchema(Schema):
         'null': 'telephone cannot be null.',
         'invalid': 'invalid telephone.'
     })
-    logo = fields.Url(required=True, error_messages={
+    logo = fields.String(required=True, error_messages={
         'required': 'logo url is required.',
         'null': 'logo url cannot be null.',
         'invalid': 'invalid logo url.'
