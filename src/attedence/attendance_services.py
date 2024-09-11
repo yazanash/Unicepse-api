@@ -3,7 +3,8 @@ from marshmallow import ValidationError
 
 from src.attedence.attendance_model import Attendance
 from src.attedence.attendance_validation import AttendanceBaseSchema
-from src.common import status
+from src.common import status, points
+from src.handshake.handshake_model import HandShake
 
 attendance_schema = AttendanceBaseSchema()
 
@@ -19,6 +20,9 @@ class AttendanceService:
                 attendance = Attendance.create_model()
                 attendance.deserialize(data)
                 attendance.create()
+                handshake = HandShake.find_by_player(attendance.gym_id, attendance.pid)
+                if handshake is not None:
+                    handshake.set_single_level(points.ATTENDANCES_POINTS)
                 return make_response(jsonify({"result": "Created successfully", "message": f"{attendance._id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

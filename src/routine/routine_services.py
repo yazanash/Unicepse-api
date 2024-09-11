@@ -1,8 +1,9 @@
 from flask import make_response, jsonify
 
 from src.common.errors import *
-from src.common import status
+from src.common import status, points
 from .routine_model import Routine
+from ..handshake.handshake_model import HandShake
 
 
 class RoutineService:
@@ -15,6 +16,10 @@ class RoutineService:
             routine = Routine.create_model()
             routine.deserialize(json)
             routine.create()
+            handshake = HandShake.find_by_player(routine.gym_id, routine.pid)
+            if handshake is not None:
+                handshake.set_single_level(points.ROUTINE_POINTS)
+
             return make_response(jsonify({"result": "Created successfully", "message": f"{routine.rid}"}),
                                  status.HTTP_201_CREATED)
         return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

@@ -3,7 +3,8 @@ from flask import make_response, jsonify
 from .subscription_validator import validate_subscription
 from .subscription_model import Subscription
 from src.common.errors import *
-from src.common import status
+from src.common import status, points
+from ..handshake.handshake_model import HandShake
 from ..payment.payment_model import Payment
 
 
@@ -18,6 +19,9 @@ class SubscriptionService:
                 subs = Subscription.create_model()
                 subs.deserialize(json)
                 subs.create()
+                handshake = HandShake.find_by_player(subs.gym_id, subs.pid)
+                if handshake is not None:
+                    handshake.set_single_level(points.SUBSCRIPTION_POINTS)
                 return make_response(jsonify({"result": "Created successfully", "message": f"{subs.id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

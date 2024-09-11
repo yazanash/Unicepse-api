@@ -1,0 +1,9 @@
+# coding: utf8
+"""
+Descriptive Point for player level
+"""
+FULL_LEVEL_POINTS = 100
+SUBSCRIPTION_POINTS = 25
+METRIC_POINTS = 5
+ROUTINE_POINTS = 50
+ATTENDANCES_POINTS = 25

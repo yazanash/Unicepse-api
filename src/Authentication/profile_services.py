@@ -30,6 +30,7 @@ class ProfileService:
         Creates an Account to the database
         """
         logger.info("Creating %s", self.full_name)
+        self.level=0
         profile = db.profiles.insert_one(self.serialize())
         logger.info("Successfully created new user %s", self.uid)
 
@@ -42,6 +43,15 @@ class ProfileService:
                                       {'$set': self.serialize()})
         return self
 
+    def update_level(self):
+        """
+        Updates an Account to the database
+        """
+        logger.info("Updating %s", self.uid)
+        user = db.profiles.update_one({'uid': str(self.uid)},
+                                      {'$set': {"level": self.level}})
+        return self
+
     @classmethod
     def all(cls):
         """Returns all the records in the database"""
@@ -49,7 +59,7 @@ class ProfileService:
         data = []
         for item in db.profiles.find():
             profile = cls.create_model()
-            data.append(profile.deserialize(item))
+            data.append(profile.deserialize_from_database(item))
         return data
 
     @classmethod
@@ -69,7 +79,7 @@ class ProfileService:
             data = db.profiles.find_one({"uid": str(by_uid)})
             if data is not None:
                 profile = cls.create_model()
-                profile.deserialize(data)
+                profile.deserialize_from_database(data)
                 return profile
             else:
                 return None
