@@ -25,8 +25,18 @@ class RoutineServiceBase:
         logger.info("Updated Successfully %s", self.routine_no)
 
     @classmethod
-    def all(cls, gym_id):
+    def all(cls, gym_id, pid):
         """Returns all the records in the database"""
+        logger.info("Processing all Player-Subscription records")
+
+        routines_ref = db.routines.find({"pid": pid, "gym_id": gym_id})
+        data = []
+        if routines_ref is not None:
+            for val in routines_ref:
+                routine = cls.create_model()
+                routine.deserialize(val)
+                data.append(routine)
+        return data
 
     @classmethod
     def find(cls, gym_id, pid):

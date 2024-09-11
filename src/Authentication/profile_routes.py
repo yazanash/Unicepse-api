@@ -68,7 +68,7 @@ def update_profile(current_user):
 def get_profiles_list():
     """this function will return all users """
     profiles = Profile.all()
-    profile_list = [profile.secret_serialize() for profile in profiles]
+    profile_list = [profile.serialize() for profile in profiles]
     return jsonify(profile_list), status.HTTP_200_OK
 
 

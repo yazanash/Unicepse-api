@@ -1,13 +1,18 @@
 from flask import make_response, jsonify
 from marshmallow import ValidationError
 
+from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
+from src.attedence.attendance_model import Attendance
 from src.handshake.handshake_model import HandShake
 from src.handshake.hanshake_validation import HandShakeBaseSchema
+from src.metrics.metrics_model import Metric
 from src.payment.payment_validator import validate_payment
 from src.payment.payment_model import Payment
 from src.common.errors import DataValidationError
-from src.common import status
+from src.common import status , points
+from src.routine.routine_model import Routine
+from src.subscription.subscription_model import Subscription
 
 hand_shake_schema = HandShakeBaseSchema()
 
@@ -25,6 +30,7 @@ class HandShakeService:
                     handshake = HandShake.create_model()
                     handshake.deserialize(data)
                     handshake.create()
+                    handshake.set_level()
                     return make_response(jsonify({"result": "Created successfully", "message": f"{handshake.uid}"}),
                                          status.HTTP_201_CREATED)
                 return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

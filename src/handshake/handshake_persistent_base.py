@@ -4,6 +4,12 @@ import logging
 
 from flask import jsonify
 
+from src.Authentication.profile_model import Profile
+from src.attedence.attendance_model import Attendance
+from src.metrics.metrics_model import Metric
+from src.common import points
+from src.routine.routine_model import Routine
+from src.subscription.subscription_model import Subscription
 from db import db
 from src.common.utils import logger
 from bson.json_util import dumps, loads
@@ -87,3 +93,37 @@ class HandShakePersistentBase:
             handshake.deserialize_from_db(handshakes)
             return handshake
         return None
+
+    @classmethod
+    def find_by_player(cls, gym_id, pid):
+        """Finds a record by its ID"""
+        logger.info("Processing lookup for id %s ...", pid)
+        handshakes = db.handshakes.find_one({'pid': str(pid), "gym_id": str(gym_id)})
+        if handshakes is not None:
+            handshake = cls.create_model()
+            handshake.deserialize_from_db(handshakes)
+            return handshake
+        return None
+
+    def set_level(self):
+        """Finds a record by its ID"""
+        subs = Subscription.all(self.gym_id, self.pid)
+        routines = Routine.all(self.gym_id, self.pid)
+        metrics = Metric.all(self.gym_id, self.pid)
+        attendances = Attendance.all(self.pid, self.gym_id)
+        po = 0
+        po += len(subs) * points.SUBSCRIPTION_POINTS
+        po += len(routines) * points.ROUTINE_POINTS
+        po += len(metrics) * points.METRIC_POINTS
+        po += len(attendances) * points.ATTENDANCES_POINTS
+        profile = Profile.find(self.uid)
+        if profile is not None:
+            profile.level += po
+            profile.update_level()
+
+    def set_single_level(self,points):
+        """Finds a record by its ID"""
+        profile = Profile.find(self.uid)
+        if profile is not None:
+            profile.level += points
+            profile.update_level()

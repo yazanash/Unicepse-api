@@ -3,7 +3,7 @@ from flask import make_response, jsonify
 from src.handshake.handshake_model import HandShake
 from src.metrics.metrics_validator import validate_metric
 from src.metrics.metrics_model import Metric
-from src.common import status
+from src.common import status, points
 from src.common.errors import DataValidationError
 
 
@@ -18,6 +18,10 @@ class MetricsService:
                 metric = Metric.create_model()
                 metric.deserialize(json)
                 metric.create()
+                handshake = HandShake.find_by_player(metric.gym_id, metric.pid)
+                if handshake is not None:
+                    handshake.set_single_level(points.METRIC_POINTS)
+
                 return make_response(jsonify({"result": "Created successfully", "message": f"{metric.id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(
