@@ -1,6 +1,7 @@
 from datetime import datetime as date
 
 from src.Authentication import profile_services
+from src.common import points
 
 
 class Profile(profile_services.ProfileService):
@@ -28,7 +29,7 @@ class Profile(profile_services.ProfileService):
             'phone': self.phone,
             'birth_date': self.birth_date,
             'gender_male': self.gender_male,
-            'level': self.level,
+            'level': self.level * points.FULL_LEVEL_POINTS,
         }
 
     def deserialize(self, data):
