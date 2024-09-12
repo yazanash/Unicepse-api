@@ -97,6 +97,7 @@ class LicenseService:
                     'token': gym_license.token,
                     'price': gym_license.price,
                 }
+                gym_license.disable_product_key()
                 return make_response(jsonify(obj),status.HTTP_200_OK)
             return make_response(jsonify({"result": "No content", "message": "cannot found any plans"}),
                                  status.HTTP_204_NO_CONTENT)

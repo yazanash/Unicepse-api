@@ -1,9 +1,10 @@
 from flask import make_response, jsonify
 
+from src.handshake.handshake_model import HandShake
 from src.payment.payment_validator import validate_payment
 from src.payment.payment_model import Payment
 from src.common.errors import DataValidationError
-from src.common import status
+from src.common import status, notification_messages
 
 
 class PaymentService:
@@ -17,6 +18,9 @@ class PaymentService:
                 pay = Payment.create_model()
                 pay.deserialize(json)
                 pay.create()
+                handshake = HandShake.find_by_player(pay.gym_id, pay.pid)
+                if handshake is not None:
+                    handshake.send_notification(notification_messages.PAYMENT_TITLE, notification_messages.PAYMENT_MESSAGE)
                 return make_response(jsonify({"result": "Created successfully", "message": f"{pay.id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

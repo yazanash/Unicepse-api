@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 
 from src.attedence.attendance_services import AttendanceService
+from src.license.license_middleware import token_verification
 
 attendances_bp = Blueprint("Attendances", __name__, url_prefix='/api/v1')
 route = "/attendances"
@@ -13,11 +14,13 @@ def read_attendances(gym_id, pid):
 
 
 @attendances_bp.route(route, methods=["POST"])
+@token_verification
 def create_attendance():
     return service.create_attendance_use_case(request.get_json())
 
 
 @attendances_bp.route(route, methods=["PUT"])
+@token_verification
 def update_attendance():
     return service.update_attendance_use_case(request.get_json())
 

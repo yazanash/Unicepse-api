@@ -42,7 +42,7 @@ def update_gym(id):
 
 @gyms_bp.route(f'{route}/upload', methods=['POST'])
 def upload_file():
-    return service.upload_logo_gym_use_case(request)
+    return service.upload(request)
 
 
 @gyms_bp.route(f'{route}/logos/<gym_id>', methods=['GET'])

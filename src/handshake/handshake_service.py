@@ -4,13 +4,14 @@ from marshmallow import ValidationError
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
 from src.attedence.attendance_model import Attendance
+from src.gym.gym_model import Gym
 from src.handshake.handshake_model import HandShake
 from src.handshake.hanshake_validation import HandShakeBaseSchema
 from src.metrics.metrics_model import Metric
 from src.payment.payment_validator import validate_payment
 from src.payment.payment_model import Payment
 from src.common.errors import DataValidationError
-from src.common import status , points
+from src.common import status, points, notification_messages
 from src.routine.routine_model import Routine
 from src.subscription.subscription_model import Subscription
 
@@ -31,6 +32,11 @@ class HandShakeService:
                     handshake.deserialize(data)
                     handshake.create()
                     handshake.set_level()
+                    gym = Gym.find(handshake.gym_id)
+                    body = (f"نود إعلامك بأنه تم تسجيلك بنجاح في نادي {gym.gym_name}."
+                            " نتمنى لك تجربة رياضية ممتعة ومليئة بالنجاحات")
+                    handshake.send_notification(notification_messages.HANDSHAKE_TITLE,
+                                                body)
                     return make_response(jsonify({"result": "Created successfully", "message": f"{handshake.uid}"}),
                                          status.HTTP_201_CREATED)
                 return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

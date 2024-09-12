@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 
 from src.Authentication.auth_service import token_required
+from src.license.license_middleware import token_verification
 from src.metrics.metrics_service import MetricsService
 
 metrics_bp = Blueprint("Metrics", __name__, url_prefix='/api/v1')
@@ -20,11 +21,13 @@ def read_single_metrics(gym_id, pid, id):
 
 
 @metrics_bp.route(route, methods=["POST"])
+@token_verification
 def create_metrics():
     return service.create_metric_use_case(request.get_json())
 
 
 @metrics_bp.route(route, methods=["PUT"])
+@token_verification
 def update_metrics():
     return service.update_metric_use_case(request.get_json())
 

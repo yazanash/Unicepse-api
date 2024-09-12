@@ -4,10 +4,12 @@ import logging
 
 from flask import jsonify
 
+import firebase_helper
 from src.Authentication.profile_model import Profile
+from src.Authentication.user_model import User
 from src.attedence.attendance_model import Attendance
 from src.metrics.metrics_model import Metric
-from src.common import points
+from src.common import points, notification_messages
 from src.routine.routine_model import Routine
 from src.subscription.subscription_model import Subscription
 from db import db
@@ -121,9 +123,17 @@ class HandShakePersistentBase:
             profile.level += po
             profile.update_level()
 
-    def set_single_level(self,points):
+    def set_single_level(self, point):
         """Finds a record by its ID"""
         profile = Profile.find(self.uid)
         if profile is not None:
-            profile.level += points
+            profile.level += point
             profile.update_level()
+
+    def send_notification(self, title, body):
+        """
+        Updates an Account to the database
+        """
+        user = User.find(self.uid)
+        firebase_helper.send_notification(user.token, title, body)
+

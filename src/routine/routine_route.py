@@ -1,5 +1,6 @@
 from flask import Blueprint, request, send_from_directory
 
+from src.license.license_middleware import token_verification
 from src.routine.routine_services import RoutineService
 
 # from gridfs import GridFS
@@ -21,11 +22,13 @@ def get_image(group_id, file_name):
 
 
 @routineBlueprint.route(route, methods=["POST"])
+@token_verification
 def create_routine():
     return service.create_routine_use_case(request.get_json())
 
 
 @routineBlueprint.route(route, methods=["PUT"])
+@token_verification
 def update_transaction():
     return service.update_routine_use_case(request.get_json())
 
