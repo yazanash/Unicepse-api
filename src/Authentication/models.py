@@ -8,6 +8,7 @@ import string
 import random
 import pyotp
 from bson import ObjectId
+from flask import render_template, url_for
 from flask_mail import Message
 from werkzeug.security import check_password_hash, generate_password_hash
 import jwt
@@ -120,14 +121,15 @@ class AuthService:
     def send_email(cls, email):
         """Finds a record by its ID"""
         logger.info("Processing send verify email for email %s ...", email)
-
         msg = Message('Hello From Unicepse', sender='unicepse@gmail.com',
                       recipients=[email])
         secret = pyotp.random_base32()
         totp = pyotp.TOTP(secret)
         otp = totp.now()
+        url = url_for('app_logo', _external=True)
+        html_content = render_template('email.html', otp=otp, url=url)
 
-        msg.body = f"Hello From unicepse this email is a test this is your otp {otp}"
+        msg.html = html_content
         # with current_app.app_context():
         mail.send(msg)
         db.emails.delete_one({"email": email})

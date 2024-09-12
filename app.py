@@ -67,6 +67,11 @@ def hello_app():
 push_service = FCMNotification(api_key=os.environ['SERVER_KEY'])
 
 
+@app.route("/logo", methods=["GET"])
+def app_logo():
+    return send_from_directory(f'assets/logo', 'logo.png')
+
+
 # @app.route('/api/v1/send_notify', methods=['POST'])
 # def send_notification():
 #     data = request.json
