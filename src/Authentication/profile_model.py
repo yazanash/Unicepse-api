@@ -29,7 +29,7 @@ class Profile(profile_services.ProfileService):
             'phone': self.phone,
             'birth_date': self.birth_date,
             'gender_male': self.gender_male,
-            'level': self.level * points.FULL_LEVEL_POINTS,
+            'level': float(self.level / points.FULL_LEVEL_POINTS),
         }
 
     def deserialize(self, data):
