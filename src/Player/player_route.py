@@ -1,6 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from src.Player.player_service import PlayerService
 from src.common import status
+from src.license.license_middleware import token_verification
 
 playerBp = Blueprint("player_info", __name__, url_prefix='/api/v1')
 player_service = PlayerService()
@@ -12,6 +13,7 @@ it should be tied with a player service(controller)
 
 
 @playerBp.route("/player", methods=["POST"])
+@token_verification
 def create_player():
     """
     create player route...
@@ -43,6 +45,7 @@ def read_player(gym_id, pid):
 
 
 @playerBp.route("/player", methods=["PUT"])
+@token_verification
 def update_player():
     """
     Update player info.

@@ -54,6 +54,21 @@ class LicensePersistentBase:
         else:
             logger.info("licenses %s could NOT be Updated ", self._id)
 
+    def disable_product_key(self):
+        """
+        Updates a license to the database
+        """
+        logger.info("Updating licenses: %s", self._id)
+        licenses = db.licenses
+        res = licenses.update_one(
+            {'_id': self._id},
+            {'$set': {'product_key': None}}
+        )
+        if res.modified_count == 1:
+            logger.info("licenses %s Updated successfully", self._id)
+        else:
+            logger.info("licenses %s could NOT be Updated ", self._id)
+
     def generate_token(self):
         """generate token key for users"""
         token = jwt.encode(payload={
