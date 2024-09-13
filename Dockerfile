@@ -4,6 +4,10 @@ WORKDIR /app
 
 COPY requirements.txt .
 
+RUN python -m venv env
+
+RUN source env/bin/activate
+
 RUN pip install -r requirements.txt
 
 COPY . .
