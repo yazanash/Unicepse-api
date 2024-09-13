@@ -12,7 +12,6 @@ uploads
 key.json
 .env
 background.py
-player_routine.json
-platinum-8b28f-firebase-adminsdk-ln291-90678268e5.json
-uniceps-a7c75-firebase-adminsdk-9eitr-026a09c51f.json
-uniceps_project.json
+unicepse.json
+encrypt.py
+uni.json

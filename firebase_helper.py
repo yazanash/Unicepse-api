@@ -3,9 +3,13 @@ import os
 import firebase_admin
 from firebase_admin import credentials, messaging, storage
 from flask import json
-
-key = json.loads(os.environ['GOOGLE_APPLICATION_CREDENTIALS_JSON'])
-cred = credentials.Certificate(key)
+import decrypt
+#
+#
+# mega_helper.get_service_account()
+# print("file got")
+decrypt.decrypt_file()
+cred = credentials.Certificate(os.getenv('DECRYPT_FILE'))
 firebase_admin.initialize_app(cred, {
     'storageBucket': os.environ['STORAGE_BUCKET']
 })
