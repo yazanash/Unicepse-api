@@ -4,42 +4,42 @@ SQLAlchemy==1.4.46
 
 # Build dependencies
 Flask~=2.1.3
-Flask-SQLAlchemy==3.0.4
-psycopg2-binary==2.9.6
+Flask-SQLAlchemy
+psycopg2-binary
 python-dotenv~=1.0.1
-Flask-Mail==0.9.1
+Flask-Mail
 PyJWT~=2.8.0
 
 # Mongo db packages
 pymongo~=4.8.0
-Flask-PyMongo==2.3.0
+Flask-PyMongo
 
 # Runtime dependencies
 gunicorn~=22.0.0
-honcho==1.0.1
-Flask-Talisman==1.0.0
+honcho
+Flask-Talisman
 Flask-Cors
 
 
 # Code quality
-pylint==2.17.4
-flake8==6.1.0
-black==23.7.0
+pylint
+flake8
+black
 
 
 # Testing dependencies
-nose-py3==1.0
-pinocchio==0.4.3
-factory-boy==3.2.1
+nose-py3
+pinocchio
+factory-boy
 
 # Code Coverage
-coverage==7.2.7
+coverage
 
 # Utilities
-httpie==3.1.0
+httpie
 pyotp~=2.9.0
 pyjwt
-pillow==10.0.0
+pillow
 marshmallow~=3.21.3
 pyfcm==1.4.2
 requests~=2.32.3
