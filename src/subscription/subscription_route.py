@@ -19,12 +19,12 @@ def read_single_transactions(gym_id, pid, id):
 
 @subscriptionBp.route(route, methods=["POST"])
 @token_verification
-def create_transaction():
+def create_transaction(current_license):
     return service.create_subscription_use_case(request.get_json())
 
 
 @subscriptionBp.route(route, methods=["PUT"])
 @token_verification
-def update_transaction():
+def update_transaction(current_license):
     return service.update_subscription_use_case(request.get_json())
 

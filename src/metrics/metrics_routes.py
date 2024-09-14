@@ -22,12 +22,12 @@ def read_single_metrics(gym_id, pid, id):
 
 @metrics_bp.route(route, methods=["POST"])
 @token_verification
-def create_metrics():
+def create_metrics(current_license):
     return service.create_metric_use_case(request.get_json())
 
 
 @metrics_bp.route(route, methods=["PUT"])
 @token_verification
-def update_metrics():
+def update_metrics(current_license):
     return service.update_metric_use_case(request.get_json())
 

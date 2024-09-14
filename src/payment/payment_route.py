@@ -21,17 +21,17 @@ def read_payment(gym_id, pid, sid, id):
 
 @payments_bp.route(route, methods=["POST"])
 @token_verification
-def create_transaction():
+def create_transaction(current_license):
     return service.create_payment_use_case(request.get_json())
 
 
 @payments_bp.route(route, methods=["PUT"])
 @token_verification
-def update_transaction():
+def update_transaction(current_license):
     return service.update_payment_use_case(request.get_json())
 
 
-@payments_bp.route(f"{route}/<int:gym_id>/<int:pid>/<int:sid>/<int:id>", methods=["DELETE"])
+@payments_bp.route(f"{route}/<gym_id>/<pid>/<sid>/<id>", methods=["DELETE"])
 @token_verification
-def delete_transaction(gym_id, pid, sid, id):
+def delete_transaction(current_license,gym_id, pid, sid, id):
     return service.delete_payment_use_case(gym_id, pid, sid, id)
