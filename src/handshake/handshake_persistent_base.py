@@ -135,5 +135,5 @@ class HandShakePersistentBase:
         Updates an Account to the database
         """
         user = User.find(self.uid)
-        firebase_helper.send_notification(user.token, title, body)
+        firebase_helper.send_notification(user.notify_token, title, body)
 
