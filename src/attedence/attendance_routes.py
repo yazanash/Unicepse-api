@@ -15,12 +15,12 @@ def read_attendances(gym_id, pid):
 
 @attendances_bp.route(route, methods=["POST"])
 @token_verification
-def create_attendance():
+def create_attendance(current_license):
     return service.create_attendance_use_case(request.get_json())
 
 
 @attendances_bp.route(route, methods=["PUT"])
 @token_verification
-def update_attendance():
+def update_attendance(current_license):
     return service.update_attendance_use_case(request.get_json())
 

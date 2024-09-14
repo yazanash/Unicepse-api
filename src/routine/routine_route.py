@@ -23,12 +23,12 @@ def get_image(group_id, file_name):
 
 @routineBlueprint.route(route, methods=["POST"])
 @token_verification
-def create_routine():
+def create_routine(current_license):
     return service.create_routine_use_case(request.get_json())
 
 
 @routineBlueprint.route(route, methods=["PUT"])
 @token_verification
-def update_transaction():
+def update_transaction(current_license):
     return service.update_routine_use_case(request.get_json())
 

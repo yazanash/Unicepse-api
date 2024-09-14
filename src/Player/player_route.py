@@ -14,7 +14,7 @@ it should be tied with a player service(controller)
 
 @playerBp.route("/player", methods=["POST"])
 @token_verification
-def create_player():
+def create_player(current_license):
     """
     create player route...
     maybe this should be on the sign-in process?
@@ -46,7 +46,7 @@ def read_player(gym_id, pid):
 
 @playerBp.route("/player", methods=["PUT"])
 @token_verification
-def update_player():
+def update_player(current_license):
     """
     Update player info.
     info should be in json format
