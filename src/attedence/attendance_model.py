@@ -28,9 +28,9 @@ class Attendance(attendance_persistant_base.AttendancePersistentBase):
         return {
             'id': str(self._id),
             'aid': self.aid,
-            'date': self.date.strftime("%d/%m/%Y"),
-            'login_time': self.login_time.strftime("%M:%H"),
-            'logout_time': self.logout_time.strftime("%M:%H"),
+            'date': self.date,
+            'login_time': self.login_time,
+            'logout_time': self.logout_time,
             'pid': self.pid,
             'sid': self.sid,
             'gym_id': self.gym_id,
