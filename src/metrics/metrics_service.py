@@ -66,7 +66,7 @@ class MetricsService:
     def update_metric_use_case(json):
         """Updates a record for player"""
         try:
-            validate_metric(json)
+            # validate_metric(json)
             res = Metric.find(json['gym_id'], json['pid'], json['id'])
             if not res:
                 return make_response(jsonify({"result": "Not found", "message": "this metric is not exist"}),

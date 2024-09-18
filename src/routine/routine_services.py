@@ -42,7 +42,7 @@ class RoutineService:
     @staticmethod
     def update_routine_use_case(data):
         """update subscription for player"""
-        routine = Routine.find_by_rid(data['gym_id'], data['pid'], data['id'])
+        routine = Routine.find_by_rid(data['gym_id'], data['pid'], data['rid'])
         if not routine:
             return make_response(jsonify({"result": "Not found", "message": "this transaction is not exist"}),
                                  status.HTTP_404_NOT_FOUND)

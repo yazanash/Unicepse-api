@@ -82,6 +82,22 @@ def update_user(account_id):
         return make_response(jsonify(err.messages), status.HTTP_400_BAD_REQUEST)
 
 
+@auth_Bp.route("/auth/refresh", methods=["PUT"])
+@token_required
+def update_user(current_user):
+    """this function will UPDATE user data a"""
+    try:
+        user = User.find(current_user.uid)
+        data = request.get_json()
+        user.notify_token = data["notify_token"]
+        token = user.generate_token()
+        user.update()
+        message = "updated successfully"
+        return make_response(jsonify({"message": message, "token": token}), status.HTTP_201_CREATED)
+    except ValidationError as err:
+        return make_response(jsonify(err.messages), status.HTTP_400_BAD_REQUEST)
+
+
 @auth_Bp.route("/auth", methods=["GET"])
 def get_users_list():
     """this function will return all users """
@@ -89,6 +105,16 @@ def get_users_list():
     users_list = [user.secret_serialize() for user in users]
     return jsonify(users_list), status.HTTP_200_OK
 
+
+@auth_Bp.route("/auth/logout", methods=["GET"])
+@token_required
+def get_users_list(current_user):
+    """this function will return all users """
+    user = User.find(current_user.uid)
+    user.token = None
+    user.notify_token = None
+    user.update()
+    return jsonify({"logged out successfully"}), status.HTTP_200_OK
 
 # @auth_Bp.route("/auth/login", methods=["POST"])
 # def login_user():

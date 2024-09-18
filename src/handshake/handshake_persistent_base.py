@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 
+from firebase_admin.messaging import UnregisteredError
 from flask import jsonify
 
 import firebase_helper
@@ -134,6 +135,8 @@ class HandShakePersistentBase:
         """
         Updates an Account to the database
         """
-        user = User.find(self.uid)
-        firebase_helper.send_notification(user.notify_token, title, body)
-
+        try:
+            user = User.find(self.uid)
+            firebase_helper.send_notification(user.notify_token, title, body)
+        except UnregisteredError as ex:
+            return "ex"

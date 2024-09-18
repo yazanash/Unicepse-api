@@ -24,7 +24,8 @@ class SubscriptionPersistentBase:
         logger.info("Updating %s", self.id)
 
         subs_ref = db.subscriptions
-        res = subs_ref.update_one({"id": self.id}, {"$set": self.serialize()})
+        res = subs_ref.update_one({"id": self.id, "gym_id": self.gym_id,"pid": self.pid},
+                                  {"$set": self.serialize()})
         if res is not None:
             logger.info("Updated Successfully...")
         else:
