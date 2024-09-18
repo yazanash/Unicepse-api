@@ -84,7 +84,7 @@ def update_user(account_id):
 
 @auth_Bp.route("/auth/refresh", methods=["PUT"])
 @token_required
-def update_user(current_user):
+def update_token_user(current_user):
     """this function will UPDATE user data a"""
     try:
         user = User.find(current_user.uid)
@@ -108,7 +108,7 @@ def get_users_list():
 
 @auth_Bp.route("/auth/logout", methods=["GET"])
 @token_required
-def get_users_list(current_user):
+def logout_user(current_user):
     """this function will return all users """
     user = User.find(current_user.uid)
     user.token = None
