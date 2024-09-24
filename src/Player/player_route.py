@@ -51,5 +51,5 @@ def update_player(current_license):
     Update player info.
     info should be in json format
     """
-    stat = player_service.update_player_usecase(request.get_json())
+    stat = player_service.update_player_use_case(request.get_json())
     return make_response("Updated Successfully!", stat)
