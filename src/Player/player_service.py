@@ -6,8 +6,8 @@ from .player_validator import validate_player
 
 class PlayerService:
     """Player service class represents Use-cases of player model"""
-
-    def create_player_usecase(self, player_json):
+    @staticmethod
+    def create_player_use_case(player_json):
         """create player service called from route to handle usecase"""
         try:
             logger.info("Try create player from json")
@@ -23,7 +23,8 @@ class PlayerService:
             logger.error(f"Error Creating Player!! maybe data corrupted? {err.args[0]}")
             return status.HTTP_406_NOT_ACCEPTABLE
 
-    def read_player_usecase(self, gym_id, by_id):
+    @staticmethod
+    def read_player_use_case(gym_id, by_id):
         """read player service called from route to handle use case"""
         try:
             if Player.check_if_exist(gym_id, by_id):
@@ -34,7 +35,8 @@ class PlayerService:
             logger.error(f"Error could not process read player!! {err.args[0]}")
             return status.HTTP_400_BAD_REQUEST
 
-    def update_player_usecase(self, player_json):
+    @staticmethod
+    def update_player_use_case( player_json):
         """update player service called from route to handle use case"""
         try:
             validate_player(player_json)
