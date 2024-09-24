@@ -44,11 +44,16 @@ class RoutineServiceBase:
         logger.info("Processing lookup for id %s ...", pid)
         try:
             data = db.routines
-            routine_data = data.find({"gym_id": gym_id, "pid": pid}).sort('routine_date', -1).limit(1).next()
-            if routine_data is not None:
-                routine = cls.create_model()
-                routine.deserialize(routine_data)
-                return routine
+            routines = data.find({"gym_id": gym_id, "pid": pid})
+            if len(routines>0):
+
+                routine_data = data.find({"gym_id": gym_id, "pid": pid}).sort('routine_date', -1).limit(1).next()
+                if routine_data is not None:
+                    routine = cls.create_model()
+                    routine.deserialize(routine_data)
+                    return routine
+                else:
+                    return None
             else:
                 return None
         except RoutineNotFoundError:

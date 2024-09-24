@@ -6,7 +6,8 @@ from src.common.utils import logger
 class Player(PlayerPersistentBase):
 
     def __init__(self, pid=None, name=None, phone_number=None, width=None, height=None,
-                 date_of_birth=None, gender=None, balance=None, gym_id=None):
+                 date_of_birth=None, gender=None, balance=None, gym_id=None, subs_date=None,
+                 subs_end_date=None):
         super().__init__()
         self.pid = pid
         self.name = name
@@ -17,6 +18,8 @@ class Player(PlayerPersistentBase):
         self.gender = gender
         self.balance = balance
         self.gym_id = gym_id
+        self.subs_date = subs_date
+        self.subs_end_date = subs_end_date
 
     def deserialize(self, json):
         """Deserializes a player from dict {json}"""
@@ -27,6 +30,8 @@ class Player(PlayerPersistentBase):
             self.phone_number = json['phone_number']
             self.width = json.get('width')                  # NULLABLE
             self.height = json.get('height')                # NULLABLE
+            self.subs_date = json.get('subs_date')                  # NULLABLE
+            self.subs_end_date = json.get('subs_end_date')                # NULLABLE
             self.date_of_birth = json['date_of_birth']
             self.gender = json['gender']
             self.balance = json.get('balance')              # NULLABLE
@@ -48,6 +53,8 @@ class Player(PlayerPersistentBase):
                 'name': self.name,
                 'width': self.width,
                 'height': self.height,
+                'subs_date': self.subs_date,
+                'subs_end_date': self.subs_end_date,
                 'date_of_birth': self.date_of_birth,
                 'gender': self.gender,
                 'balance': self.balance,

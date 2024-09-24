@@ -1,9 +1,13 @@
+import datetime
 import os
 
 from flask import request, jsonify
 from flask import current_app
 import jwt
 from functools import wraps
+
+from jwt import ExpiredSignatureError
+
 from src.Authentication.user_model import User
 from src.common import status
 
@@ -23,6 +27,12 @@ def token_required(f):
             # decoding the payload to fetch the stored details
             data = jwt.decode(token, os.environ['SECRET_KEY'], algorithms=["HS256"])
             current_user = User.find(data['public_id'])
+            if current_user is None:
+                return jsonify({
+                    'message': 'Token is invalid !!'
+                }), 401
+        except ExpiredSignatureError:
+            return jsonify({'message': 'Token has expired!'}), 401
         except TypeError:
             return jsonify({
                 'message': 'Token is invalid !!'

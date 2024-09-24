@@ -19,7 +19,7 @@ def create_player(current_license):
     create player route...
     maybe this should be on the sign-in process?
     """
-    status_code = player_service.create_player_usecase(request.get_json())
+    status_code = player_service.create_player_use_case(request.get_json())
     response = make_response()
     response.status_code = status_code
     return response
@@ -34,7 +34,7 @@ def read_player(gym_id, pid):
     """
     try:
         if gym_id is not None and pid is not None:
-            player = player_service.read_player_usecase(gym_id, pid)
+            player = player_service.read_player_use_case(gym_id, pid)
             if type(player) is int:
                 return make_response(jsonify({"addd": "asdds"}), player)
             return make_response(player.serialize(), status.HTTP_200_OK)

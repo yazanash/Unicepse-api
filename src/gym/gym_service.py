@@ -7,6 +7,7 @@ from marshmallow import ValidationError
 from werkzeug.utils import secure_filename
 
 from firebase_helper import bucket
+from src.Player.player_model import Player
 from src.gym.gym_model import Gym
 from src.gym.gym_validation import GymBaseSchema
 from src.handshake.handshake_model import HandShake
@@ -81,14 +82,14 @@ class GymService:
         """Reads All payments  for player subscription"""
         gyms = Gym.all()
         handshakes = HandShake.all(current_user.uid)
-        if len(gyms) > 0:
+        if len(handshakes) > 0:
             gyms_dict = []
-            for gym in gyms:
+            for handshake in handshakes:
+                gym = Gym.find(handshake.gym_id)
                 data = gym.serialize()
-                handshake = HandShake.find_single(current_user.uid, gym.id)
-                if handshake is not None:
-                    data.update({"pid": handshake.pid, "created_at": handshake.created_at})
-                print(data)
+                player = Player.find(gym.gym,handshake.pid)
+                data.update({"pid": handshake.pid, "start": player.subs_date, "end": player.subs_end_date,
+                             "created_at": handshake.created_at})
                 gyms_dict.append(data)
             return make_response(jsonify(gyms_dict),
                                  status.HTTP_200_OK)
