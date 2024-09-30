@@ -22,7 +22,6 @@ class LicensePersistentBase:
         Creates a handshakes in the database
         """
         logger.info("Creating license in subscription= %s", self.gym_id)
-        print("creation process")
         self.generate_product_key()
         self.subscribe_end_date = self.subscribe_date + relativedelta(months=self.period)
         licenses = db.licenses.insert_one(self.serialize_to_db_without_token())
