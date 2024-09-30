@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from bson import ObjectId
 from flask import make_response, jsonify
 from marshmallow import ValidationError
 
@@ -21,9 +20,12 @@ class LicenseService:
             data = license_schema.load(json)
             if not License.check_if_exist(data['gym_id'], data['plan_id'], data['subscribe_date']):
                 gym_license = License.create_model()
+                plan = Plan.find(data['plan_id'])
                 gym_license.deserialize_secret(data)
+                gym_license.price = plan.price
+                gym_license.period = plan.period
                 gym_license.create()
-                return make_response(jsonify({"result": "Created successfully", "data": gym_license.serialize()}),
+                return make_response(jsonify(gym_license.serialize_without_token()),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),
                                  status.HTTP_409_CONFLICT)
@@ -38,9 +40,12 @@ class LicenseService:
             data = license_schema.load(json)
             gym_license = License.find(_id)
             if gym_license is not None:
+                plan = Plan.find(data['plan_id'])
                 gym_license.deserialize_secret(data)
+                gym_license.price = plan.price
+                gym_license.period = plan.period
                 gym_license.update()
-                return make_response(jsonify({"result": "updated successfully", "message": f"{gym_license.gym_id}"}),
+                return make_response(jsonify(jsonify(gym_license.serialize_without_token())),
                                      status.HTTP_200_OK)
             return make_response(jsonify({"result": "Not Exists Exception", "message": "this record is not exists"}),
                                  status.HTTP_404_NOT_FOUND)
@@ -53,7 +58,19 @@ class LicenseService:
         """Reads All licenses"""
         licenses_list = License.all()
         if len(licenses_list) > 0:
-            licenses_dict = [gym_license.serialize() for gym_license in licenses_list]
+            licenses_dict = []
+            for gym_license in licenses_list:
+                plan = Plan.find(gym_license.plan_id)
+                if plan is not None:
+                    obj = {
+                        'gym_id': gym_license.gym_id,
+                        'plan_name': plan.plan_name,
+                        'plan_id': plan.id,
+                        'subscribe_date': gym_license.subscribe_date,
+                        'subscribe_end_date': gym_license.subscribe_end_date,
+                        'price': gym_license.price,
+                    }
+                    licenses_dict.append(obj)
             return make_response(jsonify(licenses_dict),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any licenses"}),
@@ -64,8 +81,37 @@ class LicenseService:
         """Reads license"""
         gym_license = License.find(_id)
         if gym_license is not None:
-            return make_response(jsonify(gym_license.serialize()),
-                                 status.HTTP_200_OK)
+            plan = Plan.find(gym_license.plan_id)
+            if plan is not None:
+                obj = {
+                    'gym_id': gym_license.gym_id,
+                    'plan_name': plan.plan_name,
+                    'plan_id': plan.id,
+                    'subscribe_date': gym_license.subscribe_date,
+                    'subscribe_end_date': gym_license.subscribe_end_date,
+                    'price': gym_license.price,
+                }
+                return make_response(jsonify(obj), status.HTTP_200_OK)
+        return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
+                             status.HTTP_204_NO_CONTENT)
+
+    @staticmethod
+    def read_license_use_case_with_product_key(_id):
+        """Reads license"""
+        gym_license = License.find(_id)
+        if gym_license is not None:
+            plan = Plan.find(gym_license.plan_id)
+            if plan is not None:
+                obj = {
+                    'gym_id': gym_license.gym_id,
+                    'plan_name': plan.plan_name,
+                    'plan_id': plan.id,
+                    'subscribe_date': gym_license.subscribe_date,
+                    'subscribe_end_date': gym_license.subscribe_end_date,
+                    'price': gym_license.price,
+                    'product_key': gym_license.product_key,
+                }
+                return make_response(jsonify(obj), status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
                              status.HTTP_204_NO_CONTENT)
 
@@ -98,7 +144,7 @@ class LicenseService:
                     'price': gym_license.price,
                 }
                 gym_license.disable_product_key()
-                return make_response(jsonify(obj),status.HTTP_200_OK)
+                return make_response(jsonify(obj), status.HTTP_200_OK)
             return make_response(jsonify({"result": "No content", "message": "cannot found any plans"}),
                                  status.HTTP_204_NO_CONTENT)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
@@ -107,11 +153,22 @@ class LicenseService:
     @staticmethod
     def read_gym_licenses_use_case(gym_id):
         """Reads All licenses For gym"""
-        print(f"service started to gym id {gym_id}")
         licenses_list = License.all_license(gym_id)
         if len(licenses_list) > 0:
-            licenses_dict = [gym_license.serialize() for gym_license in licenses_list]
+            licenses_dict = []
+            for gym_license in licenses_list:
+                plan = Plan.find(gym_license.plan_id)
+                if plan is not None:
+                    obj = {
+                        'gym_id': gym_license.gym_id,
+                         'plan_name': plan.plan_name,
+                        'plan_id': plan.id,
+                        'subscribe_date': gym_license.subscribe_date,
+                        'subscribe_end_date': gym_license.subscribe_end_date,
+                        'price': gym_license.price,
+                    }
+                    licenses_dict.append(obj)
             return make_response(jsonify(licenses_dict),
                                  status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any licenses"}),
-                             status.HTTP_200_OK)
+                             status.HTTP_204_NO_CONTENT)

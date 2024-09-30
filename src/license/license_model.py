@@ -40,6 +40,19 @@ class License(license_persistant_base.LicensePersistentBase):
             'period': self.period
         }
 
+    def serialize_without_token(self):
+        """should return json map for this model"""
+        return {
+            '_id': str(self._id),
+            'gym_id': self.gym_id,
+            'plan_id': self.plan_id,
+            'price': self.price,
+            'subscribe_date': self.subscribe_date.strftime("%d/%m/%Y"),
+            'subscribe_end_date': self.subscribe_end_date.strftime("%d/%m/%Y"),
+            'product_key': self.product_key,
+            'period': self.period
+        }
+
     def serialize_to_db(self):
         """should return json map for this model"""
         return {
@@ -101,9 +114,7 @@ class License(license_persistant_base.LicensePersistentBase):
         """should return this model from dict"""
         self.gym_id = json["gym_id"]
         self.plan_id = json["plan_id"]
-        self.price = json["price"]
         self.subscribe_date = datetime.strptime(str(json['subscribe_date']), "%d/%m/%Y")
-        self.period = json['period']
 
     def deserialize_from_data_base(self, json):
         """should return this model from dict"""
