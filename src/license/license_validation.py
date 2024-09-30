@@ -12,18 +12,10 @@ class LicenseBaseSchema(Schema):
         'null': 'plan cannot be null.',
         'invalid': 'invalid plan id.'
     })
-    price = fields.Float(required=True, error_messages={
-        'required': 'price is required.',
-        'null': 'price cannot be null.',
-        'invalid': 'invalid price.'
-    })
+
     subscribe_date = fields.String( required=True, error_messages={
         'required': 'subscribe date is required.',
         'null': 'subscribe date cannot be null.',
         'invalid': 'invalid subscribe date.'
     })
-    period = fields.Integer(required=True, error_messages={
-        'required': 'period is required.',
-        'null': 'period cannot be null.',
-        'invalid': 'invalid period.'
-    })
+
