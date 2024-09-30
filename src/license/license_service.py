@@ -70,6 +70,7 @@ class LicenseService:
                         'subscribe_date': gym_license.subscribe_date,
                         'subscribe_end_date': gym_license.subscribe_end_date,
                         'price': gym_license.price,
+                        'period': gym_license.period,
                     }
                     licenses_dict.append(obj)
             return make_response(jsonify(licenses_dict),
@@ -92,6 +93,7 @@ class LicenseService:
                     'subscribe_date': gym_license.subscribe_date,
                     'subscribe_end_date': gym_license.subscribe_end_date,
                     'price': gym_license.price,
+                    'period': gym_license.period,
                 }
                 return make_response(jsonify(obj), status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
@@ -113,6 +115,7 @@ class LicenseService:
                     'subscribe_end_date': gym_license.subscribe_end_date,
                     'price': gym_license.price,
                     'product_key': gym_license.product_key,
+                    'period': gym_license.period,
                 }
                 return make_response(jsonify(obj), status.HTTP_200_OK)
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
@@ -145,6 +148,7 @@ class LicenseService:
                     'subscribe_end_date': gym_license.subscribe_end_date,
                     'token': gym_license.token,
                     'price': gym_license.price,
+                    'period': gym_license.period,
                 }
                 gym_license.disable_product_key()
                 return make_response(jsonify(obj), status.HTTP_200_OK)
@@ -170,6 +174,7 @@ class LicenseService:
                         'subscribe_date': gym_license.subscribe_date,
                         'subscribe_end_date': gym_license.subscribe_end_date,
                         'price': gym_license.price,
+                        'period': gym_license.period,
                     }
                     licenses_dict.append(obj)
             return make_response(jsonify(licenses_dict),
