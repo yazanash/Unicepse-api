@@ -63,7 +63,7 @@ class LicenseService:
                 plan = Plan.find(gym_license.plan_id)
                 if plan is not None:
                     obj = {
-                        '_id': gym_license._id,
+                        '_id': str(gym_license._id),
                         'gym_id': gym_license.gym_id,
                         'plan_name': plan.plan_name,
                         'plan_id': plan.id,
@@ -85,7 +85,7 @@ class LicenseService:
             plan = Plan.find(gym_license.plan_id)
             if plan is not None:
                 obj = {
-                    '_id': gym_license._id,
+                    '_id': str(gym_license._id),
                     'gym_id': gym_license.gym_id,
                     'plan_name': plan.plan_name,
                     'plan_id': plan.id,
@@ -105,7 +105,7 @@ class LicenseService:
             plan = Plan.find(gym_license.plan_id)
             if plan is not None:
                 obj = {
-                    '_id': gym_license._id,
+                    '_id': str(gym_license._id),
                     'gym_id': gym_license.gym_id,
                     'plan_name': plan.plan_name,
                     'plan_id': plan.id,
@@ -163,7 +163,7 @@ class LicenseService:
                 plan = Plan.find(gym_license.plan_id)
                 if plan is not None:
                     obj = {
-                        '_id': gym_license._id,
+                        '_id': str(gym_license._id),
                         'gym_id': gym_license.gym_id,
                         'plan_name': plan.plan_name,
                         'plan_id': str(plan.id),
