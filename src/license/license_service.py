@@ -161,7 +161,7 @@ class LicenseService:
                 if plan is not None:
                     obj = {
                         'gym_id': gym_license.gym_id,
-                         'plan_name': plan.plan_name,
+                        'plan_name': plan.plan_name,
                         'plan_id': plan.id,
                         'subscribe_date': gym_license.subscribe_date,
                         'subscribe_end_date': gym_license.subscribe_end_date,
