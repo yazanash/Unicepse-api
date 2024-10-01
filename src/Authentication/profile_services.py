@@ -31,7 +31,7 @@ class ProfileService:
         """
         logger.info("Creating %s", self.full_name)
         self.level=0
-        profile = db.profiles.insert_one(self.serialize())
+        profile = db.profiles.insert_one(self.serialize_to_data_base())
         logger.info("Successfully created new user %s", self.uid)
 
     def update(self):
@@ -40,7 +40,7 @@ class ProfileService:
         """
         logger.info("Updating %s", self.uid)
         user = db.profiles.update_one({'uid': str(self.uid)},
-                                      {'$set': self.serialize()})
+                                      {'$set': self.serialize_to_data_base()})
         return self
 
     def update_level(self):
