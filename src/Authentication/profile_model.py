@@ -32,6 +32,17 @@ class Profile(profile_services.ProfileService):
             'level': float(self.level / points.FULL_LEVEL_POINTS),
         }
 
+    def serialize_to_data_base(self):
+        """Serializes a User into a dictionary"""
+        return {
+            'uid': str(self.uid),
+            'full_name': self.full_name,
+            'phone': self.phone,
+            'birth_date': self.birth_date,
+            'gender_male': self.gender_male,
+            'level': self.level,
+        }
+
     def deserialize(self, data):
         """
         Deserializes a User from a dictionary
