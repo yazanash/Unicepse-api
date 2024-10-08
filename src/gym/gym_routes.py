@@ -5,6 +5,7 @@ from flask import Blueprint, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 
 from src.Authentication.auth_service import token_required
+from src.api_key_protection import api_key_required
 from src.gym.gym_service import GymService
 from src.handshake.handshake_service import HandShakeService
 from src.handshake.hanshake_validation import HandShakeBaseSchema
@@ -31,16 +32,19 @@ def read_user_gyms(current_user):
 
 
 @gyms_bp.route(route, methods=["POST"])
+@api_key_required
 def create_gym():
     return service.create_gym_use_case(request.get_json())
 
 
 @gyms_bp.route(f"{route}/<id>", methods=["PUT"])
+@api_key_required
 def update_gym(id):
     return service.update_gym_use_case(id, request.get_json())
 
 
 @gyms_bp.route(f'{route}/upload', methods=['POST'])
+@api_key_required
 def upload_file():
     return service.upload(request)
 

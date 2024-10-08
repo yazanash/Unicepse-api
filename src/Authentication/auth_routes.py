@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash
 from src.Authentication.auth_service import token_required
 from src.Authentication.auth_validation import UserBaseSchema, UserSchema
 from src.Authentication.user_model import User
+from src.api_key_protection import api_key_required
 from src.common import status
 
 from marshmallow import ValidationError
@@ -99,6 +100,7 @@ def update_token_user(current_user):
 
 
 @auth_Bp.route("/auth", methods=["GET"])
+@api_key_required
 def get_users_list():
     """this function will return all users """
     users = User.all()

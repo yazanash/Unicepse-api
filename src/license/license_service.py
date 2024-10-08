@@ -45,7 +45,7 @@ class LicenseService:
                 gym_license.price = plan.price
                 gym_license.period = plan.period
                 gym_license.update()
-                return make_response(jsonify(jsonify(gym_license.serialize_without_token())),
+                return make_response(jsonify(gym_license.serialize_without_token()),
                                      status.HTTP_200_OK)
             return make_response(jsonify({"result": "Not Exists Exception", "message": "this record is not exists"}),
                                  status.HTTP_404_NOT_FOUND)
