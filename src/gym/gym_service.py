@@ -31,7 +31,7 @@ class GymService:
                 gym = Gym.create_model()
                 gym.deserialize(data)
                 gym.create()
-                return make_response(jsonify({"result": "Created successfully", "message": f"{gym.id}"}),
+                return make_response(jsonify({"result": "Created successfully", "gym_id": f"{gym.id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),
                                  status.HTTP_409_CONFLICT)

@@ -109,6 +109,8 @@ class AuthService:
         try:
             if ObjectId.is_valid(by_uid):
                 data = db.Users.find_one({"_id": ObjectId(by_uid)})
+                if data is None:
+                    return None
                 user = cls.create_model()
                 user.deserialize_from_db(data)
                 return user
