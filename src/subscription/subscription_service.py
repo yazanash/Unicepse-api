@@ -22,9 +22,9 @@ class SubscriptionService:
                 handshake = HandShake.find_by_player(subs.gym_id, subs.pid)
                 if handshake is not None:
                     handshake.set_single_level(points.SUBSCRIPTION_POINTS)
-                    body = (f"يسرنا إبلاغك بأنه تم تسجيلك في رياضة {subs.sport_name} بنجاح."
-                        " نتمنى لك التوفيق والتقدم في هذه الرياضة الجديدة")
-                    handshake.send_notification(notification_messages.SUBSCRIPTION_MESSAGE, body)
+
+                    body = f" تم تسجيلك في رياضة {subs.sport_name} بنجاح هل انت متحمس ؟!"
+                    handshake.send_notification(notification_messages.SUBSCRIPTION_TITLE, body)
                 return make_response(jsonify({"result": "Created successfully", "message": f"{subs.id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),

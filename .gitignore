@@ -7,6 +7,8 @@ src/routine/models/__pycache__/
 src/routine/routes/__pycache__/
 src/routine/service/__pycache__/
 tests/__pycache__/
+__pycache__/
+*.pyc
 uploads
 .coverage
 key.json

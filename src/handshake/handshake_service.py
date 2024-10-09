@@ -33,10 +33,8 @@ class HandShakeService:
                     handshake.create()
                     handshake.set_level()
                     gym = Gym.find(handshake.gym_id)
-                    body = (f"نود إعلامك بأنه تم تسجيلك بنجاح في نادي {gym.gym_name}."
-                            " نتمنى لك تجربة رياضية ممتعة ومليئة بالنجاحات")
-                    handshake.send_notification(notification_messages.HANDSHAKE_TITLE,
-                                                body)
+                    title = f"اهلا بك في عائلة {gym.gym_name} ."
+                    handshake.send_notification(title, notification_messages.HANDSHAKE_MESSAGE)
                     return make_response(jsonify({"result": "Created successfully", "message": f"{handshake.uid}"}),
                                          status.HTTP_201_CREATED)
                 return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),
