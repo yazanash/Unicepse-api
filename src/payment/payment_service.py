@@ -20,7 +20,8 @@ class PaymentService:
                 pay.create()
                 handshake = HandShake.find_by_player(pay.gym_id, pay.pid)
                 if handshake is not None:
-                    handshake.send_notification(notification_messages.PAYMENT_TITLE, notification_messages.PAYMENT_MESSAGE)
+                    payment_message = f"نشكرك على تسديد دفعة الاشتراك الخاصة بك. تم تأكيد استلام {pay.value} بنجاح."
+                    handshake.send_notification(notification_messages.PAYMENT_TITLE, payment_message)
                 return make_response(jsonify({"result": "Created successfully", "message": f"{pay.id}"}),
                                      status.HTTP_201_CREATED)
             return make_response(jsonify({"result": "Conflict Exception", "message": "this record is already exists"}),
