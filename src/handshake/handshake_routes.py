@@ -17,3 +17,13 @@ def read_hand_shakes(uid):
 def create_hand_shakes():
     return service.create_hand_shack_use_case(request.get_json())
 
+
+@handshakes_bp.route(f"{route}/<gym_id>/notify", methods=["POST"])
+def send_gym_players_notifications(gym_id):
+    return service.send_gym_players_notifications_use_case(gym_id, request.get_json())
+
+
+@handshakes_bp.route(f"{route}/notify", methods=["POST"])
+def send_all_players_notifications():
+    return service.send_all_players_notifications_use_case(request.get_json())
+
