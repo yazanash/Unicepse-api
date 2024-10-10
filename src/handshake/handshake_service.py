@@ -85,8 +85,10 @@ class HandShakeService:
         if users is not None:
             for user in users:
                 try:
-                    firebase_helper.send_notification(user. notify_token,json['title'], json['body'])
+                    firebase_helper.send_notification(user.notify_token,'title', 'body')
                 except UnregisteredError as ex:
+                    continue
+                except ValueError as ex:
                     continue
             return make_response(jsonify({"message": "notification sent successfully"}), status.HTTP_200_OK)
         return make_response(jsonify({"message": "notification sent successfully"}), status.HTTP_404_NOT_FOUND)
