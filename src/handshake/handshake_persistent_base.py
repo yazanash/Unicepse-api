@@ -67,6 +67,20 @@ class HandShakePersistentBase:
         return data
 
     @classmethod
+    def all_by_gym(cls, gym_id):
+        """Returns all the records in the database"""
+        logger.info("Processing all Player-handshakes records")
+        handshakes = db.handshakes.find({'gym_id': str(gym_id)})
+        data = []
+        if handshakes is not None:
+            for val in handshakes:
+                if val is not None:
+                    handshake = cls.create_model()
+                    handshake.deserialize_from_db(val)
+                    data.append(handshake)
+        return data
+
+    @classmethod
     def check_if_exist(cls, gym_id, uid):
         """check if record is exist in database"""
         logger.info("check if data exist")
@@ -139,4 +153,4 @@ class HandShakePersistentBase:
             user = User.find(self.uid)
             firebase_helper.send_notification(user.notify_token, title, body)
         except UnregisteredError as ex:
-            return "ex"
+            return ex

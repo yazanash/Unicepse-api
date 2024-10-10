@@ -1,6 +1,8 @@
+from firebase_admin.messaging import UnregisteredError
 from flask import make_response, jsonify
 from marshmallow import ValidationError
 
+import firebase_helper
 from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
 from src.attedence.attendance_model import Attendance
@@ -66,4 +68,25 @@ class HandShakeService:
         return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
                              status.HTTP_204_NO_CONTENT)
 
+    @staticmethod
+    def send_gym_players_notifications_use_case(gym_id, json):
+        """Creates payment for player subscription"""
+        handshakes = HandShake.all_by_gym(gym_id)
+        if handshakes is not None:
+            for handshake in handshakes:
+                handshake.send_notification(json['title'], json['body'])
+            return make_response(jsonify({"message": "notification sent successfully"}), status.HTTP_200_OK)
+        return make_response(jsonify({"message": "notification sent successfully"}), status.HTTP_404_NOT_FOUND)
 
+    @staticmethod
+    def send_all_players_notifications_use_case(json):
+        """Creates payment for player subscription"""
+        users = User.all()
+        if users is not None:
+            for user in users:
+                try:
+                    firebase_helper.send_notification(user. notify_token,json['title'], json['body'])
+                except UnregisteredError as ex:
+                    continue
+            return make_response(jsonify({"message": "notification sent successfully"}), status.HTTP_200_OK)
+        return make_response(jsonify({"message": "notification sent successfully"}), status.HTTP_404_NOT_FOUND)
