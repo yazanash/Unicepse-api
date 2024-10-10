@@ -48,6 +48,7 @@ def verify_otp():
                 User.delete_from_otp((data['email']))
                 return make_response(jsonify({"message": message, "token": token}), status.HTTP_201_CREATED)
             elif exist_user is not None:
+                exist_user.deserialize(data)
                 token = exist_user.generate_token()
                 exist_user.update()
                 User.delete_from_otp((data['email']))
@@ -116,7 +117,7 @@ def logout_user(current_user):
     user.token = None
     user.notify_token = None
     user.update()
-    return jsonify({"logged out successfully"}), status.HTTP_200_OK
+    return jsonify({"message": "logged out successfully"}), status.HTTP_200_OK
 
 # @auth_Bp.route("/auth/login", methods=["POST"])
 # def login_user():
