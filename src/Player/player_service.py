@@ -36,7 +36,7 @@ class PlayerService:
             return status.HTTP_400_BAD_REQUEST
 
     @staticmethod
-    def update_player_use_case( player_json):
+    def update_player_use_case(player_json):
         """update player service called from route to handle use case"""
         try:
             validate_player(player_json)
