@@ -57,6 +57,8 @@ class RoutineServiceBase:
                 return None
         except RoutineNotFoundError:
             return None
+        except StopIteration:
+            return None
 
     @classmethod
     def find_by_rid(cls, gym_id, pid, rid):
