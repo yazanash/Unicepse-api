@@ -44,7 +44,8 @@ class RoutineServiceBase:
         logger.info("Processing lookup for id %s ...", pid)
         try:
             routines = db.routines.find({"gym_id": gym_id, "pid": pid})
-            if routines is not None and routines.count() > 0:
+            documents = list(routines)
+            if routines is not None and not documents:
                 routine_data = db.routines.find({"gym_id": gym_id, "pid": pid}).sort('routine_date', -1).limit(1).next()
                 if routine_data is not None:
                     routine = cls.create_model()
