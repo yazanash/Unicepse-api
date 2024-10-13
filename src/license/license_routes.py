@@ -9,7 +9,6 @@ service = LicenseService()
 
 
 @licenses_bp.route(f"{route}/get/<lid>", methods=["GET"])
-@api_key_required
 def read_license(lid):
     return service.read_license_use_case(lid)
 
