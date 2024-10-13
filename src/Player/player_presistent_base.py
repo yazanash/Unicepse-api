@@ -47,8 +47,7 @@ class PlayerPersistentBase:
         """Finds a record by its ID"""
         logger.info("Processing lookup for id %s ...", by_uid)
         try:
-            data = db.players
-            player_data = data.find_one({"pid": by_uid, "gym_id": gym_id})
+            player_data = db.players.find_one({"pid": by_uid, "gym_id": gym_id})
             print(f"player_data {player_data}")
             if player_data is not None:
                 player = cls.create_model()
