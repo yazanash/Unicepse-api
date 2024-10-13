@@ -142,6 +142,7 @@ class LicenseService:
             plan = Plan.find(gym_license.plan_id)
             if plan is not None:
                 obj = {
+                    '_id': str(gym_license._id),
                     'gym_id': gym_license.gym_id,
                     'plan': plan.plan_name,
                     'subscribe_date': gym_license.subscribe_date,
