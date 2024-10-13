@@ -26,7 +26,7 @@ class PlayerPersistentBase:
         """
         logger.info("Updating %s", self.name)
         player_ref = db.players
-        player_ref.update_one({'pid': self.pid}, {'$set': self.serialize()})
+        player_ref.update_one({'pid': self.pid,'gym_id': self.gym_id}, {'$set': self.serialize()})
         logger.info("Updated Successfully %s", self.name)
 
     @classmethod
@@ -48,7 +48,6 @@ class PlayerPersistentBase:
         logger.info("Processing lookup for id %s ...", by_uid)
         try:
             player_data = db.players.find_one({"pid": by_uid, "gym_id": gym_id})
-            print(f"player_data {player_data}")
             if player_data is not None:
                 player = cls.create_model()
                 player.deserialize(player_data)

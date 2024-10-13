@@ -87,7 +87,6 @@ class GymService:
             for handshake in handshakes:
                 gym = Gym.find(handshake.gym_id)
                 data = gym.serialize()
-                print(handshake.gym_id +"////"+ handshake.pid)
                 player = Player.find(handshake.gym_id, handshake.pid)
                 data.update({"pid": handshake.pid, "start": player.subs_date, "end": player.subs_end_date,
                              "created_at": handshake.created_at})
