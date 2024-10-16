@@ -100,6 +100,29 @@ class LicenseService:
                              status.HTTP_204_NO_CONTENT)
 
     @staticmethod
+    def read_license_info_use_case(_id):
+        """Reads license"""
+        gym_license = License.find(_id)
+        if gym_license is not None:
+            plan = Plan.find(gym_license.plan_id)
+            if plan is not None:
+                obj = {
+                    '_id': str(gym_license._id),
+                    'gym_id': gym_license.gym_id,
+                    'plan': plan.plan_name,
+                    'plan_id': str(plan.id),
+                    'subscribe_date': gym_license.subscribe_date,
+                    'subscribe_end_date': gym_license.subscribe_end_date,
+                    'price': gym_license.price,
+                    'period': gym_license.period,
+                    'token': gym_license.token,
+                }
+                return make_response(jsonify(obj), status.HTTP_200_OK)
+        return make_response(jsonify({"result": "No content", "message": "cannot found any payments"}),
+                             status.HTTP_204_NO_CONTENT)
+
+
+    @staticmethod
     def read_license_use_case_with_product_key(_id):
         """Reads license"""
         gym_license = License.find(_id)

@@ -8,6 +8,12 @@ route = "/licenses"
 service = LicenseService()
 
 
+@licenses_bp.route(f"{route}/get-info", methods=["GET"])
+@token_verification
+def read_info_license(current_license):
+    return service.read_license_info_use_case(current_license._id)
+
+
 @licenses_bp.route(f"{route}/get/<lid>", methods=["GET"])
 def read_license(lid):
     return service.read_license_use_case(lid)
