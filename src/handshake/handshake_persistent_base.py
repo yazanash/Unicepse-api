@@ -29,7 +29,7 @@ class HandShakePersistentBase:
         """
         logger.info("Creating Payment in subscription= %s", self.pid)
         self.status = True
-        self.created_at = datetime.datetime.now()
+        self.created_at = datetime.datetime.now(datetime.timezone.utc)
         handshakes = db.handshakes
         handshakes.insert_one(self.serialize())
 
