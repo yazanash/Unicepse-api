@@ -17,7 +17,7 @@ class AttendanceBaseSchema(Schema):
         'null': 'login time cannot be null.',
         'invalid': 'invalid login time.'
     })
-    logout_time = fields.DateTime(required=True, error_messages={
+    logout_time = fields.String(required=True, error_messages={
         'required': 'logout time is required.',
         'null': 'logout time cannot be null.',
         'invalid': 'invalid logout time.'
