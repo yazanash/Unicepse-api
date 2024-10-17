@@ -7,7 +7,7 @@ class AttendanceBaseSchema(Schema):
         'null': 'attendance id cannot be null.',
         'invalid': 'invalid attendance id.'
     })
-    date = fields.DateTime( required=True, error_messages={
+    date = fields.DateTime(required=True, error_messages={
         'required': 'date is required.',
         'null': 'date cannot be null.',
         'invalid': 'invalid date.'

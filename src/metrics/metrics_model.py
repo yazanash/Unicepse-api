@@ -64,7 +64,7 @@ class Metric(MetricPersistentBase):
             "waist": self.waist,
             "chest": self.chest,
             "hips": self.hips,
-            "check_date": self.check_date.strftime("%d/%m/%Y"),
+            "check_date": self.check_date,
         }
 
     def deserialize(self, json):
@@ -87,7 +87,7 @@ class Metric(MetricPersistentBase):
         self.waist = json['waist']
         self.chest = json['chest']
         self.hips = json['hips']
-        self.check_date = datetime.strptime(json['check_date'], "%d/%m/%Y")
+        self.check_date = json['check_date']
 
     @staticmethod
     def create_model():

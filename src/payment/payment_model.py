@@ -29,7 +29,7 @@ class Payment(payment_persistent_base.PaymentPersistentBase):
             'gym_id': self.gym_id,
             'value': self.value,
             'description': self.description,
-            'date': self.date.strftime("%d/%m/%Y")
+            'date': self.date
         }
 
     def deserialize(self, json):
@@ -40,7 +40,7 @@ class Payment(payment_persistent_base.PaymentPersistentBase):
         self.gym_id = json["gym_id"]
         self.value = json['value']
         self.description = json['description']
-        self.date = datetime.strptime(json['date'], "%d/%m/%Y")
+        self.date = json['date']
 
     @staticmethod
     def create_model():
