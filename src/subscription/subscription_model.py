@@ -42,8 +42,8 @@ class Subscription(SubscriptionPersistentBase):
         self.gym_id = json["gym_id"]
         self.sport_name = json['sport_name']
         self.trainer_name = json['trainer_name']
-        self.start_date = datetime.strptime(json['start_date'], "%d/%m/%Y")
-        self.end_date = datetime.strptime(json['end_date'], "%d/%m/%Y")
+        self.start_date =json['start_date']
+        self.end_date = json['end_date']
         self.price = json['price']
         self.discount_value = json['discount_value']
         self.discount_des = json['discount_des']
@@ -64,8 +64,8 @@ class Subscription(SubscriptionPersistentBase):
             'gym_id': self.gym_id,
             'sport_name': self.sport_name,
             'trainer_name': self.trainer_name,
-            'start_date': self.start_date.strftime("%d/%m/%Y"),
-            'end_date': self.end_date.strftime("%d/%m/%Y"),
+            'start_date': self.start_date,
+            'end_date': self.end_date,
             'price': self.price,
             'discount_value': self.discount_value,
             'discount_des': self.discount_des,

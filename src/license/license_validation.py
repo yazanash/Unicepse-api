@@ -13,7 +13,7 @@ class LicenseBaseSchema(Schema):
         'invalid': 'invalid plan id.'
     })
 
-    subscribe_date = fields.String( required=True, error_messages={
+    subscribe_date = fields.DateTime( required=True, error_messages={
         'required': 'subscribe date is required.',
         'null': 'subscribe date cannot be null.',
         'invalid': 'invalid subscribe date.'
