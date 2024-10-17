@@ -12,7 +12,7 @@ from flask import render_template, url_for
 from flask_mail import Message
 from werkzeug.security import check_password_hash, generate_password_hash
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from db import db
 from mail import mail
 logger = logging.getLogger("flask.app")
@@ -59,7 +59,7 @@ class AuthService:
         """generate token key for users"""
         token = jwt.encode(payload={
             'public_id': str(self.uid),
-            'exp': datetime.utcnow() + timedelta(days=90)
+            'exp': datetime.now(timezone.utc) + timedelta(days=90)
         }, key=os.environ['SECRET_KEY'], algorithm="HS256")
 
         self.token = token

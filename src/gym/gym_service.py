@@ -89,7 +89,7 @@ class GymService:
                 data = gym.serialize()
                 player = Player.find(handshake.gym_id, handshake.pid)
                 data.update({"pid": handshake.pid, "start": player.subs_date, "end": player.subs_end_date,
-                             "created_at": handshake.created_at})
+                             "created_at": handshake.created_at.isoformat()})
                 gyms_dict.append(data)
             return make_response(jsonify(gyms_dict),
                                  status.HTTP_200_OK)
