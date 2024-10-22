@@ -24,6 +24,23 @@ def send_notification(token, title, body):
             body=body,
         ),
         token=registration_token,
+        android=messaging.AndroidConfig(
+            priority='high',
+            notification=messaging.AndroidNotification(
+                sound='default'
+            ),
+        ),
+        apns=messaging.APNSConfig(
+            payload=messaging.APNSPayload(
+                aps=messaging.Aps(
+                    sound='default',
+                    content_available=True
+                )
+            ),
+            headers={
+                'apns-priority': '10'
+                    }
+        )
     )
     response = messaging.send(message)
     return {'message_id': response}

@@ -1,8 +1,12 @@
+from datetime import datetime , timezone
+
+from dateutil.parser import parser
 from flask import make_response, jsonify
 
 from src.common.errors import *
 from src.common import status, points, notification_messages
 from .routine_model import Routine
+from ..Player.player_model import Player
 from ..handshake.handshake_model import HandShake
 
 
@@ -32,6 +36,12 @@ class RoutineService:
     @staticmethod
     def read_routine_use_case(gym_id, pid):
         """Reads All Subscription-subscription for player"""
+        player = Player.find(gym_id, pid)
+        dt_object = datetime.fromisoformat(player.subs_end_date.replace("Z", "+00:00"))
+        now = datetime.now(timezone.utc)
+        if dt_object > now:
+            return make_response(jsonify({"result": "No content", "message": "cannot found any transactions"}),
+                                 status.HTTP_204_NO_CONTENT)
         routine = Routine.find(gym_id, pid)
         if routine is not None:
             return make_response(jsonify(routine.serialize()),
