@@ -39,7 +39,7 @@ class RoutineService:
         player = Player.find(gym_id, pid)
         dt_object = datetime.fromisoformat(player.subs_end_date.replace("Z", "+00:00"))
         now = datetime.now(timezone.utc)
-        if dt_object > now:
+        if dt_object < now:
             return make_response(jsonify({"result": "No content", "message": "cannot found any transactions"}),
                                  status.HTTP_204_NO_CONTENT)
         routine = Routine.find(gym_id, pid)
