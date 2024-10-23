@@ -24,6 +24,10 @@ def token_verification(f):
             # decoding the payload to fetch the stored details
             data = jwt.decode(token, os.environ['SECRET_KEY'], algorithms=["HS256"])
             current_license = License.find(data['public_id'])
+            if current_license is None:
+                return jsonify({
+                    'message': 'Not Exist !!'
+                }), 404
         except TypeError:
             return jsonify({
                 'message': 'Token is invalid !!'
