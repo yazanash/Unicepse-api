@@ -33,5 +33,5 @@ def update_transaction(current_license):
 
 @payments_bp.route(f"{route}/<gym_id>/<pid>/<sid>/<id>", methods=["DELETE"])
 @token_verification
-def delete_transaction(current_license,gym_id, pid, sid, id):
+def delete_transaction(current_license, gym_id, pid, sid, id):
     return service.delete_payment_use_case(gym_id, pid, sid, id)

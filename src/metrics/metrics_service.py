@@ -44,11 +44,12 @@ class MetricsService:
                 if len(metrics_list) > 0:
                     for metric in metrics_list:
                         data.append(metric.serialize())
-                else:
-                    return make_response(jsonify({"result": "No content", "message": "cannot found any metrics"}),
-                                         status.HTTP_204_NO_CONTENT)
-            return make_response(jsonify(data),
-                                 status.HTTP_200_OK)
+
+            if len(data) > 0:
+                return make_response(jsonify(data), status.HTTP_200_OK)
+            else:
+                return make_response(jsonify({"result": "No content", "message": "cannot found any metrics"}),
+                                     status.HTTP_204_NO_CONTENT)
         return make_response(jsonify({"result": "No content", "message": "cannot found any handshakes"}),
                              status.HTTP_204_NO_CONTENT)
 
