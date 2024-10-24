@@ -44,7 +44,7 @@ class HandShakePersistentBase:
         self.created_at = datetime.datetime.now()
         handshakes = db.handshakes
         res = handshakes.update_one(
-            {'uid': self.sid,'pid': self.pid, "gym_id": self.gym_id},
+            {'uid': self.uid,'pid': self.pid, "gym_id": self.gym_id},
             {'$set': self.serialize()}
         )
         if res.modified_count == 1:
@@ -59,7 +59,7 @@ class HandShakePersistentBase:
         logger.info("Updating handshake: %s", self.pid)
 
         handshakes = db.handshakes
-        res = handshakes.delete_one({'uid': self.sid,'pid': self.pid, "gym_id": self.gym_id})
+        res = handshakes.delete_one({'uid': self.uid, 'pid': self.pid, "gym_id": self.gym_id})
         # if res.modified_count == 1:
         #     logger.info("handshake %s Updated successfully", self.pid)
         # else:
