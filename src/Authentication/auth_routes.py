@@ -3,11 +3,14 @@ from werkzeug.security import generate_password_hash
 
 from src.Authentication.auth_service import token_required
 from src.Authentication.auth_validation import UserBaseSchema, UserSchema
+from src.Authentication.profile_model import Profile
 from src.Authentication.user_model import User
 from src.api_key_protection import api_key_required
 from src.common import status
 
 from marshmallow import ValidationError
+
+from src.handshake.handshake_model import HandShake
 
 auth_Bp = Blueprint('auth', __name__, url_prefix='/api/v1')
 
@@ -70,6 +73,7 @@ def verify_otp():
 
 
 @auth_Bp.route("/auth/<string:account_id>", methods=["PUT"])
+@token_required
 def update_user(account_id):
     """this function will UPDATE user data a"""
     try:
@@ -170,3 +174,24 @@ def logout_user(current_user):
 #     user.update_password()
 #     message = {'message': 'user updated successfully', 'user_info': user.secret_serialize()}
 #     return make_response(jsonify(message), status.HTTP_200_OK)
+@auth_Bp.route("/auth", methods=["DELETE"])
+@token_required
+def delete_user(current_user):
+    """this function will UPDATE user data a"""
+    try:
+        user = User.find(current_user.uid)
+        if user is None:
+            abort(status.HTTP_404_NOT_FOUND, f"Account with id [{current_user.uid}] could not be found.")
+        handshakes = HandShake.all(current_user.uid)
+        if len(handshakes) > 0:
+            for hand in handshakes:
+                hand.delete()
+        profile = Profile.find(current_user.uid)
+        if profile is not None:
+            profile.delete()
+        deleted = user.delete()
+        if deleted:
+            message = {'message': 'user updated successfully', 'user_info': user.secret_serialize()}
+            return make_response(jsonify(message), status.HTTP_200_OK)
+    except ValidationError as err:
+        return make_response(jsonify(err.messages), status.HTTP_400_BAD_REQUEST)

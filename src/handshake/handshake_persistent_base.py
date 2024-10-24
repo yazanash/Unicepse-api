@@ -52,6 +52,19 @@ class HandShakePersistentBase:
         else:
             logger.info("handshake %s could NOT be Updated ", self.pid)
 
+    def delete(self):
+        """
+        Updates a handshakes to the database
+        """
+        logger.info("Updating handshake: %s", self.pid)
+
+        handshakes = db.handshakes
+        res = handshakes.delete_one({'uid': self.sid,'pid': self.pid, "gym_id": self.gym_id})
+        # if res.modified_count == 1:
+        #     logger.info("handshake %s Updated successfully", self.pid)
+        # else:
+        #     logger.info("handshake %s could NOT be Updated ", self.pid)
+
     @classmethod
     def all(cls, uid):
         """Returns all the records in the database"""
