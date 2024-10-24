@@ -45,6 +45,14 @@ class AuthService:
                                    {'$set': self.serialize()})
         return self
 
+    def delete(self):
+        """
+        Updates an Account to the database
+        """
+        logger.info("deleting %s", self.uid)
+        user = db.Users.delete_one({'_id': ObjectId(self.uid)})
+        return True
+
     def update_password(self):
         """
         Updates an Account to the database

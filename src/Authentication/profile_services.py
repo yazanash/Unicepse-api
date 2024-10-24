@@ -43,6 +43,14 @@ class ProfileService:
                                       {'$set': self.serialize_to_data_base()})
         return self
 
+    def delete(self):
+        """
+        Updates an Account to the database
+        """
+        logger.info("Deleting %s", self.uid)
+        user = db.profiles.delete_one({'uid': str(self.uid)})
+        return self
+
     def update_level(self):
         """
         Updates an Account to the database
