@@ -55,7 +55,7 @@ class PaymentService:
     def update_payment_use_case(data):
         """update payment for player subscription"""
         try:
-            validate_payment(data)
+            # validate_payment(data)
             pay = Payment.find(data['gym_id'], data['pid'], data['sid'], data['id'])
             if pay is None:
                 return make_response(jsonify({"result": "Not found", "message": "this payment is not exist"}),

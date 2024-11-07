@@ -12,7 +12,7 @@ def validate_payment(json: dict):
         assert (type(json["gym_id"]) is int)
         # assert (type(json["description"]) is str)     Nullable
         assert (type(json["value"]) is float)
-        assert (type(json["date"]) is str)
+        # assert (type(json["date"]) is str)
     except ValueError:
         logger.error("ValueError in payment data")
         raise DataValidationError("ValueError in payment")
