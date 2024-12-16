@@ -73,7 +73,7 @@ def get_user():
         abort(status.HTTP_404_NOT_FOUND, f"Account could not be found.")
     message = "verified successfully"
     token = user.generate_token()
-    email = user.email()
+    email = user.email
     return make_response(jsonify({"message": message, "token": token, "email": email}), status.HTTP_200_OK)
 
 
