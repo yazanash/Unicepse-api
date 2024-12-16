@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, request, jsonify, make_response, abort
 from werkzeug.security import generate_password_hash
 
@@ -62,14 +64,16 @@ def verify_otp():
     except ValidationError as err:
         return make_response(jsonify(err.messages), status.HTTP_400_BAD_REQUEST)
 
-# @auth_Bp.route("/auth/<string:account_id>", methods=["GET"])
-# def get_user(account_id):
-#     """this function will return user data"""
-#     user = User.find(account_id)
-#     if user is None:
-#         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
-#     message = user.serialize()
-#     return make_response(jsonify(message), status.HTTP_200_OK)
+
+@auth_Bp.route("/guest", methods=["GET"])
+def get_user():
+    """this function will return guest user """
+    user = User.find(os.environ["GUEST_ID"])
+    if user is None:
+        abort(status.HTTP_404_NOT_FOUND, f"Account could not be found.")
+    message = "verified successfully"
+    token = user.generate_token()
+    return make_response(jsonify({"message": message, "token": token}), status.HTTP_200_OK)
 
 
 @auth_Bp.route("/auth/<string:account_id>", methods=["PUT"])
