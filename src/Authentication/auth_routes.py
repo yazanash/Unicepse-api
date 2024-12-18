@@ -184,7 +184,7 @@ def logout_user(current_user):
 def delete_user(current_user):
     """this function will UPDATE user data a"""
     try:
-        if current_user.uid == os.environ["GUEST_ID"]:
+        if str(current_user.uid) == str(os.environ["GUEST_ID"]):
             abort(status.HTTP_403_FORBIDDEN, f"This profile is readonly")
         user = User.find(current_user.uid)
         if user is None:
