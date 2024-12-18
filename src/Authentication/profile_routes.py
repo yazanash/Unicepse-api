@@ -57,7 +57,7 @@ def get_auth_profile(current_user):
 @token_required
 def update_profile(current_user):
     """this function will UPDATE user data a"""
-    if current_user.uid == os.environ["GUEST_ID"]:
+    if str(current_user.uid) == str(os.environ["GUEST_ID"]):
         abort(status.HTTP_403_FORBIDDEN, f"This profile is readonly")
     profile = Profile.find(current_user.uid)
     if profile is None:
