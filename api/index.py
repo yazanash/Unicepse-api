@@ -1,17 +1,14 @@
 import os
-import pyotp
 from dotenv import load_dotenv
 
-from flask import Flask, request, jsonify, send_from_directory
-from werkzeug.security import check_password_hash
+from flask import Flask, send_from_directory
 from pyfcm import FCMNotification
-from werkzeug.utils import secure_filename
 
 from src.attedence.attendance_routes import attendances_bp
-from src.routine.routine_route import routineBlueprint
+from api.src.routine.routine_route import routineBlueprint
 from src.Authentication.auth_routes import auth_Bp
 from src.Authentication.profile_routes import profile_Bp
-from src.gym.gym_routes import gyms_bp
+from api.src.gym.gym_routes import gyms_bp
 from src.handshake.handshake_routes import handshakes_bp
 from src.license.license_routes import licenses_bp
 from src.metrics.metrics_routes import metrics_bp
@@ -21,7 +18,6 @@ from src.subscription.subscription_route import subscriptionBp
 from src.payment.payment_route import payments_bp
 from src.Player.player_route import playerBp
 from mail import mail
-from PIL import Image
 
 app = Flask(__name__)
 
