@@ -5,18 +5,18 @@ from flask import Flask, send_from_directory
 from pyfcm import FCMNotification
 
 from src.attedence.attendance_routes import attendances_bp
-from api.src.routine.routine_route import routineBlueprint
-from src.Authentication.auth_routes import auth_Bp
-from src.Authentication.profile_routes import profile_Bp
-from api.src.gym.gym_routes import gyms_bp
-from src.handshake.handshake_routes import handshakes_bp
-from src.license.license_routes import licenses_bp
-from src.metrics.metrics_routes import metrics_bp
-from src.offer.offer_route import offers_bp
-from src.plans.plan_route import plans_bp
-from src.subscription.subscription_route import subscriptionBp
-from src.payment.payment_route import payments_bp
-from src.Player.player_route import playerBp
+from src import routineBlueprint
+from src import auth_Bp
+from src import profile_Bp
+from src import gyms_bp
+from src import handshakes_bp
+from src import licenses_bp
+from src import metrics_bp
+from src import offers_bp
+from src.plans import plans_bp
+from src import subscriptionBp
+from src import payments_bp
+from src import playerBp
 from mail import mail
 
 app = Flask(__name__)
